@@ -1,7 +1,10 @@
 #Makefile
-all: simple
+all: simple asio
 
 simple:
 	cd simple && $(MAKE)
 
-.PHONY: all simple
+asio:
+	cd asio && $(MAKE)
+
+.PHONY: all simple asio

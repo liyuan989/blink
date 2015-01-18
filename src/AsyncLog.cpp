@@ -3,9 +3,9 @@
 #include "Timestamp.h"
 #include "TimeZone.h"
 
-#include "boost/ptr_container/ptr_vector.hpp"
-#include "boost/scoped_ptr.hpp"
-#include "boost/bind.hpp"
+#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/bind.hpp>
 
 #include <string>
 #include <time.h>
