@@ -1,0 +1,45 @@
+#Makefile
+CXX = g++
+
+CXXFLAGS = -g \
+		   -Wconversion \
+		   -Wall \
+		   -Werror \
+		   -Wextra \
+		   -Wshadow \
+		   -Wno-unused-parameter \
+		   -Wold-style-cast \
+		   -Woverloaded-virtual \
+		   -Wpointer-arith \
+		   -Wwrite-strings \
+		   -Wreorder \
+		   -march=native \
+		   -rdynamic \
+
+LDFLAGS = -pthread
+
+SERVER_SRC = main.cpp ../chargen/ChargenServer.cpp ../daytime/DaytimeServer.cpp ../discard/DiscardServer.cpp \
+			 ../echo/EchoServer.cpp ../time/TimeServer.cpp
+
+CLIENT_SRC =
+
+HEADDIR = -I../../../src
+
+LIBDIR = ../../../lib/debug/libblink.a
+
+OUTPUTDIR = ../../../bin/simple/all_in_one
+
+SERVER_EXEC = $(OUTPUTDIR)/server
+
+MKDIR = mkdir -p
+
+RM = rm -f
+
+all:
+	$(MKDIR) $(OUTPUTDIR)
+	$(CXX) $(CXXFLAGS) -o $(SERVER_EXEC) $(SERVER_SRC) $(LIBDIR) $(HEADDIR) $(LDFLAGS)
+
+clean:
+	$(RM) $(SERVER_EXEC) $(CLIENT_EXEC)
+
+.PHONY: clean all
