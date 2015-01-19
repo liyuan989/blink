@@ -45,7 +45,7 @@ TcpClient::~TcpClient()
     bool unique = false;
     {
         MutexLockGuard guard(mutex_);
-        unique = connection.unique();
+        unique = connection_.unique();
         connection = connection_;
     }
     if (connection)

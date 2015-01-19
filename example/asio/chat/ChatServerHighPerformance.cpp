@@ -2,6 +2,8 @@
 
 #include "TcpServer.h"
 #include "EventLoop.h"
+#include "MutexLock.h"
+#include "ThreadLocalSingleton.h"
 #include "Log.h"
 
 #include <boost/bind.hpp>
@@ -24,7 +26,13 @@ public:
 
     void start()
     {
+        server_.setThreadInitCallback(boost::bind(&ChatServer::threadInit, this, _1));
         server_.start();
+    }
+
+    void setThreadnumber(int num)
+    {
+        server_.setThreadNumber(num);
     }
 
 private:
@@ -35,11 +43,11 @@ private:
                  << (connection->connected() ? "UP" : "DOWN");
         if (connection->connected())
         {
-            connections_.insert(connection);
+            LocalConnections::getInstance().insert(connection);
         }
         else
         {
-            connections_.erase(connection);
+            LocalConnections::getInstance().erase(connection);
         }
     }
 
@@ -47,18 +55,42 @@ private:
                          const std::string& message,
                          Timestamp receive_time)
     {
-        for (ConnectionList::iterator it = connections_.begin();
-             it != connections_.end(); ++it)
+        EventLoop::Functor func = boost::bind(&ChatServer::destribueMessage, this, message);
+        LOG_DEBUG;
+        for (std::set<EventLoop*>::iterator it = loops_.begin(); it != loops_.end(); ++it)
+        {
+            (*it)->queueInLoop(func);
+        }
+        LOG_DEBUG;
+    }
+
+    void threadInit(EventLoop* loop)
+    {
+        assert(LocalConnections::pointer() == NULL);
+        LocalConnections::getInstance();
+        assert(LocalConnections::pointer() != NULL);
+        MutexLockGuard guard(mutex_);
+        loops_.insert(loop);
+    }
+
+    void destribueMessage(const std::string& message)
+    {
+        LOG_DEBUG << "begin";
+        for (ConnectionList::iterator it = LocalConnections::getInstance().begin();
+             it != LocalConnections::getInstance().end(); ++it)
         {
             codec_.send(boost::get_pointer(*it), message);
         }
+        LOG_DEBUG << "end";
     }
 
     typedef std::set<TcpConnectionPtr> ConnectionList;
+    typedef ThreadLocalSingleton<ConnectionList> LocalConnections;
 
-    TcpServer       server_;
-    Codec           codec_;
-    ConnectionList  connections_;
+    TcpServer             server_;
+    Codec                 codec_;
+    MutexLock             mutex_;
+    std::set<EventLoop*>  loops_;
 };
 
 int main(int argc, char const *argv[])
@@ -67,6 +99,7 @@ int main(int argc, char const *argv[])
     EventLoop loop;
     InetAddress server_addr(9600);
     ChatServer server(&loop, server_addr);
+    server.setThreadnumber(5);
     server.start();
     loop.loop();
     return 0;

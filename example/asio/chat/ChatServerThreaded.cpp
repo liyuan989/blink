@@ -2,6 +2,7 @@
 
 #include "TcpServer.h"
 #include "EventLoop.h"
+#include "MutexLock.h"
 #include "Log.h"
 
 #include <boost/bind.hpp>
@@ -27,12 +28,18 @@ public:
         server_.start();
     }
 
+    void setThreadnumber(int num)
+    {
+        server_.setThreadNumber(num);
+    }
+
 private:
     void onConnection(const TcpConnectionPtr& connection)
     {
         LOG_INFO << connection->peerAddress().toIpPort() << " -> "
                  << connection->localAddress().toIpPort() << " is "
                  << (connection->connected() ? "UP" : "DOWN");
+        MutexLockGuard guard(mutex_);
         if (connection->connected())
         {
             connections_.insert(connection);
@@ -47,6 +54,7 @@ private:
                          const std::string& message,
                          Timestamp receive_time)
     {
+        MutexLockGuard guard(mutex_);
         for (ConnectionList::iterator it = connections_.begin();
              it != connections_.end(); ++it)
         {
@@ -58,6 +66,7 @@ private:
 
     TcpServer       server_;
     Codec           codec_;
+    MutexLock       mutex_;
     ConnectionList  connections_;
 };
 
@@ -67,6 +76,7 @@ int main(int argc, char const *argv[])
     EventLoop loop;
     InetAddress server_addr(9600);
     ChatServer server(&loop, server_addr);
+    server.setThreadnumber(5);
     server.start();
     loop.loop();
     return 0;
