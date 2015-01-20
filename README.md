@@ -7,7 +7,7 @@
 -----------
 
 * **Linux only**.
-    * It runs on Linux with kernel 2.6.28 at lease for epoll, new syscall, new flag.
+    * It runs on Linux with kernel 2.6.28 at least for epoll, new syscall, new flag.
     * eg. eventfd, timerfd, O_CLOEXEC.
 
 * **It also need boost library**.
