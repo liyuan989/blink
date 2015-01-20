@@ -18,10 +18,6 @@ CXXFLAGS = -g \
 
 LDFLAGS = -pthread
 
-SERVER_SRC = ChatServer.cpp
-
-CLIENT_SRC = ChatClient.cpp
-
 HEADDIR = -I../../../src
 
 LIBDIR = ../../../lib/debug/libblink.a
