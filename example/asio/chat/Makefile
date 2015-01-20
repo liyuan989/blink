@@ -46,6 +46,6 @@ all:
 	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/ChatClientLoadTest ChatClientLoadTest.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
 
 clean:
-	$(RM) $(SERVER_EXEC) $(CLIENT_EXEC)
+	$(RM) $(OUTPUTDIR)/Chat*
 
 .PHONY: clean all

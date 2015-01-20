@@ -40,6 +40,6 @@ all:
 	$(CXX) $(CXXFLAGS) -o $(SERVER_EXEC) $(SERVER_SRC) $(LIBDIR) $(HEADDIR) $(LDFLAGS)
 
 clean:
-	$(RM) $(SERVER_EXEC) $(CLIENT_EXEC)
+	$(RM) $(SERVER_EXEC)
 
 .PHONY: clean all

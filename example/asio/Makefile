@@ -1,7 +1,10 @@
 #Makefile
-all: chat
+all: chat timer
 
 chat:
 	cd chat && $(MAKE)
 
-.PHONY: all chat
+timer:
+	cd timer && $(MAKE)
+
+.PHONY: all chat timer
