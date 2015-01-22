@@ -99,7 +99,7 @@ void EchoServer::onTimer()
     dumpConnectionList();
     Timestamp now = Timestamp::now();
     for (WeakConnectionList::iterator it = connection_list_.begin();
-         it != connection_list_.end(); ++it)
+         it != connection_list_.end();)
     {
         TcpConnectionPtr connection = it->lock();
         if (connection)
