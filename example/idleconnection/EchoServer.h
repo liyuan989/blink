@@ -59,7 +59,7 @@ private:
             }
         }
 
-        WeakTcpConnectionPtr weak_connection_;
+        WeakTcpConnectionPtr weak_connection_;  // use weak_ptr to avoid circular reference.
     };
 
     typedef boost::shared_ptr<Entry> EntryPtr;

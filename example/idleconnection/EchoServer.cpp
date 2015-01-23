@@ -41,7 +41,7 @@ void EchoServer::onConnection(const TcpConnectionPtr& connection)
         connection_buckets_.back().insert(entry);
         dumpConnectionBuckets();
         WeakEntryPtr weak_entry(entry);
-        connection->setContext(weak_entry);
+        connection->setContext(weak_entry);  // use weak_ptr to avoid circular reference.
     }
     else
     {
