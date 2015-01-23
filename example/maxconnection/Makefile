@@ -18,15 +18,15 @@ CXXFLAGS = -g \
 
 LDFLAGS = -pthread
 
-SERVER_SRC = main.cpp EchoServer.cpp
+SERVER_SRC = MaxConnection.cpp
 
 HEADDIR = -I../../src
 
 LIBDIR = ../../lib/debug/libblink.a
 
-OUTPUTDIR = ../../bin/idleconnection
+OUTPUTDIR = ../../bin/maxconnection
 
-SERVER_EXEC = $(OUTPUTDIR)/server
+SERVER_EXEC = $(OUTPUTDIR)/MaxConnection
 
 
 MKDIR = mkdir -p
@@ -36,9 +36,8 @@ RM = rm -f
 all:
 	$(MKDIR) $(OUTPUTDIR)
 	$(CXX) $(CXXFLAGS) -o $(SERVER_EXEC) $(SERVER_SRC) $(LIBDIR) $(HEADDIR) $(LDFLAGS)
-	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/server_sorted EchoServer_sorted.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
 
 clean:
-	$(RM) $(SERVER_EXEC) server*
+	$(RM) $(SERVER_EXEC)
 
 .PHONY: clean all
