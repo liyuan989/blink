@@ -99,6 +99,32 @@ const char* inet_ntop(int family, const struct in_addr* addr, char* str, size_t 
     return ::inet_ntop(family, implicit_cast<const void*>(addr), str, len);
 }
 
+void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr)
+{
+    assert(size >= INET_ADDRSTRLEN);
+    sockets::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
+    size_t end = strlen(buf);
+    uint16_t port = sockets::ntoh16(addr.sin_port);
+    assert(size > end);
+    snprintf(buf + end, size - end, ":%u", port);
+}
+
+void toIp(char* buf, size_t size, const struct sockaddr_in& addr)
+{
+    assert(size >= INET_ADDRSTRLEN);
+    sockets::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
+}
+
+void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr)
+{
+    addr->sin_family = AF_INET;
+    addr->sin_port = sockets::hton16(port);
+    if (sockets::inet_pton(AF_INET, ip, &addr->sin_addr) <= 0)
+    {
+        LOG_ERROR << "sockets::fromIpPort";
+    }
+}
+
 struct hostent* gethostbyname(const char* name)
 {
     struct hostent* val = ::gethostbyname(name);

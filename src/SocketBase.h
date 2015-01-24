@@ -30,6 +30,10 @@ int16_t ntoh16(int16_t net16);
 int inet_pton(int family, const char* str, struct in_addr* addr);
 const char* inet_ntop(int family, const struct in_addr* addr, char* str, size_t len);
 
+void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr);
+void toIp(char* buf, size_t size, const struct sockaddr_in& addr);
+void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr);
+
 //  struct hostent
 //  {
 //  	char*   h_name;              /* official name of host */
@@ -110,7 +114,7 @@ int shutdown(int sockfd, int howto);
 ssize_t readv(int fd, const struct iovec* iov, int iovcnt);
 ssize_t writev(int fd, const struct iovec* iov, int iovcnt);
 
-int createNonblocking();    // create tcp socket
+int createNonblocking();    // create tcp ipv4 socket
 bool setNonBlockAndCloseOnExec(int sockfd);  // fcntl
 int getSocketError(int sockfd);
 bool isSelfConnect(int sockfd);
