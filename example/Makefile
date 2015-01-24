@@ -1,5 +1,5 @@
 #Makefile
-all: simple asio twisted netty idleconnection maxconnection
+all: simple asio twisted netty idleconnection maxconnection roundtrip
 
 simple:
 	cd simple && $(MAKE)
@@ -19,4 +19,7 @@ idleconnection:
 maxconnection:
 	cd maxconnection && $(MAKE)
 
-.PHONY: all simple asio twisted netty idleconnection maxconnection
+roundtrip:
+	cd roundtrip && $(MAKE)
+
+.PHONY: all simple asio twisted netty idleconnection maxconnection roundtrip
