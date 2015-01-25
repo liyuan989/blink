@@ -22,7 +22,7 @@ HEADDIR = -I../../src
 
 LIBDIR = ../../lib/debug/libblink.a
 
-OUTPUTDIR = ../../bin/hub
+OUTPUTDIR = ../../bin/multiplexer
 
 MKDIR = mkdir -p
 
@@ -30,11 +30,9 @@ RM = rm -f
 
 all:
 	$(MKDIR) $(OUTPUTDIR)
-	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/PubSubServer PubSubServer.cpp Codec.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
-	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/PubClient Pub.cpp PubSubClient.cpp Codec.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
-	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/SubClient Sub.cpp PubSubClient.cpp Codec.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/MultiplexServer_simple MultiplexServer_simple.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
 
 clean:
-	$(RM) $(OUTPUTDIR)/*
+	$(RM) $(OUTPUTDIR)/Multi*
 
 .PHONY: clean all
