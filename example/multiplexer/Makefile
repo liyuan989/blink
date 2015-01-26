@@ -31,6 +31,8 @@ RM = rm -f
 all:
 	$(MKDIR) $(OUTPUTDIR)
 	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/MultiplexServer_simple MultiplexServer_simple.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/MultiplexServer MultiplexServer.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $(OUTPUTDIR)/Demux Demux.cpp $(LIBDIR) $(HEADDIR) $(LDFLAGS)
 
 clean:
 	$(RM) $(OUTPUTDIR)/Multi*

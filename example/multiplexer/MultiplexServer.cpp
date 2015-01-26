@@ -2,7 +2,10 @@
 #include "TcpClient.h"
 #include "EventLoop.h"
 #include "InetAddress.h"
+#include "MutexLock.h"
 #include "Nocopyable.h"
+#include "Atomic.h"
+#include "Thread.h"
 #include "Log.h"
 
 #include <boost/bind.hpp>
@@ -11,6 +14,7 @@
 
 #include <queue>
 #include <map>
+#include <vector>
 #include <stdio.h>
 
 using namespace blink;
@@ -22,12 +26,13 @@ const uint16_t kClientPort = 9600;
 const uint16_t kBackendPort = 9700;
 const char* kBackendIp = "127.0.0.1";
 
-class MultiplexServer : Nocopyable
+class MultiplexServer :Nocopyable
 {
 public:
     MultiplexServer(EventLoop* loop,
                     const InetAddress& listen_addr,
-                    const InetAddress& backend_addr);
+                    const InetAddress& backend_addr,
+                    int number_threads);
 
     void start();
 
@@ -44,10 +49,16 @@ private:
                           Buffer* buf,
                           Timestamp receive_time);
     void sendToClient(Buffer* buf);
-    void doCommand(const std::string& command);
+    void printStatistics();
 
     TcpServer                        server_;
     TcpClient                        backend_;
+    int                              number_threads_;
+    AtomicInt64                      transferred_;
+    AtomicInt64                      received_messages_;
+    int64_t                          old_counter_;
+    Timestamp                        start_time_;
+    MutexLock                        mutex_;
     TcpConnectionPtr                 backend_connection_;
     std::map<int, TcpConnectionPtr>  client_connections_;
     std::queue<int>                  available_ids_;
@@ -55,19 +66,26 @@ private:
 
 MultiplexServer::MultiplexServer(EventLoop* loop,
                                  const InetAddress& listen_addr,
-                                 const InetAddress& backend_addr)
+                                 const InetAddress& backend_addr,
+                                 int number_threads)
     : server_(loop, listen_addr, "MultiplexServer"),
-      backend_(loop, backend_addr, "MultiplexBackend")
+      backend_(loop, backend_addr, "MultiplexBackend"),
+      number_threads_(number_threads),
+      old_counter_(0),
+      start_time_(Timestamp::now())
 {
     server_.setConnectionCallback(boost::bind(&MultiplexServer::onClientConnection, this, _1));
     server_.setMessageCallback(boost::bind(&MultiplexServer::onClientMessage, this, _1, _2, _3));
+    server_.setThreadNumber(number_threads);
     backend_.setConnectionCallback(boost::bind(&MultiplexServer::onBackendConnection, this, _1));
     backend_.setMessageCallback(boost::bind(&MultiplexServer::onBackendMessage, this, _1, _2, _3));
     backend_.enableRetry();
+    //loop->runEvery(10.0, boost::bind(&MultiplexServer::printStatistics, this));
 }
 
 void MultiplexServer::start()
 {
+    LOG_INFO << "starting " << number_threads_ << " threads.";
     backend_.connect();
     server_.start();
 }
@@ -80,11 +98,14 @@ void MultiplexServer::onClientConnection(const TcpConnectionPtr& connection)
     if (connection->connected())
     {
         int id = -1;
-        if (!available_ids_.empty())
         {
-            id = available_ids_.front();
-            available_ids_.pop();
-            client_connections_[id] = connection;
+            MutexLockGuard guard(mutex_);
+            if (!available_ids_.empty())
+            {
+                id = available_ids_.front();
+                available_ids_.pop();
+                client_connections_[id] = connection;
+            }
         }
         if (id <= 0)
         {
@@ -109,6 +130,8 @@ void MultiplexServer::onClientConnection(const TcpConnectionPtr& connection)
             snprintf(buf, sizeof(buf), "CONNECTION %d FROM %s IS DOWN\r\n",
                      id, connection->peerAddress().toIpPort().c_str());
             sendBackendString(0, buf);
+
+            MutexLockGuard guard(mutex_);
             if (backend_connection_)
             {
                 available_ids_.push(id);
@@ -127,6 +150,9 @@ void MultiplexServer::onClientMessage(const TcpConnectionPtr& connection,
                                                 Buffer* buf,
                                                 Timestamp receive_time)
 {
+    size_t len = buf->readableSize();
+    transferred_.getAndSet(len);
+    received_messages_.incrementAndGet();
     if (!connection->getContext().empty())
     {
         int id = boost::any_cast<int>(connection->getContext());
@@ -170,9 +196,14 @@ void MultiplexServer::sendBackendPacket(int id, Buffer* buf)
                                   static_cast<uint8_t>(id & 0xFF),
                                   static_cast<uint8_t>((id & 0xFF00) >> 8)};
     buf->prepend(header, kHeaderLen);
-    if (backend_connection_)
+    TcpConnectionPtr backend_connection;
     {
-        backend_connection_->send(buf);
+        MutexLockGuard guard(mutex_);
+        backend_connection = backend_connection_;
+    }
+    if (backend_connection)
+    {
+        backend_connection->send(buf);
     }
 }
 
@@ -181,8 +212,10 @@ void MultiplexServer::onBackendConnection(const TcpConnectionPtr& connection)
     LOG_TRACE << "Backend " << connection->localAddress().toIpPort() << " -> "
               << connection->peerAddress().toIpPort() << " is "
               << (connection->connected() ? "UP" : "DOWN");
+    std::vector<TcpConnectionPtr> connections_to_detroy;
     if (connection->connected())
     {
+        MutexLockGuard guard(mutex_);
         backend_connection_ = connection;
         assert(available_ids_.empty());
         for (int i = 1; i <= kMaxConnections; ++i)
@@ -192,11 +225,13 @@ void MultiplexServer::onBackendConnection(const TcpConnectionPtr& connection)
     }
     else
     {
+        MutexLockGuard guard(mutex_);
         backend_connection_.reset();
+        connections_to_detroy.reserve(client_connections_.size());
         for (std::map<int, TcpConnectionPtr>::iterator it = client_connections_.begin();
              it != client_connections_.end(); ++it)
         {
-            it->second->shutdown();
+            connections_to_detroy.push_back(it->second);
         }
         client_connections_.clear();
         while (!available_ids_.empty())
@@ -204,12 +239,20 @@ void MultiplexServer::onBackendConnection(const TcpConnectionPtr& connection)
             available_ids_.pop();
         }
     }
+    for (std::vector<TcpConnectionPtr>::iterator it = connections_to_detroy.begin();
+         it != connections_to_detroy.end(); ++it)
+    {
+        (*it)->shutdown();
+    }
 }
 
 void MultiplexServer::onBackendMessage(const TcpConnectionPtr& connection,
                                                  Buffer* buf,
                                                  Timestamp receive_time)
 {
+    size_t len = buf->readableSize();
+    transferred_.addAndGet(len);
+    received_messages_.incrementAndGet();
     sendToClient(buf);
 }
 
@@ -226,38 +269,37 @@ void MultiplexServer::sendToClient(Buffer* buf)
         {
             int id = static_cast<uint8_t>(buf->peek()[1]);
             id |= (static_cast<uint8_t>(buf->peek()[2]) << 8);
-            if (id != 0)
+            TcpConnectionPtr client_connection;
             {
+                MutexLockGuard guard(mutex_);
                 std::map<int, TcpConnectionPtr>::iterator it = client_connections_.find(id);
                 if (it != client_connections_.end())
                 {
-                    it->second->send(buf->peek() + kHeaderLen, len);
+                    client_connection = it->second;
                 }
             }
-            else
+            if (client_connection)
             {
-                std::string command(buf->peek() + kHeaderLen, len);
-                LOG_INFO << "Backend command " << command;
-                doCommand(command);
+                client_connection->send(buf->peek() + kHeaderLen, len);
             }
             buf->reset(kHeaderLen + len);
         }
     }
 }
 
-void MultiplexServer::doCommand(const std::string& command)
+void MultiplexServer::printStatistics()
 {
-    static const std::string kDisconnectedCommand = "DISCONNECT ";
-    if (command.size() > kDisconnectedCommand.size()
-        && std::equal(kDisconnectedCommand.begin(), kDisconnectedCommand.end(), command.begin()))
-    {
-        int id = atoi(&command[kDisconnectedCommand.size()]);
-        std::map<int, TcpConnectionPtr>::iterator it = client_connections_.find(id);
-        if (it != client_connections_.end())
-        {
-            it->second->shutdown();
-        }
-    }
+    Timestamp end_time = Timestamp::now();
+    int64_t new_counter = transferred_.get();
+    int64_t bytes = new_counter - old_counter_;
+    int64_t messages = received_messages_.getAndSet(0);
+    double time = timeDifference(end_time, start_time_);
+    printf("%4.3f MiB/s %4.3f Ki Msg/s %6.2f bytes/msg\n",
+           static_cast<double>(bytes) / time / 1024 / 1024,
+           static_cast<double>(messages) / time / 1024,
+           static_cast<double>(bytes) / static_cast<double>(messages));
+    old_counter_ = new_counter;
+    start_time_ = end_time;
 }
 
 int main(int argc, char const *argv[])
@@ -267,10 +309,15 @@ int main(int argc, char const *argv[])
     {
         kBackendIp = argv[1];
     }
+    int number_threads = 4;
+    if (argc > 2)
+    {
+        number_threads = atoi(argv[2]);
+    }
     EventLoop loop;
     InetAddress listen_addr(kClientPort);
     InetAddress backend_addr(kBackendIp, kBackendPort);
-    MultiplexServer server(&loop, listen_addr, backend_addr);
+    MultiplexServer server(&loop, listen_addr, backend_addr, number_threads);
     server.start();
     loop.loop();
     return 0;
