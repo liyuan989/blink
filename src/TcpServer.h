@@ -66,7 +66,7 @@ public:
         return name_;
     }
 
-    EventLoop* getLoop()
+    EventLoop* getLoop() const
     {
         return loop_;
     }
