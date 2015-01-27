@@ -145,6 +145,7 @@ void EPollPoller::updateChannel(Channel* channel)
         }
         else
         {
+            // FIXME: Use EPOLL_CTL_ADD and ignore the return error.
             update(EPOLL_CTL_MOD, channel);
         }
     }
