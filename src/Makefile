@@ -29,10 +29,6 @@ MKDIR = mkdir -p
 
 SRCS = *.cpp
 
-LIBS =
-
-HEADS =
-
 OBJS = $(SRCS:.cpp=.o)
 
 LIBDIR_DEBUG = ../lib/debug
@@ -43,21 +39,23 @@ EXECUTABLE_DEBUG = $(LIBDIR_DEBUG)/libblink.a
 
 EXECUTABLE_RELEASE = $(LIBDIR_RELEASE)/libblink.a
 
-ar_lib_debug = $(AR) $(ARFLAGS) $(EXECUTABLE_DEBUG) $(OBJS)
+ar_lib_debug = $(AR) $(ARFLAGS) $(EXECUTABLE_DEBUG) $(OBJS) http/*.o
 
-ar_lib_release = $(AR) $(ARFLAGS) $(EXECUTABLE_RELEASE) $(OBJS)
+ar_lib_release = $(AR) $(ARFLAGS) $(EXECUTABLE_RELEASE) $(OBJS) http/*.o
 
-rm_objs = $(RM) $(OBJS)
+rm_objs = $(RM) $(OBJS) http/*.o
 
 all:
 	$(MKDIR) $(LIBDIR_DEBUG)
-	$(CXX) $(CXXFLAGS) $(SRCS)
+	$(CXX) $(CXXFLAGS) $(SRCS) $(HEADS)
+	cd http && $(MAKE)
 	$(ar_lib_debug)
 	$(rm_objs)
 
 release:
 	$(MKDIR) $(LIBDIR_RELEASE)
 	$(CXX) $(RELEASEFLAGS) $(CXXFLAGS) $(SRCS)
+	cd http && $(MAKE) release
 	$(ar_lib_release)
 	$(rm_objs)
 
