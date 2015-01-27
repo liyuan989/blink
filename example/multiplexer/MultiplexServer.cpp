@@ -192,9 +192,12 @@ void MultiplexServer::sendBackendPacket(int id, Buffer* buf)
     size_t len = buf->readableSize();
     LOG_DEBUG << "sendBackendPacket " << len;
     assert(len <= kMaxPacketLen);
-    uint8_t header[kHeaderLen] = {static_cast<uint8_t>(len),
-                                  static_cast<uint8_t>(id & 0xFF),
-                                  static_cast<uint8_t>((id & 0xFF00) >> 8)};
+    uint8_t header[kHeaderLen] =
+    {
+        static_cast<uint8_t>(len),
+        static_cast<uint8_t>(id & 0xFF),
+        static_cast<uint8_t>((id & 0xFF00) >> 8),
+    };
     buf->prepend(header, kHeaderLen);
     TcpConnectionPtr backend_connection;
     {
