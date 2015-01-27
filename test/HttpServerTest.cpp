@@ -76,7 +76,8 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-char favicon[555] = {
+char favicon[555] =
+{
   '\x89', 'P', 'N', 'G', '\xD', '\xA', '\x1A', '\xA',
   '\x0', '\x0', '\x0', '\xD', 'I', 'H', 'D', 'R',
   '\x0', '\x0', '\x0', '\x10', '\x0', '\x0', '\x0', '\x10',
