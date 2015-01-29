@@ -28,19 +28,19 @@ void testIpPort()
     {
         std::ostringstream os;
         os << "192.168." << i << ".255";
-        blink::InetAddress addr(os.str(), 10*i);
+        blink::InetAddress addr(os.str(), static_cast<uint16_t>(10 * i));
         printf("Ip:   %s\n", addr.toIp().c_str());
     }
     for (int i = 0; i < 255; ++i)
     {
-        blink::InetAddress addr("192.168.1.1", 10*i);
+        blink::InetAddress addr("192.168.1.1", static_cast<uint16_t>(10 * i));
         printf("Port:   %hu\n", addr.toPort());
     }
     for (int i = 0; i < 255; ++i)
     {
         std::ostringstream os;
         os << "192.168.1." << i;
-        blink::InetAddress addr(os.str(), 10*i);
+        blink::InetAddress addr(os.str(), static_cast<uint16_t>(10 * i));
         printf("Ip: Port   %s\n", addr.toIpPort().c_str());
     }
 }

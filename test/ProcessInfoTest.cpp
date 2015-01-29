@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
     printf("pidString : %s\n", pidString().c_str());
     printf("usrname : %s\n", username().c_str());
     printf("startTime : %s\n", startTime().toString().c_str());
-    printf("startTime(format) : %s\n", startTime().toFormatedString(true).c_str());
+    printf("startTime(format) : %s\n", startTime().toFormattedString().c_str());
     printf("clockTicksPerSecond : %d\n", clockTicksPerSecond());
     printf("pageSize : %d\n", pageSize());
     printf("isDebugBuild : %s\n", (isDebugBuild() ? "true" : "false"));

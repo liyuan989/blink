@@ -10,9 +10,9 @@ using namespace blink;
 
 int main(int argc, char const *argv[])
 {
-	TimeStamp tm_stamp(TimeStamp::now());
+	Timestamp tm_stamp(Timestamp::now());
 	std::string s = tm_stamp.toString();
-	std::string s_fmt = tm_stamp.toFormatedString(true);
+	std::string s_fmt = tm_stamp.toFormattedString(true);
 	printf("%s\n", s.c_str());
 	printf("%s\n", s_fmt.c_str());
 	struct timeval tv;

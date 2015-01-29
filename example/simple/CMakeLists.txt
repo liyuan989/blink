@@ -1,0 +1,6 @@
+add_subdirectory(all_in_one)
+add_subdirectory(chargen)
+add_subdirectory(daytime)
+add_subdirectory(discard)
+add_subdirectory(echo)
+add_subdirectory(time)

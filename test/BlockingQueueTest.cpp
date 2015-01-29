@@ -117,7 +117,7 @@ private:
             Timestamp data = task_queue_.take();
             if (data.valid())
             {
-                int delay = timeDifference(Timestamp::now(), data) * 1000 * 1000;
+                int delay = static_cast<int>(timeDifference(Timestamp::now(), data) * 1000 * 1000);
                 ++delay_map[delay];
             }
             running = data.valid();

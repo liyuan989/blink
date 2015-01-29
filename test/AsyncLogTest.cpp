@@ -42,7 +42,7 @@ void bench(bool longlog)
     for (int i = 0; i < 32; ++i)
     {
         Timestamp start = Timestamp::now();
-        for (int i = 0; i < kBatch; ++i)
+        for (int j = 0; j < kBatch; ++j)
         {
             LOG_INFO << "hey boy! 9876543210" << "QWERASDFZXC"
                      << " poilkujhuhhd " << (longlog ? longstr : " ") << count;

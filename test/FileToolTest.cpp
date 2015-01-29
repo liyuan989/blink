@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
 
     AppendFile append_file(std::string("1.txt"));
     append_file.appendFile(s, strlen(s));
-    append_file.fflush();
+    append_file.flush();
     printf("writebytes = %d\n", append_file.writtenBytes());
     return 0;
 }

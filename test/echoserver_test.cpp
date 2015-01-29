@@ -37,7 +37,7 @@ private:
                   << connection->peerAddress().toIpPort() << " is "
                   << (connection->connected() ? "UP" : "DOWN");
         LOG_INFO << connection->getTcpInfoString();
-        connection->send("hello\n")
+        connection->send("hello\n");
     }
 
     void onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)

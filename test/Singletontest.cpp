@@ -20,9 +20,9 @@ public:
         printf("destroying, message: %s  tid = %d  name: %s addr: %p\n", message_.c_str(), tid(), threadName(), this);
     }
 
-    void setMessage(const std::string& message)
+    void setMessage(const std::string& msg)
     {
-        message_ = message;
+        message_ = msg;
     }
 
     std::string message() const
