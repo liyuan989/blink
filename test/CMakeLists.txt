@@ -69,8 +69,8 @@ target_link_libraries(LogTest blink)
 add_executable(ProcessInfoTest ProcessInfoTest.cpp)
 target_link_libraries(ProcessInfoTest blink)
 
-add_executable(Singletontest Singletontest.cpp)
-target_link_libraries(Singletontest blink)
+add_executable(SingletonTest SingletonTest.cpp)
+target_link_libraries(SingletonTest blink)
 
 add_executable(TcpClientTest TcpClientTest.cpp)
 target_link_libraries(TcpClientTest blink)
@@ -93,8 +93,8 @@ target_link_libraries(ThreadTest blink)
 add_executable(TimerQueueTest TimerQueueTest.cpp)
 target_link_libraries(TimerQueueTest blink)
 
-add_executable(TimeStampTest TimeStampTest.cpp)
-target_link_libraries(TimeStampTest blink)
+add_executable(TimestampTest TimestampTest.cpp)
+target_link_libraries(TimestampTest blink)
 
 add_executable(TimeZoneTest TimeZoneTest.cpp)
 target_link_libraries(TimeZoneTest blink)

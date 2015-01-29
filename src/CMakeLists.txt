@@ -1,0 +1,44 @@
+set(SRCS
+ Acceptor.cpp
+ AsyncLog.cpp
+ Buffer.cpp
+ Channel.cpp
+ Condition.cpp
+ Connector.cpp
+ CountDownLatch.cpp
+ CurrentThread.cpp
+ Date.cpp
+ EventLoop.cpp
+ EventLoopThread.cpp
+ EventLoopThreadPool.cpp
+ Exception.cpp
+ FileTool.cpp
+ InetAddress.cpp
+ Log.cpp
+ LogFile.cpp
+ LogStream.cpp
+ MutexLock.cpp
+ Poller.cpp
+ ProcessBase.cpp
+ ProcessInfo.cpp
+ Rio.cpp
+ Socket.cpp
+ SocketBase.cpp
+ TcpClient.cpp
+ TcpConnection.cpp
+ TcpServer.cpp
+ Thread.cpp
+ ThreadBase.cpp
+ ThreadPool.cpp
+ Timer.cpp
+ TimerQueue.cpp
+ Timestamp.cpp
+ TimeZone.cpp
+ http/HttpContext.cpp
+ http/HttpRequest.cpp
+ http/HttpResponse.cpp
+ http/HttpServer.cpp
+ )
+
+add_library(blink ${SRCS})
+target_link_libraries(blink pthread rt)
