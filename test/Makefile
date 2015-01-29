@@ -1,5 +1,0 @@
-#Makefile
-
-all:
-
-.PHONY: all
