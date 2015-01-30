@@ -8,10 +8,15 @@ BUILD_BIR=${CURRENT_DIR}/build/${BUILD_TYPE}
 BUILD_NO_EXAMPLES=${BUILD_NO_EXAMPLES:-0}
 BUILD_NO_TEST=${BUILD_NO_TEST:-0}
 
-mkdir -p ${BUILD_BIR}
-cd ${BUILD_BIR}
-cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-      -DCMAKE_BUILD_NO_EXAMPLES=${BUILD_NO_EXAMPLES} \
-      -DCMAKE_BUILD_NO_TEST=${BUILD_NO_TEST} \
-      ${CURRENT_DIR}
-make
+if [ ${BUILD_TYPE} != "release" ] && [ ${BUILD_TYPE} != "debug" ]
+then
+    echo "Usage: BUILD_TYPE=debug/release"
+else
+    mkdir -p ${BUILD_BIR}
+    cd ${BUILD_BIR}
+    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+          -DCMAKE_BUILD_NO_EXAMPLES=${BUILD_NO_EXAMPLES} \
+          -DCMAKE_BUILD_NO_TEST=${BUILD_NO_TEST} \
+          ${CURRENT_DIR}
+    make
+fi
