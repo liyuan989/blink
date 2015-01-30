@@ -20,30 +20,24 @@
 # Build
 -------
 
-To compile debug library into /lib/debug:
+**It must be built by cmake >= 2.6 at lease**
 
-    % make
+To compile release library into /lib/release, release examples and test into bin/release:
+
+    % ./build.sh 
     
-To compile release library into /lib/release:
-
-    % make release
+    or
     
-To compile example (need debug library) into /bin:
+    % BUILD_TYPE=release ./build.sh
 
-    % make example
-    
-To compile all:
+To compile debug library into /lib/debug, debug examples and test into bin/debug:
 
-    % make all
-    
-To clean library:
+    % BUILD_TYPE=debug ./build.sh 
 
-    % make clean
-    
-To clean example:
+You can also add BUILD_NO_EXAMPLES or BUILD_NO_TEST in head, if you don't wanna build exmaples and test.
 
-    % make clean-example
-    
-To clean all:
+Such as:
 
-    % make clean-all
+    % BUILD_TYPE=debug BUILD_NO_EXAMPLES=true ./build.sh
+    % BUILD_NO_TEST=true ./build.sh
+    % BUILD_TYPE=debug BUILD_NO_EXAMPLES=true BUILD_NO_TEST=true ./build.sh
