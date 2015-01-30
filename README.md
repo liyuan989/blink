@@ -34,9 +34,7 @@
 
     % BUILD_TYPE=debug ./build.sh 
 
-**You can also add BUILD_NO_EXAMPLES or BUILD_NO_TEST in head, if you don't wanna build exmaples and test.**
-
-**Such as:**
+**You can also add BUILD_NO_EXAMPLES or BUILD_NO_TEST in head, if you don't wanna build exmaples or test. Such as:**
 
     % BUILD_TYPE=debug BUILD_NO_EXAMPLES=true ./build.sh
     % BUILD_NO_TEST=true ./build.sh
