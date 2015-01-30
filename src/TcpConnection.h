@@ -117,9 +117,10 @@ public:
         write_complete_callback_ = cb;
     }
 
-    void setHighWaterMarkCallback(const HighWaterMarkCallback& cb)
+    void setHighWaterMarkCallback(const HighWaterMarkCallback& cb, size_t high_water_mark)
     {
         high_water_mark_callback_ = cb;
+        high_water_mark_ = high_water_mark;
     }
 
     void setCloseCallback(const CloseCallback& cb)
