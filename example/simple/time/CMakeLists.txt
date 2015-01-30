@@ -1,4 +1,4 @@
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/simple/time)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/simple/time)
 
 add_executable(simple_time_client client.cpp)
 target_link_libraries(simple_time_client blink)

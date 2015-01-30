@@ -1,4 +1,4 @@
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/test)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/test)
 
 add_executable(AcceptorTest AcceptorTest.cpp)
 target_link_libraries(AcceptorTest blink)
@@ -15,11 +15,15 @@ target_link_libraries(BlockingQueueTest blink)
 add_executable(BoundedBlockingQueueTest BoundedBlockingQueueTest.cpp)
 target_link_libraries(BoundedBlockingQueueTest blink)
 
-add_executable(Buffer_BoostTest Buffer_BoostTest.cpp)
-target_link_libraries(Buffer_BoostTest blink boost_unit_test_framework)
+if(BOOSTTEST_LIBRARY)
+    add_executable(Buffer_BoostTest Buffer_BoostTest.cpp)
+    target_link_libraries(Buffer_BoostTest blink boost_unit_test_framework)
+endif()
 
-add_executable(Buffer_GoogleTest Buffer_GoogleTest.cpp)
-target_link_libraries(Buffer_GoogleTest blink gtest)
+if(GTEST_FOUND)
+    add_executable(Buffer_GoogleTest Buffer_GoogleTest.cpp)
+    target_link_libraries(Buffer_GoogleTest blink ${GTEST_BOTH_LIBRARIES})
+endif()
 
 add_executable(CountDownLatchTest CountDownLatchTest.cpp)
 target_link_libraries(CountDownLatchTest blink)
@@ -48,8 +52,10 @@ target_link_libraries(ExceptionTest blink)
 add_executable(FileToolTest FileToolTest.cpp)
 target_link_libraries(FileToolTest blink)
 
-add_executable(HttpRequest_unittest HttpRequest_unittest.cpp)
-target_link_libraries(HttpRequest_unittest blink gtest)
+if(GTEST_FOUND)
+    add_executable(HttpRequest_unittest HttpRequest_unittest.cpp)
+    target_link_libraries(HttpRequest_unittest blink ${GTEST_BOTH_LIBRARIES})
+endif()
 
 add_executable(HttpServerTest HttpServerTest.cpp)
 target_link_libraries(HttpServerTest blink)

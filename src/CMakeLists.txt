@@ -41,4 +41,4 @@ set(SRCS
  )
 
 add_library(blink ${SRCS})
-target_link_libraries(blink pthread rt)
+target_link_libraries(blink pthread rt ${Boost_LIBRARIES})

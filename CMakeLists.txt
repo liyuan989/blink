@@ -41,19 +41,22 @@ else()
     message(FATAL_ERROR "Wrong build option! usage: -DCMAKE_BUILD_TYPE=debug/release")
 endif()
 
-find_package(Boost REQUIRED)
-find_library(BOOSTTEST_LIBRARY NAMES boost_unit_test_framework)
-find_package(GTest REQUIRED)
-
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
+find_package(Boost REQUIRED)
 if(Boost_FOUND)
-    message(STATUS "found boost")
+    message(STATUS "found Boost")
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+find_library(BOOSTTEST_LIBRARY NAMES boost_unit_test_framework)
+if(BOOSTTEST_LIBRARY)
+    message(STATUS "found boost_unit_test_framework")
+endif()
+
+find_package(GTest)
 if(GTEST_FOUND)
-    message(STATUS "found gtest")
+    message(STATUS "found Gtest")
     include_directories(${GTEST_INCLUDE_DIRS})
 endif()
 
@@ -65,5 +68,10 @@ message(STATUS "LIBRARY_OUTPUT_PATH = " ${LIBRARY_OUTPUT_PATH})
 
 add_subdirectory(src)
 
-add_subdirectory(test)
-add_subdirectory(example)
+if(NOT CMAKE_BUILD_NO_TEST)
+    add_subdirectory(test)
+endif()
+
+if(NOT CMAKE_BUILD_NO_EXAMPLES)
+    add_subdirectory(example)
+endif()

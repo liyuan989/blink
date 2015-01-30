@@ -1,4 +1,4 @@
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/hub)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/hub)
 
 add_executable(Pub Pub.cpp PubSubClient.cpp Codec.cpp)
 target_link_libraries(Pub blink)

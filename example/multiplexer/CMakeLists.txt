@@ -1,4 +1,4 @@
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/multiplexer)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/multiplexer)
 
 add_executable(Demux Demux.cpp)
 target_link_libraries(Demux blink)

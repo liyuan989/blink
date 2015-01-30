@@ -1,4 +1,4 @@
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/asio/chat)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/asio/chat)
 
 add_executable(ChatClient ChatClient.cpp)
 target_link_libraries(ChatClient blink)

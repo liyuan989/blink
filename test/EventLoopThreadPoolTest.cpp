@@ -57,6 +57,7 @@ int main(int argc, char const *argv[])
         assert(next_loop != loop_thread_pool3.getNextLoop());
         assert(next_loop != loop_thread_pool3.getNextLoop());
         assert(next_loop == loop_thread_pool3.getNextLoop());
+        (void)next_loop;
     }
     loop.loop();
     return 0;
