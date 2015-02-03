@@ -225,7 +225,7 @@ void Socket::setReusePort(bool on)
     int optval = on ? 1 : 0;
     int val = ::setsockopt(sockfd_, SOL_SOCKET, SO_REUSEPORT, &optval,
                            static_cast<socklen_t>(sizeof(optval)));
-    if (val < 0)
+    if (val < 0 && on)
     {
         LOG_ERROR << "SO_REUSEPORT failed";
     }
