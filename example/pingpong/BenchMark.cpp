@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
     for (boost::ptr_vector<Channel>::iterator it = g_channels.begin();
          it != g_channels.end(); ++it)
     {
-        it->disableAll()
+        it->disableAll();
         it->remove();
     }
     return 0;

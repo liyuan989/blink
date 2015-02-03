@@ -1,3 +1,10 @@
+INCLUDE(CheckFunctionExists)
+
+check_function_exists(accept4 HAVE_ACCEPT4)
+if(NOT HAVE_ACCEPT4)
+    set_source_file_target(Socket.cpp PROPERTIES COMPILE_FLAGS "-DNO_ACCEPT4")
+endif()
+
 set(SRCS
  Acceptor.cpp
  AsyncLog.cpp

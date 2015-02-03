@@ -3,12 +3,12 @@ cmake_minimum_required(VERSION 2.6)
 project(blink)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_BUILD_TYPE "debug")
 endif()
 
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -finline-limit=1000")
 
 set(CMAKE_CXX_FLAGS
 -g
@@ -24,6 +24,7 @@ set(CMAKE_CXX_FLAGS
 -Wwrite-strings
 -Wreorder
 -march=native
+-D_FILE_OFFSET_BITS=64
 -rdynamic
 )
 
@@ -38,7 +39,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "debug")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "release")
     set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib/release)
 else()
-    message(FATAL_ERROR "Wrong build option! usage: -DCMAKE_BUILD_TYPE=debug/release")
+    message(FATAL_ERROR "Wrong build option! usage: -DCMAKE_BUILD_TYPE=Debug/Release")
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
