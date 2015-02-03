@@ -19,17 +19,6 @@ unsigned short hton_short(unsigned short hostshort);
 unsigned long ntoh_long(unsigned long netlong);
 unsigned short ntoh_short(unsigned short netshort);
 
-int64_t hton64(int64_t host64);
-int32_t hton32(int32_t host32);
-int16_t hton16(int16_t host16);
-
-int64_t ntoh64(int64_t net64);
-int32_t ntoh32(int32_t net32);
-int16_t ntoh16(int16_t net16);
-
-int inet_pton(int family, const char* str, struct in_addr* addr);
-const char* inet_ntop(int family, const struct in_addr* addr, char* str, size_t len);
-
 void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr);
 void toIp(char* buf, size_t size, const struct sockaddr_in& addr);
 void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr);

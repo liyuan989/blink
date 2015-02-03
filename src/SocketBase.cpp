@@ -1,4 +1,5 @@
 #include "SocketBase.h"
+#include "Endian.h"
 #include "Types.h"
 #include "Log.h"
 
@@ -41,7 +42,7 @@ const struct sockaddr_in* sockaddr_in_cast(const struct sockaddr* addr)
 
 unsigned long hton_long(unsigned long hostlong)
 {
-    return ::htonl(hostlong);
+    return htonl(hostlong);
 }
 
 unsigned short hton_short(unsigned short hostshort)
@@ -51,7 +52,7 @@ unsigned short hton_short(unsigned short hostshort)
 
 unsigned long ntoh_long(unsigned long netlong)
 {
-    return ::ntohl(netlong);
+    return ntohl(netlong);
 }
 
 unsigned short ntoh_short(unsigned short netshort)
@@ -59,52 +60,12 @@ unsigned short ntoh_short(unsigned short netshort)
     return ntohs(netshort);
 }
 
-int64_t hton64(int64_t host64)
-{
-    return implicit_cast<int64_t>(::htobe64(implicit_cast<uint64_t>(host64)));
-}
-
-int32_t hton32(int32_t host32)
-{
-    return implicit_cast<int32_t>(::htobe32(implicit_cast<uint32_t>(host32)));
-}
-
-int16_t hton16(int16_t host16)
-{
-    return implicit_cast<int16_t>(htobe16(implicit_cast<uint16_t>(host16)));
-}
-
-int64_t ntoh64(int64_t net64)
-{
-    return implicit_cast<int64_t>(::be64toh(implicit_cast<uint64_t>(net64)));
-}
-
-int32_t ntoh32(int32_t net32)
-{
-    return implicit_cast<int32_t>(::be32toh(implicit_cast<uint32_t>(net32)));
-}
-
-int16_t ntoh16(int16_t net16)
-{
-    return implicit_cast<int16_t>(be16toh(implicit_cast<uint16_t>(net16)));
-}
-
-int inet_pton(int family, const char* str, struct in_addr* addr)
-{
-    return ::inet_pton(family, str, implicit_cast<void*>(addr));
-}
-
-const char* inet_ntop(int family, const struct in_addr* addr, char* str, size_t len)
-{
-    return ::inet_ntop(family, implicit_cast<const void*>(addr), str, len);
-}
-
 void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr)
 {
     assert(size >= INET_ADDRSTRLEN);
-    sockets::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
+    ::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
     size_t end = strlen(buf);
-    uint16_t port = sockets::ntoh16(addr.sin_port);
+    uint16_t port = networkToHost16(addr.sin_port);
     assert(size > end);
     snprintf(buf + end, size - end, ":%u", port);
 }
@@ -112,14 +73,14 @@ void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr)
 void toIp(char* buf, size_t size, const struct sockaddr_in& addr)
 {
     assert(size >= INET_ADDRSTRLEN);
-    sockets::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
+    ::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
 }
 
 void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr)
 {
     addr->sin_family = AF_INET;
-    addr->sin_port = sockets::hton16(port);
-    if (sockets::inet_pton(AF_INET, ip, &addr->sin_addr) <= 0)
+    addr->sin_port = hostToNetwork16(port);
+    if (::inet_pton(AF_INET, ip, &addr->sin_addr) <= 0)
     {
         LOG_ERROR << "sockets::fromIpPort";
     }
@@ -381,7 +342,7 @@ int openClientFd(char* hostname, int port)
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = sockets::hton_short(static_cast<unsigned short>(port));
-    if (sockets::inet_pton(AF_INET, hostname, &ipaddr) != 1)
+    if (::inet_pton(AF_INET, hostname, &ipaddr) != 1)
     {
         hostp = sockets::gethostbyname(hostname);
         if (hostp == NULL)

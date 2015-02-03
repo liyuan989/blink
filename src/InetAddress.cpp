@@ -1,4 +1,5 @@
 #include "InetAddress.h"
+#include "Endian.h"
 #include "Log.h"
 
 #include <boost/static_assert.hpp>
@@ -17,45 +18,33 @@ InetAddress::InetAddress(uint16_t port, bool loop_back_only)
     memset(&addr_, 0, sizeof(addr_));
     addr_.sin_family = AF_INET;
     in_addr_t ip = loop_back_only ? INADDR_LOOPBACK : INADDR_ANY;     // in_addr_t equal to uint32_t
-    addr_.sin_addr.s_addr = sockets::hton32(ip);
-    addr_.sin_port = sockets::hton16(port);
+    addr_.sin_addr.s_addr = sockets::hostToNetwork32(ip);
+    addr_.sin_port = sockets::hostToNetwork16(port);
 }
 
 InetAddress::InetAddress(std::string ip, uint16_t port)
 {
     memset(&addr_, 0, sizeof(addr_));
-    addr_.sin_family = AF_INET;
-    addr_.sin_port = sockets::hton16(port);
-    if (sockets::inet_pton(AF_INET, ip.c_str(), &addr_.sin_addr) <= 0)
-    {
-        LOG_ERROR << "sockets::inet_pton error, in InetAddress constructing";
-    }
+    sockets::fromIpPort(ip.c_str(), port, &addr_);
 }
 
 std::string InetAddress::toIp() const
 {
     char buf[32];
-    assert(sizeof(buf) >= INET_ADDRSTRLEN);
-    sockets::inet_ntop(AF_INET, &addr_.sin_addr, buf, sizeof(buf));
+    sockets::toIp(buf, sizeof(buf), addr_);
     return buf;
 }
 
 std::string InetAddress::toIpPort() const
 {
     char buf[32];
-    size_t size = sizeof(buf);
-    assert(size >= INET_ADDRSTRLEN);
-    sockets::inet_ntop(AF_INET, &addr_.sin_addr, buf, sizeof(buf));
-    size_t end = strlen(buf);
-    assert(size > end);
-    uint16_t port = sockets::ntoh16(addr_.sin_port);
-    snprintf(buf + end, size - end, ":%hu", port);
+    sockets::toIpPort(buf, sizeof(buf), addr_);
     return buf;
 }
 
 uint16_t InetAddress::toPort() const
 {
-    return sockets::ntoh16(addr_.sin_port);
+    return sockets::networkToHost16(addr_.sin_port);
 }
 
 //  struct hostent

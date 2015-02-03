@@ -3,7 +3,7 @@
 
 #include "Nocopyable.h"
 #include "TcpConnection.h"
-#include "SocketBase.h"
+#include "Endian.h"
 #include "Buffer.h"
 #include "Log.h"
 
@@ -29,7 +29,7 @@ public:
     {
         while (buf->readableSize() >= kHeaderlen)
         {
-            const int32_t len = blink::sockets::ntoh32(buf->peekInt32());
+            const int32_t len = blink::sockets::networkToHost32(buf->peekInt32());
             if (len > 65536 || len < 0)
             {
                 LOG_ERROR << "Invalid length " << len;

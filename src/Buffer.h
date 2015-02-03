@@ -2,7 +2,7 @@
 #define __BLINK_BUFFER_H__
 
 #include "Copyable.h"
-#include "SocketBase.h"
+#include "Endian.h"
 
 #include <algorithm>
 #include <vector>
@@ -248,19 +248,19 @@ public:
 
     void appendInt16(int16_t x)
     {
-        int16_t be16 = sockets::hton16(x);
+        int16_t be16 = sockets::hostToNetwork16(x);
         append(&be16, sizeof(be16));
     }
 
     void appendInt32(int32_t x)
     {
-        int32_t be32 = sockets::hton32(x);
+        int32_t be32 = sockets::hostToNetwork32(x);
         append(&be32, sizeof(be32));
     }
 
     void appendInt64(int64_t x)
     {
-        int64_t be64 = sockets::hton64(x);
+        int64_t be64 = sockets::hostToNetwork64(x);
         append(&be64, sizeof(be64));
     }
 
@@ -307,19 +307,19 @@ public:
 
     void prependInt16(int16_t x)
     {
-        int16_t be16 = sockets::hton16(x);
+        int16_t be16 = sockets::hostToNetwork16(x);
         prepend(&be16, sizeof(be16));
     }
 
     void prependInt32(int32_t x)
     {
-        int32_t be32 = sockets::hton32(x);
+        int32_t be32 = sockets::hostToNetwork32(x);
         prepend(&be32, sizeof(be32));
     }
 
     void prependInt64(int64_t x)
     {
-        int64_t be64 = sockets::hton64(x);
+        int64_t be64 = sockets::hostToNetwork64(x);
         prepend(&be64, sizeof(be64));
     }
 

@@ -1,7 +1,7 @@
 #include "TimeZone.h"
 #include "Date.h"
 #include "Nocopyable.h"
-#include "SocketBase.h"
+#include "Endian.h"
 
 #include <boost/shared_ptr.hpp>
 
@@ -119,7 +119,7 @@ public:
         {
             throw std::logic_error("bad int32_t data");
         }
-        return sockets::ntoh32(val);
+        return sockets::networkToHost32(val);
     }
 
     uint8_t readUint8()

@@ -39,7 +39,7 @@ void TimeServer::onConnection(const TcpConnectionPtr& connection)
     if (connection->connected())
     {
         Timestamp time_now(Timestamp::now().microSecondsSinceEpoch() + kTimeZoneValue);
-        int64_t now = hton64(time_now.microSecondsSinceEpoch());
+        int64_t now = hostToNetwork64(time_now.microSecondsSinceEpoch());
         connection->send(&now, sizeof(now));
         connection->shutdown();
     }

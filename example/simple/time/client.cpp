@@ -49,7 +49,7 @@ private:
     {
         if (buf->readableSize() >= sizeof(int64_t))
         {
-            int64_t server_time_since_epoch = ntoh64(buf->readInt64());
+            int64_t server_time_since_epoch = networkToHost64(buf->readInt64());
             LOG_INFO << "Server time: " << Timestamp(server_time_since_epoch).toFormattedString();
         }
         else
