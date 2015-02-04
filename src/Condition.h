@@ -13,7 +13,7 @@ public:
 	~Condition();
 
 	void wait();
-	int timedWait(int seconds);  // if timeout, return ETIMEDOUT (defined in errno.h)
+	bool timedWait(int seconds);  // if timeout return true, false otherwise
 	void wakeup();
 	void wakeupAll();
 
