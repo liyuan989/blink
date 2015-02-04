@@ -11,12 +11,12 @@
 namespace blink
 {
 
-void Rio::setBuffsize(size_t n)
+void Rio::setBufferSize(size_t n)
 {
     buf_.resize(n);
 }
 
-ssize_t Rio::readn(void* usrbuf, size_t n)
+ssize_t Rio::readBytes(void* usrbuf, size_t n)
 {
     ssize_t n_left = n;
     ssize_t n_read;
@@ -46,7 +46,7 @@ ssize_t Rio::readn(void* usrbuf, size_t n)
     return n - n_left;
 }
 
-ssize_t Rio::writen(void* usrbuf, size_t n)
+ssize_t Rio::writeBytes(void* usrbuf, size_t n)
 {
     ssize_t n_left = n;
     ssize_t n_write;
@@ -71,9 +71,9 @@ ssize_t Rio::writen(void* usrbuf, size_t n)
     return n;
 }
 
-ssize_t Rio::readlineb(void* usrbuf, size_t maxlen)
+ssize_t Rio::readLineBuffer(void* usrbuf, size_t maxlen)
 {
-    if (maxlen > buffsize_)
+    if (maxlen > buffer_size_)
     {
         fprintf(stderr, "error: run out of buffsize range\n");
         return -1;
@@ -111,13 +111,13 @@ ssize_t Rio::readlineb(void* usrbuf, size_t maxlen)
         }
     }
     *bufp = 0;
-    bufptr_ = &buf_[0];
+    bufptr_ = &*buf_.begin();
     return n;
 }
 
-ssize_t Rio::readnb(void* usrbuf, size_t n)
+ssize_t Rio::readBytesBuffer(void* usrbuf, size_t n)
 {
-    if (n > buffsize_)
+    if (n > buffer_size_)
     {
         fprintf(stderr, "error: run out of buffsize range\n");
         return -1;
@@ -151,7 +151,7 @@ ssize_t Rio::readnb(void* usrbuf, size_t n)
 
 ssize_t Rio::rioRead(char* usrbuf, size_t n)
 {
-    if (n > buffsize_)
+    if (n > buffer_size_)
     {
         fprintf(stderr, "error: run out of buffsize range\n");
         return -1;
@@ -172,7 +172,7 @@ ssize_t Rio::rioRead(char* usrbuf, size_t n)
         }
         else
         {
-            bufptr_ = &buf_[0];
+            bufptr_ = &*buf_.begin();
         }
     }
 
@@ -186,12 +186,12 @@ ssize_t Rio::rioRead(char* usrbuf, size_t n)
     count_ -= count;
     if (count_ == 0)
     {
-        bufptr_ = &buf_[0];
+        bufptr_ = &*buf_.begin();
     }
     return count;
 }
 
-off_t Rio::lseekn(off_t offset, int whence)
+off_t Rio::seekBytes(off_t offset, Whence whence)
 {
     return ::lseek(fd_, offset, whence);
 }

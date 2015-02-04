@@ -10,18 +10,22 @@
 namespace blink
 {
 
-enum
-{
-    RIO_BEGIN = SEEK_SET,
-    RIO_CURRENT = SEEK_CUR,
-    RIO_END = SEEK_END
-};
-
 class Rio : Nocopyable
 {
 public:
-    Rio(int fd, size_t buffsize = 8192)
-        : fd_(fd), count_(0), buffsize_(buffsize), buf_(buffsize_), bufptr_(&buf_[0])
+    enum Whence
+    {
+        kBegin = SEEK_SET,
+        kCurrent = SEEK_CUR,
+        kEnd = SEEK_END,
+    };
+
+    Rio(int fd, size_t buffer_size = 8192)
+        : fd_(fd),
+          count_(0),
+          buffer_size_(buffer_size),
+          buf_(buffer_size),
+          bufptr_(&*buf_.begin())
     {
     }
 
@@ -30,19 +34,19 @@ public:
         fd_ = fd;
     }
 
-    void setBuffsize(size_t n);
-    ssize_t readn(void* usrbuf, size_t n);
-    ssize_t writen(void* usrbuf, size_t n);
-    ssize_t readlineb(void* usrbuf, size_t maxlen);
-    ssize_t readnb(void* usrbuf, size_t n);
-    off_t lseekn(off_t offset, int whence);
+    void setBufferSize(size_t n);
+    ssize_t readBytes(void* usrbuf, size_t n);
+    ssize_t writeBytes(void* usrbuf, size_t n);
+    ssize_t readLineBuffer(void* usrbuf, size_t maxlen);
+    ssize_t readBytesBuffer(void* usrbuf, size_t n);
+    off_t seekBytes(off_t offset, Whence whence);
 
 private:
     ssize_t rioRead(char* usrbuf, size_t n);
 
     int                fd_;
     int                count_;
-    size_t             buffsize_;
+    size_t             buffer_size_;
     std::vector<char>  buf_;
     char*              bufptr_;
 };
