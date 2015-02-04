@@ -4,6 +4,8 @@
 #include "ThreadBase.h"
 
 #include <pthread.h>
+
+#include <assert.h>
 #include <stdlib.h>
 
 namespace blink
@@ -31,6 +33,7 @@ public:
     static T& getInstance()
     {
         threads::pthread_once(&once_control_, init);
+        assert(value_ != NULL);
         return *value_;
     }
 
@@ -50,6 +53,7 @@ private:
         T_must_be_complete_type dummy;
         (void)dummy;
         delete value_;
+        value_ = NULL;
     }
 
     Singleton();
