@@ -46,7 +46,7 @@ private:
     MutexLock                  mutex_;
     Condition                  not_empty_;
     Condition                  not_full_;
-    string                name_;
+    string                     name_;
     Task                       thread_init_callback_;
     boost::ptr_vector<Thread>  threads_;
     std::deque<Task>           queue_;
