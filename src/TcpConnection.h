@@ -155,6 +155,7 @@ private:
     void shutdownInLoop();
     //void shutdownAndForceCloseInLoop(double seconds);
     void forceCloseInLoop();
+    const char* stateToString() const;
 
     void setState(StateE state)
     {
@@ -162,7 +163,7 @@ private:
     }
 
     EventLoop*                  loop_;
-    const string           name_;
+    const string                name_;
     StateE                      state_;
     boost::scoped_ptr<Socket>   socket_;
     boost::scoped_ptr<Channel>  channel_;

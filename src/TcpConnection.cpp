@@ -53,8 +53,25 @@ TcpConnection::TcpConnection(EventLoop* loop,
 TcpConnection::~TcpConnection()
 {
     LOG_DEBUG << "TcpConnection::destructor[" << name_ << "] at " << this
-              << " fd = " << channel_->fd() << " state = " << state_;
+              << " fd = " << channel_->fd() << " state = " << stateToString();
     assert(state_ == kDisconnected);
+}
+
+const char* TcpConnection::stateToString() const
+{
+    switch (state_)
+    {
+        case kConnected:
+            return "kConnected";
+        case kConnecting:
+            return "kConnecting";
+        case kDisconnected:
+            return "kDisconnected";
+        case kDisconnecting:
+            return "kDisconnecting";
+        default:
+            return "unkown state";
+    }
 }
 
 bool TcpConnection::getTcpInfo(struct tcp_info* tcpi) const
