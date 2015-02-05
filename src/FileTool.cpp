@@ -1,5 +1,6 @@
 #include "FileTool.h"
 #include "Types.h"
+#include "Log.h"
 
 #include <boost/static_assert.hpp>
 
@@ -9,10 +10,8 @@
 #include <unistd.h>
 
 #include <algorithm>
-#include <string>
 #include <assert.h>
 #include <errno.h>
-#include <string.h>
 #include <stdio.h>
 
 #ifndef _GNU_SOURCE
@@ -24,7 +23,7 @@ namespace blink
 
 const int ReadSmallFile::kBufferSize;
 
-ReadSmallFile::ReadSmallFile(const std::string& filename)
+ReadSmallFile::ReadSmallFile(const string& filename)
     : fd_(::open(filename.c_str(), O_RDONLY | O_CLOEXEC)), errno_(0)
 {
     buf_[0] = '\0';
@@ -82,7 +81,7 @@ int ReadSmallFile::readToBuffer(int* size)
 //  };
 
 int ReadSmallFile::readToString(int maxsize,
-                            std::string* destination,
+                            string* destination,
                             int64_t* filesize,
                             int64_t* creat_time,
                             int64_t* modify_time)
@@ -142,9 +141,9 @@ int ReadSmallFile::readToString(int maxsize,
     return err;
 }
 
-int readFile(const std::string& filename,
+int readFile(const string& filename,
              int maxsize,
-             std::string* destination,
+             string* destination,
              int64_t* filesize,
              int64_t* creat_time,
              int64_t* modify_time)
@@ -155,7 +154,7 @@ int readFile(const std::string& filename,
 
 const int AppendFile::kBufferSize;
 
-AppendFile::AppendFile(const std::string& filename)
+AppendFile::AppendFile(const string& filename)
     : fp_(::fopen(filename.c_str(), "ae")), bytes_(0) //'e' for O_CLOEXEC
 {
     assert(fp_);
@@ -179,7 +178,7 @@ void AppendFile::appendFile(const char* destination, size_t len)
             int err = ::ferror(fp_);
             if (err)
             {
-                fprintf(stderr, "AppendFile::appendFile() failed: %s\n", strerror(err));
+                fprintf(stderr, "AppendFile::appendFile() failed: %s\n", strerror_rb(err));
                 break;
             }
         }

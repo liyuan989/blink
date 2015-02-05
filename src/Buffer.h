@@ -3,11 +3,10 @@
 
 #include "Copyable.h"
 #include "Endian.h"
+#include "Types.h"
 
 #include <algorithm>
 #include <vector>
-#include <string>
-
 #include <stdint.h>
 #include <assert.h>
 #include <string.h>
@@ -55,7 +54,7 @@ public:
     {
         Buffer temp;
         temp.ensureWriteableSize(readableSize() + reserve);
-        std::string readable_data = toString();
+        string readable_data = toString();
         temp.append(readable_data.c_str(), readable_data.size());
         swap(temp);
     }
@@ -197,22 +196,22 @@ public:
         reset(sizeof(int64_t));
     }
 
-    std::string resetToString(size_t len)
+    string resetToString(size_t len)
     {
         assert(len <= readableSize());
-        std::string result(peek(), len);
+        string result(peek(), len);
         reset(len);
         return result;
     }
 
-    std::string resetAllToString()
+    string resetAllToString()
     {
         return resetToString(readableSize());
     }
 
-    std::string toString() const
+    string toString() const
     {
-        return std::string(peek(), readableSize());
+        return string(peek(), readableSize());
     }
 
     void ensureWriteableSize(size_t len)
@@ -236,7 +235,7 @@ public:
         append(static_cast<const char*>(data), len);
     }
 
-    void append(const std::string& data)
+    void append(const string& data)
     {
         append(data.c_str(), data.size());
     }

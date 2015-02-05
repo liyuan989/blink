@@ -2,8 +2,8 @@
 #define __BLINK_FILETOOL_H__
 
 #include "Nocopyable.h"
+#include "Types.h"
 
-#include <string>
 #include <stdint.h>
 
 namespace blink
@@ -14,12 +14,12 @@ class ReadSmallFile : Nocopyable
 public:
     static const int kBufferSize = 1024*64;
 
-    explicit ReadSmallFile(const std::string& filename);
+    explicit ReadSmallFile(const string& filename);
     ~ReadSmallFile();
 
     int readToBuffer(int* size);
     int readToString(int maxsize,
-                     std::string* destination,
+                     string* destination,
                      int64_t* filesize,
                      int64_t* creat_time,
                      int64_t* modify_time);
@@ -35,9 +35,9 @@ private:
     char  buf_[kBufferSize];
 };
 
-int readFile(const std::string& filename,
+int readFile(const string& filename,
              int maxsize,
-             std::string* destination,
+             string* destination,
              int64_t* filesize = NULL,
              int64_t* creat_time = NULL,
              int64_t* modify_time = NULL);
@@ -47,7 +47,7 @@ class AppendFile
 public:
     const static int kBufferSize = 1024*64;
 
-    explicit AppendFile(const std::string& filename);
+    explicit AppendFile(const string& filename);
     ~AppendFile();
 
     void appendFile(const char* destination, size_t len);

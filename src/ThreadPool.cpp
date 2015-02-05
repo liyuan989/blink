@@ -13,7 +13,7 @@
 namespace blink
 {
 
-ThreadPool::ThreadPool(const std::string& name)
+ThreadPool::ThreadPool(const string& name)
     : mutex_(),
       not_empty_(mutex_),
       not_full_(mutex_),

@@ -9,8 +9,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <string>
-
 using namespace blink;
 
 BOOST_AUTO_TEST_CASE(testAppendReset)
@@ -20,13 +18,13 @@ BOOST_AUTO_TEST_CASE(testAppendReset)
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
 
-    const std::string str(200, 'a');
+    const string str(200, 'a');
     buf.append(str);
     BOOST_CHECK_EQUAL(buf.readableSize(), str.size());
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - str.size());
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
 
-    const std::string str2 = buf.resetToString(50);
+    const string str2 = buf.resetToString(50);
     BOOST_CHECK_EQUAL(str2.size(), 50);
     BOOST_CHECK_EQUAL(buf.readableSize(), str.size() - str2.size());
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - str.size());
@@ -37,7 +35,7 @@ BOOST_AUTO_TEST_CASE(testAppendReset)
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 2 * str.size());
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize + str2.size());
 
-    const std::string str3 = buf.resetAllToString();
+    const string str3 = buf.resetAllToString();
     BOOST_CHECK_EQUAL(str3.size(), 350);
     BOOST_CHECK_EQUAL(buf.readableSize(), 0);
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize);
@@ -47,7 +45,7 @@ BOOST_AUTO_TEST_CASE(testAppendReset)
 BOOST_AUTO_TEST_CASE(testBufferGrow)
 {
     Buffer buf;
-    buf.append(std::string(400, 'b'));
+    buf.append(string(400, 'b'));
     BOOST_CHECK_EQUAL(buf.readableSize(), 400);
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 400);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
@@ -57,7 +55,7 @@ BOOST_AUTO_TEST_CASE(testBufferGrow)
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 400);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize + 50);
 
-    buf.append(std::string(1000, 'c'));
+    buf.append(string(1000, 'c'));
     BOOST_CHECK_EQUAL(buf.readableSize(), 1350);
     BOOST_CHECK_EQUAL(buf.writeableSize(), 0);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize + 50);
@@ -71,7 +69,7 @@ BOOST_AUTO_TEST_CASE(testBufferGrow)
 BOOST_AUTO_TEST_CASE(testBufferInsideGrow)
 {
     Buffer buf;
-    buf.append(std::string(800, 'd'));
+    buf.append(string(800, 'd'));
     BOOST_CHECK_EQUAL(buf.readableSize(), 800);
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 800);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
@@ -81,7 +79,7 @@ BOOST_AUTO_TEST_CASE(testBufferInsideGrow)
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 800);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize + 500);
 
-    buf.append(std::string(300, 'e'));
+    buf.append(string(300, 'e'));
     BOOST_CHECK_EQUAL(buf.readableSize(), 600);
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 600);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
@@ -90,7 +88,7 @@ BOOST_AUTO_TEST_CASE(testBufferInsideGrow)
 BOOST_AUTO_TEST_CASE(testBufferShrink)
 {
     Buffer buf;
-    buf.append(std::string(2000, 'f'));
+    buf.append(string(2000, 'f'));
     BOOST_CHECK_EQUAL(buf.readableSize(), 2000);
     BOOST_CHECK_EQUAL(buf.writeableSize(), 0);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
@@ -103,14 +101,14 @@ BOOST_AUTO_TEST_CASE(testBufferShrink)
     buf.shrink(0);
     BOOST_CHECK_EQUAL(buf.readableSize(), 500);
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 500);
-    BOOST_CHECK_EQUAL(buf.resetAllToString(), std::string(500, 'f'));
+    BOOST_CHECK_EQUAL(buf.resetAllToString(), string(500, 'f'));
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
 }
 
 BOOST_AUTO_TEST_CASE(testBufferPrepend)
 {
     Buffer buf;
-    buf.append(std::string(200, 'g'));
+    buf.append(string(200, 'g'));
     BOOST_CHECK_EQUAL(buf.readableSize(), 200);
     BOOST_CHECK_EQUAL(buf.writeableSize(), Buffer::kBufferSize - 200);
     BOOST_CHECK_EQUAL(buf.prependableSize(), Buffer::kPrependSize);
@@ -153,7 +151,7 @@ BOOST_AUTO_TEST_CASE(testBufferReadInteger)
 BOOST_AUTO_TEST_CASE(testBufferFindEOL)
 {
     Buffer buf;
-    buf.append(std::string(100000, 'k'));
+    buf.append(string(100000, 'k'));
     const char* null = NULL;
     BOOST_CHECK_EQUAL(buf.findEndOfLine(), null);
     BOOST_CHECK_EQUAL(buf.findEndOfLine(buf.peek() + 90000), null);
@@ -165,7 +163,7 @@ void testFile()
     int fd1 = open("1.txt", O_RDONLY);
     int err1 = 0;
     buffer.readData(fd1, &err1);
-    std::string s1 = buffer.resetAllToString();
+    string s1 = buffer.resetAllToString();
     printf("%s\n", s1.c_str());
     printf("%d\n", buffer.bufferCapacity());
     printf("%d\n", buffer.writeableSize());

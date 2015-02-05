@@ -21,7 +21,7 @@ class Session : Nocopyable
 public:
     Session(EventLoop* loop,
             const InetAddress& server_addr,
-            const std::string& name,
+            const string& name,
             Client* owner)
         : client_(loop, server_addr, name),
           owner_(owner),
@@ -112,7 +112,7 @@ public:
         }
     }
 
-    const std::string& message() const
+    const string& message() const
     {
         return message_;
     }
@@ -165,7 +165,7 @@ private:
     int                         session_count_;
     int                         timeout_;
     boost::ptr_vector<Session>  sessions_;
-    std::string                 message_;
+    string                      message_;
     AtomicInt32                 num_connected_;
 };
 

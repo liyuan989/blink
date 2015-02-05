@@ -10,7 +10,7 @@
 class FastCgiCodec : blink::Nocopyable
 {
 public:
-    typedef std::map<std::string, std::string> ParamMap;
+    typedef std::map<blink::string, blink::string> ParamMap;
     typedef boost::function<void (const blink::TcpConnectionPtr&,
                                   ParamMap&,
                                   blink::Buffer*)> Callback;

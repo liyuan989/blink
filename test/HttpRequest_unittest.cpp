@@ -18,15 +18,15 @@ TEST(testParseRequest, AllInOne)
 
     const HttpRequest& request = context.request();
     EXPECT_EQ(HttpRequest::kGet, request.method());
-    EXPECT_EQ(std::string("/index.html"), request.path());
+    EXPECT_EQ(string("/index.html"), request.path());
     EXPECT_EQ(HttpRequest::kHttp11, request.getVersion());
-    EXPECT_EQ(std::string("www.google.com"), request.getHeader("Host"));
-    EXPECT_EQ(std::string(""), request.getHeader("User-Agent"));
+    EXPECT_EQ(string("www.google.com"), request.getHeader("Host"));
+    EXPECT_EQ(string(""), request.getHeader("User-Agent"));
 }
 
 TEST(testParseRequest, InTwoPieces)
 {
-    std::string str("GET /index.html HTTP/1.1\r\n"
+    string str("GET /index.html HTTP/1.1\r\n"
                     "Host: www.google.com\r\n"
                     "\r\n");
     for (size_t i = 0; i < str.size(); ++i)
@@ -44,10 +44,10 @@ TEST(testParseRequest, InTwoPieces)
 
         const HttpRequest& request = context.request();
         EXPECT_EQ(HttpRequest::kGet, request.method());
-        EXPECT_EQ(std::string("/index.html"), request.path());
+        EXPECT_EQ(string("/index.html"), request.path());
         EXPECT_EQ(HttpRequest::kHttp11, request.getVersion());
-        EXPECT_EQ(std::string("www.google.com"), request.getHeader("Host"));
-        EXPECT_EQ(std::string(""), request.getHeader("User-Agent"));
+        EXPECT_EQ(string("www.google.com"), request.getHeader("Host"));
+        EXPECT_EQ(string(""), request.getHeader("User-Agent"));
     }
 }
 
@@ -65,11 +65,11 @@ TEST(testParseRequest, EmplyHeaderValue)
 
     const HttpRequest& request = context.request();
     EXPECT_EQ(HttpRequest::kGet, request.method());
-    EXPECT_EQ(std::string("/index.html"), request.path());
+    EXPECT_EQ(string("/index.html"), request.path());
     EXPECT_EQ(HttpRequest::kHttp11, request.getVersion());
-    EXPECT_EQ(std::string("www.google.com"), request.getHeader("Host"));
-    EXPECT_EQ(std::string(""), request.getHeader("User-Agent"));
-    EXPECT_EQ(std::string(""), request.getHeader("Accept-Encoding"));
+    EXPECT_EQ(string("www.google.com"), request.getHeader("Host"));
+    EXPECT_EQ(string(""), request.getHeader("User-Agent"));
+    EXPECT_EQ(string(""), request.getHeader("Accept-Encoding"));
 }
 
 int main(int argc, char* argv[])

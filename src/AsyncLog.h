@@ -25,7 +25,7 @@ class AsyncLog : Nocopyable
     typedef boost::ptr_vector<Buffer>::auto_type  BufferPtr;
 
 public:
-    AsyncLog(const std::string& basename, size_t roll_size, int flush_interval = 3);
+    AsyncLog(const string& basename, size_t roll_size, int flush_interval = 3);
 
     ~AsyncLog()
     {
@@ -60,7 +60,7 @@ private:
     void ThreadFunc();
     void formatTime(char* time_buf, size_t len);
 
-    std::string     basename_;
+    string          basename_;
     size_t          roll_size_;
     const int       flush_interval_;
     bool            running_;

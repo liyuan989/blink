@@ -18,7 +18,7 @@ void defaultHttpCallback(const HttpRequest& request, HttpResponse* response)
 
 HttpServer::HttpServer(EventLoop* loop,
                        const InetAddress& listen_addr,
-                       const std::string& name,
+                       const string& name,
                        TcpServer::Option option)
     : server_(loop, listen_addr, name),
       http_callback_(defaultHttpCallback)
@@ -65,7 +65,7 @@ void HttpServer::onMessage(const TcpConnectionPtr& connection,
 
 void HttpServer::onRequest(const TcpConnectionPtr& connection, const HttpRequest& request)
 {
-    const std::string& header = request.getHeader("Connection");
+    const string& header = request.getHeader("Connection");
     bool close = header == "close" ||
         (request.getVersion() == HttpRequest::kHttp10 && header != "Keep-Alive");
     HttpResponse response(close);

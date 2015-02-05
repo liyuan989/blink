@@ -2,7 +2,6 @@
 
 #include <sys/time.h>
 
-#include <string>
 #include <time.h>
 #include <stdio.h>
 
@@ -18,7 +17,7 @@ int main(int argc, char const *argv[])
  	gmtime_r(&second, &tm_time);
 
  	Date date2(tm_time);
-    std::string s =  date2.toString();
+    string s =  date2.toString();
  	printf("%s\n", s.c_str());
 
  	Date date3(2014, 12, 21);

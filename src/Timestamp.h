@@ -2,9 +2,9 @@
 #define __BLINK_TIMESTAMP_H__
 
 #include "Copyable.h"
+#include "Types.h"
 
 #include <algorithm>
-#include <string>
 #include <stdint.h>
 #include <time.h>
 
@@ -27,8 +27,8 @@ public:
     static Timestamp now();
     static Timestamp invalid();
 
-    std::string toString() const;
-    std::string toFormattedString(bool show_microseconds = true) const;
+    string toString() const;
+    string toFormattedString(bool show_microseconds = true) const;
 
     void swap(Timestamp& rhs)
     {

@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <stdexcept>
-#include <string>
 #include <vector>
 #include <assert.h>
 #include <stdint.h>
@@ -100,7 +99,7 @@ public:
         return fp_;
     }
 
-    std::string readBytes(size_t n)
+    string readBytes(size_t n)
     {
         char buf[n];
         ssize_t nread = ::fread(buf, 1, n, fp_);
@@ -108,7 +107,7 @@ public:
         {
             throw std::logic_error("no enough data");
         }
-        return std::string(buf, n);
+        return string(buf, n);
     }
 
     int32_t readInt32()
@@ -141,8 +140,8 @@ struct TimeZone::Data
 {
     std::vector<Transition>   transition;
     std::vector<LocalTime>    local_time;
-    std::vector<std::string>  name;
-    std::string               abbreviation;
+    std::vector<string>  name;
+    string               abbreviation;
 };
 
 bool readTimeZoneFile(const char* zone_file, TimeZone::Data* data)
@@ -152,12 +151,12 @@ bool readTimeZoneFile(const char* zone_file, TimeZone::Data* data)
     {
         try
         {
-            std::string head = f.readBytes(4);
+            string head = f.readBytes(4);
             if (head != "TZif")
             {
                 throw std::logic_error("bad head");
             }
-            std::string version = f.readBytes(1);
+            string version = f.readBytes(1);
             f.readBytes(15);
             int32_t is_gmt_count = f.readInt32();
             int32_t is_std_count = f.readInt32();

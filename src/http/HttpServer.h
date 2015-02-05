@@ -20,7 +20,7 @@ public:
 
     HttpServer(EventLoop* loop,
                const InetAddress& listen_addr,
-               const std::string& name,
+               const string& name,
                TcpServer::Option option = TcpServer::kNoReusePort);
 
     // force out-line destructor, for scoped_ptr member.

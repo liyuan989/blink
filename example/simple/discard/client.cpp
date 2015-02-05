@@ -10,7 +10,6 @@
 
 #include <unistd.h>
 
-#include <string>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -22,7 +21,7 @@ const int64_t kTimeZoneValue = static_cast<int64_t>(8) * 3600 * 1000 * 1000;
 class Client
 {
 public:
-    Client(EventLoop* loop, const InetAddress& server_addr, const std::string& name)
+    Client(EventLoop* loop, const InetAddress& server_addr, const string& name)
         : loop_(loop), client_(loop, server_addr, name)
     {
         client_.setConnectionCallback(boost::bind(&Client::onConnection, this, _1));
@@ -55,7 +54,7 @@ private:
     void onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)
     {
 
-        std::string message = buf->resetAllToString();
+        string message = buf->resetAllToString();
         LOG_INFO << connection->name() << " discards " << message.size() << " bytes received at "
              << Timestamp(time.microSecondsSinceEpoch() + kTimeZoneValue).toFormattedString();
     }

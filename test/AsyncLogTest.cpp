@@ -38,7 +38,7 @@ void bench(bool longlog)
 {
     const int kBatch = 1000;
     int count = 0;
-    std::string longstr(3000, 'X');
+    string longstr(3000, 'X');
     for (int i = 0; i < 32; ++i)
     {
         Timestamp start = Timestamp::now();

@@ -19,8 +19,8 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
               << " " << request.path() << std::endl;
     if (!benchmark)
     {
-        const std::map<std::string, std::string>& headers = request.headers();
-        for (std::map<std::string, std::string>::const_iterator it = headers.begin();
+        const std::map<string, string>& headers = request.headers();
+        for (std::map<string, string>::const_iterator it = headers.begin();
              it != headers.end(); ++it)
         {
             std::cout << it->first << ": " << it->second << std::endl;
@@ -32,7 +32,7 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
         response->setStatusMessage("OK");
         response->setContextType("text/html");
         response->addHeader("Server", "HttpServerTest");
-        std::string now =
+        string now =
             Timestamp(Timestamp::now().microSecondsSinceEpoch() + kTimeZoneValue).toFormattedString();
         response->setBody("<html><head><title>This is title</title></head>"
                           "<body><h1>Hey</h1>Now is " + now + " GMT+8" +
@@ -43,7 +43,7 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
         response->setStatusCode(HttpResponse::kOk);
         response->setStatusMessage("OK");
         response->setContextType("image/png");
-        response->setBody(std::string(favicon, sizeof(favicon)));
+        response->setBody(string(favicon, sizeof(favicon)));
     }
     else if (request.path() == "/hello")
     {

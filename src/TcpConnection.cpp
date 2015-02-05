@@ -29,7 +29,7 @@ void defaultMessageCallback(const TcpConnectionPtr& connection, Buffer* buffer, 
 }
 
 TcpConnection::TcpConnection(EventLoop* loop,
-                             const std::string& connection_name,
+                             const string& connection_name,
                              int sockfd,
                              const InetAddress& local_addr,
                              const InetAddress& peer_addr)
@@ -62,7 +62,7 @@ bool TcpConnection::getTcpInfo(struct tcp_info* tcpi) const
     return socket_->getTcpInfo(tcpi);
 }
 
-std::string TcpConnection::getTcpInfoString() const
+string TcpConnection::getTcpInfoString() const
 {
     char buf[1024];
     buf[0] = '\0';
@@ -72,10 +72,10 @@ std::string TcpConnection::getTcpInfoString() const
 
 void TcpConnection::send(const void* data, size_t len)
 {
-    send(std::string(static_cast<const char*>(data), len));
+    send(string(static_cast<const char*>(data), len));
 }
 
-void TcpConnection::send(const std::string& data)
+void TcpConnection::send(const string& data)
 {
     if (state_ == kConnected)
     {
@@ -106,7 +106,7 @@ void TcpConnection::send(Buffer* buf)
     }
 }
 
-void TcpConnection::sendInLoop(const std::string& data)
+void TcpConnection::sendInLoop(const string& data)
 {
     sendInLoop(&*data.begin(), data.size());
 }

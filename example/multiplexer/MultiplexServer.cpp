@@ -41,7 +41,7 @@ private:
     void onClientMessage(const TcpConnectionPtr& connection,
                          Buffer* buf,
                          Timestamp receive_time);
-    void sendBackendString(int id, const std::string& message);
+    void sendBackendString(int id, const string& message);
     void sendBackendBuffer(int id, Buffer* buf);
     void sendBackendPacket(int id, Buffer* buf);
     void onBackendConnection(const TcpConnectionPtr& connection);
@@ -164,7 +164,7 @@ void MultiplexServer::onClientMessage(const TcpConnectionPtr& connection,
     }
 }
 
-void MultiplexServer::sendBackendString(int id, const std::string& message)
+void MultiplexServer::sendBackendString(int id, const string& message)
 {
     assert(message.size() <= kMaxPacketLen);
     Buffer buf;

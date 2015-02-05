@@ -4,7 +4,6 @@
 
 #include <boost/bind.hpp>
 
-#include <string>
 #include <stdio.h>
 #include <time.h>
 
@@ -23,18 +22,18 @@ public:
         printf("tid = %d, destructing addr: %p, Test name: %s\n", tid(), this, name_.c_str());
     }
 
-    void setName(const std::string namemsg)
+    void setName(const string& namemsg)
     {
         name_ = namemsg;
     }
 
-    const std::string& name() const
+    const string& name() const
     {
         return name_;
     }
 
 private:
-    std::string name_;
+    string name_;
 };
 
 void print()
@@ -43,7 +42,7 @@ void print()
            tid(), ThreadLocalSingleton<Test>::getInstance().name().c_str());
 }
 
-void func(std::string change)
+void func(string change)
 {
     print();
     ThreadLocalSingleton<Test>::getInstance().setName(change);

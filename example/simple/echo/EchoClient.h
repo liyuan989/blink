@@ -6,14 +6,12 @@
 #include "EventLoop.h"
 #include "InetAddress.h"
 
-#include <string>
-
 class EchoClient : blink::Nocopyable
 {
 public:
     EchoClient(blink::EventLoop* loop,
                const blink::InetAddress& server_addr,
-               const std::string& name);
+               const blink::string& name);
 
     void connect();
 

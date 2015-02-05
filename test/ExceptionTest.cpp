@@ -1,6 +1,5 @@
 #include "Exception.h"
 
-#include <string>
 #include <stdio.h>
 
 void test()

@@ -46,7 +46,7 @@ private:
     void onServerMessage(const TcpConnectionPtr& connection,
                          Buffer* buf,
                          Timestamp receive_time);
-    void doCommand(const std::string& command);
+    void doCommand(const string& command);
     void onSocksConnection(int connection_id, const TcpConnectionPtr& connection);
     void onSocksMessage(int connection_id,
                         const TcpConnectionPtr& connection,
@@ -133,7 +133,7 @@ void DemuxServer::onServerMessage(const TcpConnectionPtr& connection,
             }
             else
             {
-                std::string command(buf->peek() + kHeaderLen, len);
+                string command(buf->peek() + kHeaderLen, len);
                 doCommand(command);
             }
             buf->reset(kHeaderLen + len);
@@ -141,11 +141,11 @@ void DemuxServer::onServerMessage(const TcpConnectionPtr& connection,
     }
 }
 
-void DemuxServer::doCommand(const std::string& command)
+void DemuxServer::doCommand(const string& command)
 {
-    static const std::string kConnectCommand = "CONNECT ";
+    static const string kConnectCommand = "CONNECT ";
     int id = atoi(&command[kConnectCommand.size()]);
-    bool is_up = command.find(" IS UP") != std::string::npos;
+    bool is_up = command.find(" IS UP") != string::npos;
     LOG_INFO << "doCommand " << id << " " << is_up;
     if (is_up)
     {

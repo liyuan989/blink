@@ -2,7 +2,6 @@
 #include "CurrentThread.h"
 #include "Thread.h"
 
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
@@ -21,18 +20,18 @@ public:
                tid(), threadName(), this, name_.c_str());
     }
 
-    void setName(const std::string namemsg)
+    void setName(const string namemsg)
     {
         name_ = namemsg;
     }
 
-    const std::string& name() const
+    const string& name() const
     {
         return name_;
     }
 
 private:
-    std::string  name_;
+    string  name_;
 };
 
 ThreadLocal<ThreadLocalTest> test1;

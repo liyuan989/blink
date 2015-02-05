@@ -11,8 +11,8 @@ enum ParseResult
 };
 
 ParseResult parseMessage(blink::Buffer* buf,
-                         std::string* command,
-                         std::string* topic,
-                         std::string* content);
+                         blink::string* command,
+                         blink::string* topic,
+                         blink::string* content);
 
 #endif

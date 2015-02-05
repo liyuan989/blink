@@ -14,7 +14,7 @@ const int64_t kTimeZoneValue = static_cast<int64_t>(8) * 3600 * 1000 * 1000;
 
 ChargenServer::ChargenServer(EventLoop* loop,
                              const InetAddress& server_addr,
-                             const std::string& name,
+                             const string& name,
                              bool print)
     : loop_(loop),
       server_(loop, server_addr, name),
@@ -28,7 +28,7 @@ ChargenServer::ChargenServer(EventLoop* loop,
     {
         loop->runEvery(3.0, boost::bind(&ChargenServer::printThroughput, this));
     }
-    std::string line;
+    string line;
     for (int i = 33; i < 127; ++i)
     {
         line.push_back(char(i));
@@ -59,7 +59,7 @@ void ChargenServer::onConnection(const TcpConnectionPtr& connection)
 
 void ChargenServer::onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)
 {
-    std::string message = buf->resetAllToString();
+    string message = buf->resetAllToString();
     LOG_INFO << connection->name() << " discards " << message.size() << " bytes received at "
              << Timestamp(time.microSecondsSinceEpoch() + kTimeZoneValue).toFormattedString();
 }

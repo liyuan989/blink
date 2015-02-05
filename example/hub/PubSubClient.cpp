@@ -7,7 +7,7 @@ using namespace blink;
 
 PubSubClient::PubSubClient(EventLoop* loop,
                            const InetAddress& server_addr,
-                           const std::string& name)
+                           const string& name)
     : client_(loop, server_addr, name)
 {
     // FIXME: destructor is not thread safd.
@@ -30,22 +30,22 @@ bool PubSubClient::connected()
     return connection_ && connection_->connected();
 }
 
-bool PubSubClient::subscribe(const std::string& topic, const SubscribeCallback& cb)
+bool PubSubClient::subscribe(const string& topic, const SubscribeCallback& cb)
 {
-    std::string message = "sub " + topic + "\r\n";
+    string message = "sub " + topic + "\r\n";
     subscribe_callback_ = cb;
     return send(message);
 }
 
-void PubSubClient::unsubscribe(const std::string& topic)
+void PubSubClient::unsubscribe(const string& topic)
 {
-    std::string message = "unsub " + topic + "\r\n";
+    string message = "unsub " + topic + "\r\n";
     send(message);
 }
 
-bool PubSubClient::publish(const std::string& topic, const std::string& content)
+bool PubSubClient::publish(const string& topic, const string& content)
 {
-    std::string message = "pub " + topic + "\r\n" + content + "\r\n";
+    string message = "pub " + topic + "\r\n" + content + "\r\n";
     return send(message);
 }
 
@@ -72,9 +72,9 @@ void PubSubClient::onMessage(const TcpConnectionPtr& connection,
     ParseResult result = kSuccess;
     while (result == kSuccess)
     {
-        std::string command;
-        std::string topic;
-        std::string content;
+        string command;
+        string topic;
+        string content;
         result = parseMessage(buf, &command, &topic, &content);
         if (result == kSuccess)
         {
@@ -90,7 +90,7 @@ void PubSubClient::onMessage(const TcpConnectionPtr& connection,
     }
 }
 
-bool PubSubClient::send(const std::string& message)
+bool PubSubClient::send(const string& message)
 {
     bool succeed = false;
     if (connection_ && connection_->connected())

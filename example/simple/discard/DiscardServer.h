@@ -6,14 +6,12 @@
 #include "EventLoop.h"
 #include "InetAddress.h"
 
-#include <string>
-
 class DiscardServer : blink::Nocopyable
 {
 public:
     DiscardServer(blink::EventLoop* loop,
                   const blink::InetAddress& server_addr,
-                  const std::string& name);
+                  const blink::string& name);
 
     void start();
 

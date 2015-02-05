@@ -36,7 +36,7 @@ private:
     void onClientMessage(const TcpConnectionPtr& connection,
                          Buffer* buf,
                          Timestamp receive_time);
-    void sendBackendString(int id, const std::string& message);
+    void sendBackendString(int id, const string& message);
     void sendBackendBuffer(int id, Buffer* buf);
     void sendBackendPacket(int id, Buffer* buf);
     void onBackendConnection(const TcpConnectionPtr& connection);
@@ -44,7 +44,7 @@ private:
                           Buffer* buf,
                           Timestamp receive_time);
     void sendToClient(Buffer* buf);
-    void doCommand(const std::string& command);
+    void doCommand(const string& command);
 
     TcpServer                        server_;
     TcpClient                        backend_;
@@ -138,7 +138,7 @@ void MultiplexServer::onClientMessage(const TcpConnectionPtr& connection,
     }
 }
 
-void MultiplexServer::sendBackendString(int id, const std::string& message)
+void MultiplexServer::sendBackendString(int id, const string& message)
 {
     assert(message.size() <= kMaxPacketLen);
     Buffer buf;
@@ -239,7 +239,7 @@ void MultiplexServer::sendToClient(Buffer* buf)
             }
             else
             {
-                std::string command(buf->peek() + kHeaderLen, len);
+                string command(buf->peek() + kHeaderLen, len);
                 LOG_INFO << "Backend command " << command;
                 doCommand(command);
             }
@@ -248,9 +248,9 @@ void MultiplexServer::sendToClient(Buffer* buf)
     }
 }
 
-void MultiplexServer::doCommand(const std::string& command)
+void MultiplexServer::doCommand(const string& command)
 {
-    static const std::string kDisconnectedCommand = "DISCONNECT ";
+    static const string kDisconnectedCommand = "DISCONNECT ";
     if (command.size() > kDisconnectedCommand.size()
         && std::equal(kDisconnectedCommand.begin(), kDisconnectedCommand.end(), command.begin()))
     {

@@ -10,7 +10,7 @@
 
 using namespace blink;
 
-void print(const std::string& msg, int n, const boost::shared_ptr<CountDownLatch>& latch)
+void print(const string& msg, int n, const boost::shared_ptr<CountDownLatch>& latch)
 {
     char buf[64];
     snprintf(buf, sizeof(buf), "I'm the task %d: %s", n, msg.c_str());
@@ -20,7 +20,7 @@ void print(const std::string& msg, int n, const boost::shared_ptr<CountDownLatch
 
 int main(int argc, char const *argv[])
 {
-    ThreadPool pool(std::string("CountDownLatchTest.ThreadPool"));
+    ThreadPool pool(string("CountDownLatchTest.ThreadPool"));
     pool.setMaxQueueSize(5);
     pool.start(5);
     boost::shared_ptr<CountDownLatch> latch(new CountDownLatch(90));
@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
     {
         char buf[32];
         snprintf(buf, sizeof(buf), "(task %d)", i);
-        pool.run(boost::bind(print, std::string(buf), i, latch));
+        pool.run(boost::bind(print, string(buf), i, latch));
     }
     latch->wait();
     LOG_INFO << "latch::getCount: " << latch->getCount();

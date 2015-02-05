@@ -79,11 +79,11 @@ private:
 
     void printConnection()
     {
-        std::string procStatus = procStat();
+        string procStatus = procStat();
         printf("%d connection, file %d , VmSize %ld KiB, RSS %ld KiB, \n",
                connections_.get(), openedFiles(),
                getLong(procStatus, "VmSize:"), getLong(procStatus, "VmRSS:"));
-        std::string meminfo;
+        string meminfo;
         readFile("/proc/meminfo", 65536, &meminfo);
         long total_kb = getLong(meminfo, "MemTotal:");
         long free_kb = getLong(meminfo, "MemFree:");
@@ -92,11 +92,11 @@ private:
         printf("system memory used %ld KiB\n", total_kb - free_kb - buffers_kb - cached_kb);
     }
 
-    long getLong(const std::string& procStatus, const char* key)
+    long getLong(const string& procStatus, const char* key)
     {
         long result = 0;
         size_t pos = procStatus.find(key);
-        if (pos != std::string::npos)
+        if (pos != string::npos)
         {
             result = atoi(procStatus.c_str() + pos + strlen(key));
         }

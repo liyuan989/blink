@@ -6,7 +6,6 @@
 
 #include <unistd.h>
 
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
@@ -32,7 +31,7 @@ int main(int argc, char *argv[])
     Log::setOutput(outputFunc);
     Log::setFlush(flushFunc);
 
-    std::string s = "1234567890 QWERTYUUIOPASDFGHJKLZXCVBN sadasdqwewqsadadasd";
+    string s = "1234567890 QWERTYUUIOPASDFGHJKLZXCVBN sadasdqwewqsadadasd";
     for (int i = 0; i < 1024 * 10; ++i)
     {
         LOG_INFO << s;

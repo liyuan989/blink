@@ -43,7 +43,7 @@ public:
     typedef Thread::ThreadFunc ThreadFunc;
 
     ThreadData(const ThreadFunc& func,
-               const std::string& name,
+               const string& name,
                const boost::weak_ptr<pid_t>& weak_tid)
         : func_(func), name_(name), weak_tid_(weak_tid)
     {
@@ -91,7 +91,7 @@ public:
 
 private:
     ThreadFunc  func_;
-    std::string name_;
+    string name_;
     boost::weak_ptr<pid_t> weak_tid_;
 };
 
@@ -105,7 +105,7 @@ void* startThread(void* arg)
 
 AtomicInt32 Thread::num_created_;
 
-Thread::Thread(const ThreadFunc& func, const std::string& thread_name)
+Thread::Thread(const ThreadFunc& func, const string& thread_name)
     : started_(false),
       joined_(false),
       pthread_id_(0),

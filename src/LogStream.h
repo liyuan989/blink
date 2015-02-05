@@ -8,12 +8,10 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
 
+#include <algorithm>
+#include <assert.h>
 #include <stdint.h>
 #include <string.h>
-
-#include <algorithm>
-#include <string>
-#include <assert.h>
 #include <stdio.h>
 
 namespace blink
@@ -83,9 +81,9 @@ public:
         return buf_;
     }
 
-    std::string toString() const
+    string toString() const
     {
-        return std::string(buf_, current_ - buf_);
+        return string(buf_, current_ - buf_);
     }
 
     const char* debugString() const
@@ -197,7 +195,7 @@ public:
         return operator<<(reinterpret_cast<const char*>(str));
     }
 
-    LogStream& operator<<(const std::string& s)
+    LogStream& operator<<(const string& s)
     {
         buffer_.append(s.c_str(), s.size());
         return *this;

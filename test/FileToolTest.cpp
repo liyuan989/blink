@@ -1,7 +1,5 @@
 #include "FileTool.h"
 
-#include <string>
-
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,8 +9,8 @@ using namespace blink;
 int main(int argc, char const *argv[])
 {
     const char* s = "hey, make it happy!";
-    std::string str;
-    ReadSmallFile read_file(std::string("1.txt"));
+    string str;
+    ReadSmallFile read_file(string("1.txt"));
     int n;
     read_file.readToBuffer(&n);
     int64_t filesize;
@@ -26,7 +24,7 @@ int main(int argc, char const *argv[])
     printf("modify_time = %lld\n", modify_time);
     printf("readbytes = %d\n", n);
 
-    AppendFile append_file(std::string("1.txt"));
+    AppendFile append_file(string("1.txt"));
     append_file.appendFile(s, strlen(s));
     append_file.flush();
     printf("writebytes = %d\n", append_file.writtenBytes());

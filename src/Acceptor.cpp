@@ -10,7 +10,6 @@
 
 #include <errno.h>
 #include <assert.h>
-//#include <string>
 
 namespace blink
 {
@@ -51,7 +50,7 @@ void Acceptor::handleRead()
     int connectfd = accept_socket_.accept(&peer_addr);
     if (connectfd >= 0)
     {
-        //std::string hostport = peer_addr.toIpPort();
+        //string hostport = peer_addr.toIpPort();
         //LOG_TRACE << "Accepts of " << hostport;
         if (new_connection_callback_)
         {

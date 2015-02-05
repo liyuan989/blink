@@ -1,8 +1,9 @@
 #ifndef __BLINK_EXCEPTION_H__
 #define __BLINK_EXCEPTION_H__
 
+#include "Types.h"
+
 #include <exception>
-#include <string>
 
 namespace blink
 {
@@ -10,7 +11,7 @@ namespace blink
 class Exception : public std::exception
 {
 public:
-	explicit Exception(std::string& message);
+	explicit Exception(const string& message);
 	explicit Exception(const char* message);
 	virtual ~Exception() throw();
 
@@ -20,8 +21,8 @@ public:
 private:
 	void fillStackTrace();
 
-	std::string message_;
-	std::string stack_;
+	string  message_;
+	string  stack_;
 };
 
 }  // namespace blink

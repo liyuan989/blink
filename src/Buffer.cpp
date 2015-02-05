@@ -4,7 +4,7 @@
 
 #include <sys/uio.h>
 #include <errno.h>
-#include <stdio.h>
+
 namespace blink
 {
 

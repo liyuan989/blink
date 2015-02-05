@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <map>
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
@@ -24,7 +23,7 @@ public:
         {
             char buf[64];
             snprintf(buf, sizeof(buf), "working thread %d", i);
-            threads_.push_back(new Thread(boost::bind(&BlockingQueueTest::threadCallback, this), std::string(buf)));
+            threads_.push_back(new Thread(boost::bind(&BlockingQueueTest::threadCallback, this), string(buf)));
             threads_.back().start();
         }
     }
@@ -37,7 +36,7 @@ public:
         {
             char buf[32];
             snprintf(buf, sizeof(buf), "hey boy %d", i);
-            task_queue_.put(std::string(buf));
+            task_queue_.put(string(buf));
             printf("tid = %d, put data = %s, size = %d\n", tid(), buf, task_queue_.size());
         }
     }
@@ -46,7 +45,7 @@ public:
     {
         for (size_t i = 0; i < threads_.size(); ++i)
         {
-            task_queue_.put(std::string("stop"));
+            task_queue_.put(string("stop"));
         }
         std::for_each(threads_.begin(), threads_.end(), boost::bind(&Thread::join, _1));
     }
@@ -59,14 +58,14 @@ private:
         bool running = true;
         while (running)
         {
-            std::string data = task_queue_.take();
+            string data = task_queue_.take();
             printf("thread tid: %d  data: %s  size: %d\n", tid(), data.c_str(), task_queue_.size());
             running = (data != "stop");
         }
         printf("%s stopped! tid: %d\n", threadName(), tid());
     }
 
-    BlockingQueue<std::string>  task_queue_;
+    BlockingQueue<string>  task_queue_;
     CountDownLatch              latch_;
     boost::ptr_vector<Thread>   threads_;
 };
@@ -81,7 +80,7 @@ public:
         {
             char buf[64];
             snprintf(buf, sizeof(buf), "working thread %d", i);
-            threads_.push_back(new Thread(boost::bind(&BlockingQueueBench::threadCallback, this), std::string(buf)));
+            threads_.push_back(new Thread(boost::bind(&BlockingQueueBench::threadCallback, this), string(buf)));
             threads_.back().start();
         }
     }

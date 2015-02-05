@@ -33,7 +33,7 @@ Timestamp Timestamp::invalid()
     return Timestamp();
 }
 
-std::string Timestamp::toString() const
+string Timestamp::toString() const
 {
     char buf[32] = {0};
     int64_t seconds = microseconds_since_epoch_ / kMicrosecondsPerSecond;
@@ -63,7 +63,7 @@ std::string Timestamp::toString() const
 //  # endif
 //  };
 
-std::string Timestamp::toFormattedString(bool show_microseconds) const
+string Timestamp::toFormattedString(bool show_microseconds) const
 {
     char buf[32] = {0};
     time_t seconds = static_cast<time_t>(microseconds_since_epoch_ / kMicrosecondsPerSecond);

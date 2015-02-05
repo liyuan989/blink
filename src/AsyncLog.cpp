@@ -7,9 +7,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
 
-#include <string>
 #include <time.h>
-#include <string.h>
 #include <assert.h>
 #include <stdio.h>
 
@@ -18,7 +16,7 @@ namespace blink
 
 TimeZone g_asyncLogTimeZone(3600 * 8, "UTC+8");
 
-AsyncLog::AsyncLog(const std::string& basename,
+AsyncLog::AsyncLog(const string& basename,
                    size_t roll_size,
                    int flush_interval)
     : basename_(basename),

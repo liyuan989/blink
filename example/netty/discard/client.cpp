@@ -61,7 +61,7 @@ private:
 
     EventLoop*   loop_;
     TcpClient    client_;
-    std::string  message_;
+    string       message_;
 };
 
 int main(int argc, char const *argv[])

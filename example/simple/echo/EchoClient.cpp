@@ -7,12 +7,11 @@
 
 #include <unistd.h>
 
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
 
-EchoClient::EchoClient(EventLoop* loop, const InetAddress& server_addr, const std::string& name)
+EchoClient::EchoClient(EventLoop* loop, const InetAddress& server_addr, const string& name)
     : loop_(loop), client_(loop, server_addr, name)
 {
     client_.setConnectionCallback(boost::bind(&EchoClient::onConnection, this, _1));
@@ -37,7 +36,7 @@ void EchoClient::onConnection(const TcpConnectionPtr& connection)
 
 void EchoClient::onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)
 {
-    std::string message = buf->resetAllToString();
+    string message = buf->resetAllToString();
     LOG_TRACE << connection->name() << " receive " << message.size()
               << " bytes at " << time.toFormattedString();
     if (message == "q\n" || message == "quit\n")

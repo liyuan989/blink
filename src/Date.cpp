@@ -46,7 +46,7 @@ Date::Date(int years, int months, int days)
 {
 }
 
-std::string Date::toString() const
+string Date::toString() const
 {
     char buf[32];
     YearMonthDay ymd(yearMonthDay());

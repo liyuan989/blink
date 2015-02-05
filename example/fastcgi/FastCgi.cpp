@@ -138,7 +138,7 @@ bool FastCgiCodec::parseAllParams()
         }
         if (params_stream_.readableSize() >= name_len + value_len)
         {
-            std::string name = params_stream_.resetToString(name_len);
+            string name = params_stream_.resetToString(name_len);
             params_[name] = params_stream_.resetToString(value_len);
         }
         else

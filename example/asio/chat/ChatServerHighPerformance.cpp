@@ -52,7 +52,7 @@ private:
     }
 
     void onStringMessage(const TcpConnectionPtr& connection,
-                         const std::string& message,
+                         const string& message,
                          Timestamp receive_time)
     {
         EventLoop::Functor func = boost::bind(&ChatServer::destribueMessage, this, message);
@@ -73,7 +73,7 @@ private:
         loops_.insert(loop);
     }
 
-    void destribueMessage(const std::string& message)
+    void destribueMessage(const string& message)
     {
         LOG_DEBUG << "begin";
         for (ConnectionList::iterator it = LocalConnections::getInstance().begin();

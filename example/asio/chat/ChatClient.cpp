@@ -36,7 +36,7 @@ public:
         client_.disconnect();
     }
 
-    void write(const std::string& message)
+    void write(const string& message)
     {
         MutexLockGuard guard(mutex_);
         if (connection_)
@@ -63,7 +63,7 @@ private:
     }
 
     void onStringMessage(const TcpConnectionPtr& connection,
-                         const std::string& message,
+                         const string& message,
                          Timestamp receive_time)
     {
         printf("<<< %s\n", message.c_str());
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
     InetAddress server_addr(argv[1], static_cast<uint16_t>(atoi(argv[2])));
     ChatClient client(loop_thread.startLoop(), server_addr);
     client.connect();
-    std::string line;
+    string line;
     while (std::getline(std::cin, line))
     {
         client.write(line);

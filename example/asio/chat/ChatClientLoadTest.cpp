@@ -69,7 +69,7 @@ private:
     }
 
     void onStringMessage(const TcpConnectionPtr& connection,
-                         const std::string& message,
+                         const string& message,
                          Timestamp receive_time)
     {
         receive_time_ = loop_->pollReturnTime();

@@ -2,13 +2,12 @@
 
 #include <execinfo.h>
 
-#include <string>
 #include <stdlib.h>
 
 namespace blink
 {
 
-Exception::Exception(std::string& message)
+Exception::Exception(const string& message)
     : message_(message)
 {
     fillStackTrace();

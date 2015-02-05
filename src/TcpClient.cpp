@@ -22,7 +22,7 @@ void removeConnector(const ConnectorPtr& connector)
     // TODO
 }
 
-TcpClient::TcpClient(EventLoop* loop, const InetAddress& server_addr, const std::string& name)
+TcpClient::TcpClient(EventLoop* loop, const InetAddress& server_addr, const string& name)
     : loop_(CHECK_NOTNULL(loop)),
       connector_(new Connector(loop, server_addr)),
       name_(name),
@@ -99,7 +99,7 @@ void TcpClient::newConnection(int sockfd)
     char buf[32];
     snprintf(buf, sizeof(buf), ":%s#%d", peer_addr.toIpPort().c_str(), next_connection_id_);
     ++next_connection_id_;
-    std::string connection_name = name_ + buf;
+    string connection_name = name_ + buf;
     InetAddress locak_addr(sockets::getLocalAddr(sockfd));
     TcpConnectionPtr connection(new TcpConnection(loop_, connection_name, sockfd, locak_addr, peer_addr));
     connection->setConnectionCallback(connection_callback_);

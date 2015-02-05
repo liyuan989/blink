@@ -25,7 +25,7 @@ void HttpResponse::appendToBuffer(Buffer* output) const
         output->append("Connection: Keep-Alive\r\n");
     }
 
-    for (std::map<std::string, std::string>::const_iterator it = headers_.begin();
+    for (std::map<string, string>::const_iterator it = headers_.begin();
          it != headers_.end(); ++it)
     {
         output->append(it->first);

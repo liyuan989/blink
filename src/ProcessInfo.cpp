@@ -13,8 +13,6 @@
 
 #include <algorithm>
 #include <vector>
-#include <string>
-
 #include <time.h>
 #include <assert.h>
 #include <ctype.h>
@@ -64,7 +62,7 @@ Timestamp g_startTime = Timestamp::now();
 int       g_clockTicks = static_cast<int>(::sysconf(_SC_CLK_TCK));
 int       g_pageSize = static_cast<int>(::sysconf(_SC_PAGESIZE));
 
-std::string pidString()
+string pidString()
 {
     char buf[32];
     snprintf(buf, sizeof(buf), "%d", processes::getpid());
@@ -82,7 +80,7 @@ std::string pidString()
 //      char   *pw_shell;      /* shell program */
 //  };
 
-std::string username()
+string username()
 {
     struct passwd pwd;
     struct passwd* result = NULL;
@@ -120,7 +118,7 @@ bool isDebugBuild()
 #endif
 }
 
-std::string hostName()
+string hostName()
 {
     char buf[256];
     if (::gethostname(buf, sizeof(buf)) == 0)
@@ -134,48 +132,48 @@ std::string hostName()
     }
 }
 
-std::string procName()
+string procName()
 {
-    std::string stat = procStat();
+    string stat = procStat();
     size_t left_pos = stat.find('(');
     size_t right_pos = stat.find(')');
-    if (left_pos != std::string::npos && right_pos != std::string::npos && left_pos < right_pos)
+    if (left_pos != string::npos && right_pos != string::npos && left_pos < right_pos)
     {
         size_t len = right_pos - (left_pos + 1);
-        return std::string(stat, left_pos + 1, len);
+        return string(stat, left_pos + 1, len);
     }
     else
     {
-        return std::string();
+        return string();
     }
 }
 
-std::string procStatus()
+string procStatus()
 {
-    std::string result;
+    string result;
     readFile("/proc/self/status", 65536, &result);
     return result;
 }
 
-std::string procStat()
+string procStat()
 {
-    std::string result;
+    string result;
     readFile("proc/self/stat", 65536, &result);
     return result;
 }
 
-std::string threadStat()
+string threadStat()
 {
     char buf[64];
     snprintf(buf, sizeof(buf), "/proc/self/task/%d/stat", tid());
-    std::string result;
+    string result;
     readFile(buf, 65536, &result);
     return result;
 }
 
-std::string exePath()
+string exePath()
 {
-    std::string result;
+    string result;
     char buf[1024];
     ssize_t n = ::readlink("/proc/self/exe", buf, sizeof(buf));
     if (n > 0)
@@ -235,9 +233,9 @@ CpuTime cpuTime()
 int threadsNumber()
 {
     int result = 0;
-    std::string status = procStatus();
+    string status = procStatus();
     size_t pos = status.find("Threads:");
-    if (pos != std::string::npos)
+    if (pos != string::npos)
     {
         result = atoi(status.c_str() + pos + 8);
     }

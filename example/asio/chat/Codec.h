@@ -9,13 +9,11 @@
 
 #include <boost/function.hpp>
 
-#include <string>
-
 class Codec : blink::Nocopyable
 {
 public:
     typedef boost::function<void (const blink::TcpConnectionPtr&,
-                                  const std::string&,
+                                  const blink::string&,
                                   blink::Timestamp)> StringMessageCallback;
 
     explicit Codec(const StringMessageCallback& cb)
@@ -39,7 +37,7 @@ public:
             else if (buf->readableSize() >= len + kHeaderlen)
             {
                 buf->reset(kHeaderlen);
-                std::string message(buf->peek(), len);
+                blink::string message(buf->peek(), len);
                 message_callback_(connection, message, receive_time);
                 buf->reset(len);
             }
@@ -50,7 +48,7 @@ public:
         }
     }
 
-    void send(blink::TcpConnection* connection, std::string message)
+    void send(blink::TcpConnection* connection, blink::string message)
     {
         blink::Buffer buf;
         buf.append(&*message.begin(), message.size());

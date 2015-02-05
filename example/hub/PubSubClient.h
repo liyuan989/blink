@@ -9,20 +9,20 @@ class PubSubClient : blink::Nocopyable
 {
 public:
     typedef boost::function<void (PubSubClient*)> ConnectionCallback;
-    typedef boost::function<void (const std::string& topic,
-                                  const std::string& content,
+    typedef boost::function<void (const blink::string& topic,
+                                  const blink::string& content,
                                   blink::Timestamp)> SubscribeCallback;
 
     PubSubClient(blink::EventLoop* loop,
                  const blink::InetAddress& server_addr,
-                 const std::string& name);
+                 const blink::string& name);
 
     void start();
     void stop();
     bool connected();
-    bool subscribe(const std::string& topic, const SubscribeCallback& cb);
-    void unsubscribe(const std::string& topic);
-    bool publish(const std::string& topic, const std::string& content);
+    bool subscribe(const blink::string& topic, const SubscribeCallback& cb);
+    void unsubscribe(const blink::string& topic);
+    bool publish(const blink::string& topic, const blink::string& content);
 
     void setConnectionCallback(const ConnectionCallback& cb)
     {
@@ -34,7 +34,7 @@ private:
     void onMessage(const blink::TcpConnectionPtr& connection,
                    blink::Buffer* buf,
                    blink::Timestamp receive_time);
-    bool send(const std::string& message);
+    bool send(const blink::string& message);
 
     blink::TcpClient         client_;
     blink::TcpConnectionPtr  connection_;

@@ -5,12 +5,12 @@
 
 using namespace blink;
 
-typedef std::map<std::string, std::string> UserMap;
+typedef std::map<string, string> UserMap;
 UserMap users;
 
-std::string getUser(const std::string& user)
+string getUser(const string& user)
 {
-    std::string result("No such user");
+    string result("No such user");
     UserMap::iterator it = users.find(user);
     if (it != users.end())
     {
@@ -26,7 +26,7 @@ void onMessage(const TcpConnectionPtr& connection,
     const char* crlf = buf->findCRLF();
     if (crlf)
     {
-        std::string user(buf->peek(), crlf);
+        string user(buf->peek(), crlf);
         connection->send(getUser(user) + "\r\n");
         buf->resetUntil(crlf + 2);
         connection->shutdown();

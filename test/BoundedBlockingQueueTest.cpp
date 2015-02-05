@@ -24,7 +24,7 @@ public:
             char buf[64];
             snprintf(buf, sizeof(buf), "working thread %d", i);
             threads_.push_back(new Thread(boost::bind(&BoundedBlockingQueueBench::threadCallback, this),
-                                          std::string(buf)));
+                                          string(buf)));
             threads_.back().start();
         }
     }

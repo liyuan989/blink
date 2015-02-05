@@ -3,9 +3,9 @@
 using namespace blink;
 
 ParseResult parseMessage(Buffer* buf,
-                         std::string* command,
-                         std::string* topic,
-                         std::string* content)
+                         string* command,
+                         string* topic,
+                         string* content)
 {
     ParseResult result = kError;
     const char* crlf = buf->findCRLF();

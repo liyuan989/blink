@@ -5,7 +5,6 @@
 #include <boost/bind.hpp>
 
 #include <time.h>
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
@@ -15,14 +14,14 @@ void print()
     LOG_INFO << "tid=" << tid();
 }
 
-void printString(const std::string& s)
+void printString(const string& s)
 {
     LOG_INFO << "tid=" << tid() << " " << s.c_str();
 }
 
 void test(size_t size)
 {
-    ThreadPool threadpool(std::string("TestThreadPool"));
+    ThreadPool threadpool(string("TestThreadPool"));
     threadpool.setMaxQueueSize(size);
     threadpool.start(5);
     threadpool.run(print);
@@ -32,7 +31,7 @@ void test(size_t size)
     {
         char buf[32];
         snprintf(buf, sizeof(buf), "cycle task test: %d", i);
-        threadpool.run(boost::bind(printString, std::string(buf)));
+        threadpool.run(boost::bind(printString, string(buf)));
     }
     LOG_INFO << "done";
     usleep(1);

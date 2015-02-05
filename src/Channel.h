@@ -8,8 +8,6 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/function.hpp>
 
-#include <string>
-
 namespace blink
 {
 
@@ -29,7 +27,7 @@ public:
     void handleEvent(Timestamp receive_time);
     void tie(const boost::shared_ptr<void>& rhs);
     void remove();
-    std::string reventsToString() const;    // DEBUG
+    string reventsToString() const;    // DEBUG
 
     void setReadCallback(const ReadEventCallback callback)
     {

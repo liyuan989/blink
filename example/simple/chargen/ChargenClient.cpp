@@ -8,7 +8,7 @@
 
 using namespace blink;
 
-ChargenClient::ChargenClient(EventLoop* loop, const InetAddress& server_addr, const std::string& name)
+ChargenClient::ChargenClient(EventLoop* loop, const InetAddress& server_addr, const string& name)
     : loop_(loop), client_(loop, server_addr, name)
 {
     client_.setConnectionCallback(boost::bind(&ChargenClient::onConnection, this, _1));
@@ -33,6 +33,6 @@ void ChargenClient::onConnection(const TcpConnectionPtr& connection)
 
 void ChargenClient::onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)
 {
-    std::string msg = buf->resetAllToString();
+    string msg = buf->resetAllToString();
     printf("received data size = %d bytes.\n", msg.size());
 }

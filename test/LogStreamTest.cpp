@@ -1,6 +1,5 @@
 #include "LogStream.h"
 
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
@@ -10,7 +9,7 @@ int main(int argc, char const *argv[])
     LogStream logstream;
     char* p = NULL;
     logstream << p;
-    std::string s = logstream.buffer().toString();
+    string s = logstream.buffer().toString();
     printf("%s\n", s.c_str());
     logstream.reset();
 

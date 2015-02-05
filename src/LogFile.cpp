@@ -7,8 +7,6 @@
 #include "TimeZone.h"
 #include <boost/scoped_ptr.hpp>
 
-#include <string>
-
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
@@ -19,7 +17,7 @@ namespace blink
 const int LogFile::kRollPerSeconds;
 TimeZone g_logFileTimeZone(3600 * 8, "UTC+8");
 
-LogFile::LogFile(const std::string& basename,
+LogFile::LogFile(const string& basename,
                  size_t roll_size,
                  bool thread_safe,
                  int flush_interval,
@@ -34,7 +32,7 @@ LogFile::LogFile(const std::string& basename,
       last_roll_(0),
       last_flush_(0)
 {
-    assert(basename.find('/') == std::string::npos);
+    assert(basename.find('/') == string::npos);
     rollFile();
 }
 
@@ -71,7 +69,7 @@ void LogFile::flush()
 bool LogFile::rollFile()
 {
     time_t now = 0;
-    std::string filename = getLogFileName(basename_, &now);
+    string filename = getLogFileName(basename_, &now);
     time_t start = now / kRollPerSeconds * kRollPerSeconds;
     if (now > last_roll_)
     {
@@ -117,9 +115,9 @@ void LogFile::appendUnlocked(const char* logline, size_t len)
     }
 }
 
-std::string LogFile::getLogFileName(const std::string& basename, time_t* now)
+string LogFile::getLogFileName(const string& basename, time_t* now)
 {
-    std::string filename;
+    string filename;
     filename.reserve(basename.size() + 64);
     filename = basename;
     *now = ::time(NULL);

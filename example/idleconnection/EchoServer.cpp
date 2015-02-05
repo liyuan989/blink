@@ -55,7 +55,7 @@ void EchoServer::onMessage(const TcpConnectionPtr& connection,
                            Buffer* buf,
                            Timestamp receive_time)
 {
-    std::string message = buf->resetAllToString();
+    string message = buf->resetAllToString();
     LOG_INFO << connection->name() << " echo " << message.size() << " bytes at "
              << Timestamp(receive_time.microSecondsSinceEpoch() + kTimeZoneValue).toFormattedString();
     connection->send(message);

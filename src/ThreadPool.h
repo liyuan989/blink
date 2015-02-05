@@ -4,12 +4,12 @@
 #include "Nocopyable.h"
 #include "MutexLock.h"
 #include "Condition.h"
+#include "Types.h"
 
 #include <boost/function.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
 #include <deque>
-#include <string>
 
 namespace blink
 {
@@ -21,7 +21,7 @@ class ThreadPool : Nocopyable
 public:
     typedef boost::function<void ()> Task;
 
-    explicit ThreadPool(const std::string& name = std::string("ThreadPool"));
+    explicit ThreadPool(const string& name = string("ThreadPool"));
     ~ThreadPool();
 
     void start(int num_threads);
@@ -46,7 +46,7 @@ private:
     MutexLock                  mutex_;
     Condition                  not_empty_;
     Condition                  not_full_;
-    std::string                name_;
+    string                name_;
     Task                       thread_init_callback_;
     boost::ptr_vector<Thread>  threads_;
     std::deque<Task>           queue_;

@@ -32,7 +32,7 @@ public:
 
     TcpServer(EventLoop* loop,
               const InetAddress& listen_addr,
-              const std::string& server_name,
+              const string& server_name,
               Option option = kNoReusePort);
 
     // force out-line destructor, for scoped_ptr members.
@@ -56,12 +56,12 @@ public:
     //   assigned on a round-robin basis.
     void setThreadNumber(int number_threads);
 
-    const std::string& hostport() const
+    const string& hostport() const
     {
         return hostport_;
     }
 
-    const std::string& name() const
+    const string& name() const
     {
         return name_;
     }
@@ -110,11 +110,11 @@ private:
     // Not thread safe, but in loop.
     void removeConnectionInLoop(const TcpConnectionPtr& connection);
 
-    typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
+    typedef std::map<string, TcpConnectionPtr> ConnectionMap;
 
     EventLoop*                              loop_;                     // the acceptor loop
-    const std::string                       hostport_;
-    const std::string                       name_;
+    const string                            hostport_;
+    const string                            name_;
     boost::scoped_ptr<Acceptor>             acceptor_;                 // avoid revealing Acceptor
     boost::shared_ptr<EventLoopThreadPool>  thread_pool_;
     ConnectionCallback                      connection_callback_;

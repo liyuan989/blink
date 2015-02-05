@@ -2,7 +2,6 @@
 #include "Thread.h"
 #include "CurrentThread.h"
 
-#include <string>
 #include <stdio.h>
 
 using namespace blink;
@@ -20,18 +19,18 @@ public:
         printf("destroying, message: %s  tid = %d  name: %s addr: %p\n", message_.c_str(), tid(), threadName(), this);
     }
 
-    void setMessage(const std::string& msg)
+    void setMessage(const string& msg)
     {
         message_ = msg;
     }
 
-    std::string message() const
+    string message() const
     {
         return message_;
     }
 
 private:
-    std::string message_;
+    string message_;
 };
 
 class SingletonTestNoDestroy
@@ -60,7 +59,7 @@ void func()
 
 int main(int argc, char const *argv[])
 {
-    Thread thread(func, std::string("test Singletontest"));
+    Thread thread(func, string("test Singletontest"));
     thread.start();
     thread.join();
 

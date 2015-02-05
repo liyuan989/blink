@@ -44,7 +44,7 @@ private:
     }
 
     void onStringMessage(const TcpConnectionPtr& connection,
-                         const std::string& message,
+                         const string& message,
                          Timestamp receive_time)
     {
         for (ConnectionList::iterator it = connections_.begin();

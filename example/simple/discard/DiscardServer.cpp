@@ -10,8 +10,6 @@
 
 #include <boost/bind.hpp>
 
-#include <string>
-
 using namespace blink;
 using namespace blink::sockets;
 
@@ -19,7 +17,7 @@ const int64_t kTimeZoneValue = static_cast<int64_t>(8) * 3600 * 1000 * 1000;
 
 DiscardServer::DiscardServer(EventLoop* loop,
                              const InetAddress& server_addr,
-                             const std::string& name)
+                             const string& name)
     : loop_(loop), server_(loop, server_addr, name)
 {
     server_.setConnectionCallback(boost::bind(&DiscardServer::onConnection, this, _1));
@@ -40,7 +38,7 @@ void DiscardServer::onConnection(const TcpConnectionPtr& connection)
 
 void DiscardServer::onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)
 {
-    std::string message = buf->resetAllToString();
+    string message = buf->resetAllToString();
     LOG_INFO << connection->name() << " discards " << message.size() << " bytes received at "
              << Timestamp(time.microSecondsSinceEpoch() + kTimeZoneValue).toFormattedString();
 }

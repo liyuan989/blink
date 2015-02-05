@@ -16,7 +16,7 @@ using namespace blink;
 
 extern char favicon[555];
 bool g_benchark = false;
-std::map<std::string, std::string> g_redirections;
+std::map<string, string> g_redirections;
 const int64_t kTimeZoneValue = static_cast<int64_t>(8) * 3600 * 1000 * 1000;
 
 void onRequest(const HttpRequest& request, HttpResponse* response)
@@ -24,8 +24,8 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
     LOG_INFO << "Headers " << request.methodString() << " " << request.path();
     if (!g_benchark)
     {
-        const std::map<std::string, std::string>& headers = request.headers();
-        for (std::map<std::string, std::string>::const_iterator it = headers.begin();
+        const std::map<string, string>& headers = request.headers();
+        for (std::map<string, string>::const_iterator it = headers.begin();
              it != headers.end(); ++it)
         {
             LOG_DEBUG << it->first << ": " << it->second;
@@ -34,7 +34,7 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
 
     // TUDO: support PUT and DELETE to create new redirection on-the-fly
 
-    std::map<std::string, std::string>::const_iterator it = g_redirections.find(request.path());
+    std::map<string, string>::const_iterator it = g_redirections.find(request.path());
     if (it != g_redirections.end())
     {
         response->setStatusCode(HttpResponse::kMovePermanently);
@@ -48,9 +48,9 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
         response->setStatusMessage("OK");
         response->setContextType("text/html");
         int64_t microseconds = Timestamp::now().microSecondsSinceEpoch() + kTimeZoneValue;
-        std::string now = Timestamp(microseconds).toFormattedString();
-        std::string text;
-        for (std::map<std::string, std::string>::const_iterator iter = g_redirections.begin();
+        string now = Timestamp(microseconds).toFormattedString();
+        string text;
+        for (std::map<string, string>::const_iterator iter = g_redirections.begin();
              iter != g_redirections.end(); ++iter)
         {
             text.append("<ul>" + iter->first + " =&gt; " + iter->second + "</ul>");
@@ -64,7 +64,7 @@ void onRequest(const HttpRequest& request, HttpResponse* response)
         response->setStatusCode(HttpResponse::kOk);
         response->setStatusMessage("OK");
         response->setContextType("image/png");
-        response->setBody(std::string(favicon, sizeof(favicon)));
+        response->setBody(string(favicon, sizeof(favicon)));
     }
     else
     {

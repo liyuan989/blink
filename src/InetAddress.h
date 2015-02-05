@@ -2,9 +2,9 @@
 #define __BLINK_INETADDRESS_H__
 
 #include "Copyable.h"
+#include "Types.h"
 #include "SocketBase.h"
 
-#include <string>
 #include <stdint.h>
 
 namespace blink
@@ -38,10 +38,10 @@ public:
     }
 
     explicit InetAddress(uint16_t port = 0, bool loop_back_only = false);
-    InetAddress(std::string ip, uint16_t port);
+    InetAddress(const string& ip, uint16_t port);
 
-    std::string toIp() const;
-    std::string toIpPort() const;
+    string toIp() const;
+    string toIpPort() const;
     uint16_t toPort() const;
 
     const struct sockaddr_in getSockAddrInet() const
@@ -64,7 +64,7 @@ public:
         return addr_.sin_port;
     }
 
-    static bool resolve(std::string hostname, InetAddress* result);
+    static bool resolve(const string& hostname, InetAddress* result);
 
 private:
     struct sockaddr_in  addr_;

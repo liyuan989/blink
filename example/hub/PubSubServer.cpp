@@ -14,12 +14,12 @@
 
 using namespace blink;
 
-typedef std::set<std::string> ConnectionSubscription;
+typedef std::set<string> ConnectionSubscription;
 
 class Topic : Copyable
 {
 public:
-    Topic(const std::string& topic)
+    Topic(const string& topic)
         : topic_(topic)
     {
     }
@@ -38,11 +38,11 @@ public:
         audiences_.erase(connection);
     }
 
-    void publish(const std::string& content, Timestamp time)
+    void publish(const string& content, Timestamp time)
     {
         content_ = content;
         last_pub_time_ = time;
-        std::string message = makeMessage();
+        string message = makeMessage();
         for (std::set<TcpConnectionPtr>::iterator it = audiences_.begin();
              it != audiences_.end(); ++it)
         {
@@ -51,13 +51,13 @@ public:
     }
 
 private:
-    std::string makeMessage()
+    string makeMessage()
     {
         return "pub " + topic_ + "\r\n" + content_ + "\r\n";
     }
 
-    std::string                 topic_;
-    std::string                 content_;
+    string                      topic_;
+    string                      content_;
     Timestamp                   last_pub_time_;
     std::set<TcpConnectionPtr>  audiences_;
 };
@@ -105,9 +105,9 @@ private:
         ParseResult result = kSuccess;
         while (result == kSuccess)
         {
-            std::string command;
-            std::string topic;
-            std::string content;
+            string command;
+            string topic;
+            string content;
             result = parseMessage(buf, &command, &topic, &content);
             if (result == kSuccess)
             {
@@ -143,7 +143,7 @@ private:
         doPublish("internal", "utc_time", now.toFormattedString(), now);
     }
 
-    void doSubscribe(const TcpConnectionPtr& connection, const std::string& topic)
+    void doSubscribe(const TcpConnectionPtr& connection, const string& topic)
     {
         ConnectionSubscription* connection_sub
             = boost::any_cast<ConnectionSubscription>(connection->getMutableContext());
@@ -151,7 +151,7 @@ private:
         getTopic(topic).add(connection);
     }
 
-    void doUnsubscribe(const TcpConnectionPtr& connection, const std::string& topic)
+    void doUnsubscribe(const TcpConnectionPtr& connection, const string& topic)
     {
         LOG_INFO << connection->name() << " unsubscribes " << topic;
         getTopic(topic).remove(connection);
@@ -161,17 +161,17 @@ private:
         connection_sub->erase(topic);
     }
 
-    void doPublish(const std::string& source,
-                   const std::string& topic,
-                   const std::string& content,
+    void doPublish(const string& source,
+                   const string& topic,
+                   const string& content,
                    Timestamp time)
     {
         getTopic(topic).publish(content, time);
     }
 
-    Topic& getTopic(const std::string& topic)
+    Topic& getTopic(const string& topic)
     {
-        std::map<std::string, Topic>::iterator it = topics_.find(topic);
+        std::map<string, Topic>::iterator it = topics_.find(topic);
         if (it == topics_.end())
         {
             it = topics_.insert(std::make_pair(topic, Topic(topic))).first;
@@ -181,7 +181,7 @@ private:
 
     EventLoop*                    loop_;
     TcpServer                     server_;
-    std::map<std::string, Topic>  topics_;
+    std::map<string, Topic>  topics_;
 };
 
 int main(int argc, char const *argv[])

@@ -7,7 +7,6 @@
 
 #include <unistd.h>
 
-#include <string>
 #include <time.h>
 #include <stdio.h>
 
@@ -26,12 +25,12 @@ void testThreadFunc2(int data)
 class Test
 {
 public:
-    explicit Test(const std::string s)
+    explicit Test(const string& s)
         : s_(s)
     {
     }
 
-    void testThreadFunc3(const std::string& msg)
+    void testThreadFunc3(const string& msg)
     {
         printf("Thread3: pid = %d  tid = %d  member = %s  msg = %s\n",
                processes::getpid(), tid(), s_.c_str(), msg.c_str());
@@ -44,30 +43,30 @@ public:
     }
 
 private:
-    std::string s_;
+    string s_;
 };
 
 int main(int argc, char const *argv[])
 {
     printf("main: pid = %d  tid =  %d\n", processes::getpid(), tid());
 
-    Thread thread1(boost::bind(testThreadFunc1), std::string("test thread1"));
+    Thread thread1(boost::bind(testThreadFunc1), string("test thread1"));
     thread1.start();
     thread1.join();
 
-    Thread thread2(boost::bind(testThreadFunc2, 99), std::string("test thread2"));
+    Thread thread2(boost::bind(testThreadFunc2, 99), string("test thread2"));
     thread2.start();
     thread2.join();
 
-    Test test3(std::string("test3"));
-    Thread thread3(boost::bind(&Test::testThreadFunc3, &test3, std::string("message")),
-                   std::string("test thread3"));
+    Test test3(string("test3"));
+    Thread thread3(boost::bind(&Test::testThreadFunc3, &test3, string("message")),
+                   string("test thread3"));
     thread3.start();
     thread3.join();
 
     {
-        Test test4(std::string("test4"));
-        Thread thread4(boost::bind(&Test::testThreadFunc4, boost::ref(test4)), std::string("test thread4"));
+        Test test4(string("test4"));
+        Thread thread4(boost::bind(&Test::testThreadFunc4, boost::ref(test4)), string("test thread4"));
         thread4.start();
     }
 

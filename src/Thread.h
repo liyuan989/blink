@@ -3,13 +3,12 @@
 
 #include "Nocopyable.h"
 #include "Atomic.h"
+#include "Types.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
 
 #include <pthread.h>
-
-#include <string>
 
 namespace blink
 {
@@ -19,7 +18,7 @@ class Thread : Nocopyable
 public:
     typedef boost::function<void ()> ThreadFunc;
 
-    explicit Thread(const ThreadFunc& func, const std::string& thread_name = std::string());
+    explicit Thread(const ThreadFunc& func, const string& thread_name = string());
     ~Thread();
 
     void start();
@@ -35,7 +34,7 @@ public:
         return *tid_;
     }
 
-    const std::string name() const
+    const string name() const
     {
         return name_;
     }
@@ -53,7 +52,7 @@ private:
     pthread_t                 pthread_id_;
     boost::shared_ptr<pid_t>  tid_;
     ThreadFunc                func_;
-    std::string               name_;
+    string                    name_;
 
     static AtomicInt32 num_created_;
 };

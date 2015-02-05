@@ -5,13 +5,12 @@
 #include "Buffer.h"
 #include "InetAddress.h"
 #include "Callbacks.h"
+#include "Types.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/any.hpp>
-
-#include <string>
 
 struct tcp_info;  // defined in <netinet/tcp.h>
 
@@ -29,7 +28,7 @@ class TcpConnection : Nocopyable,
 public:
     // Constructs a TcpConnection with a connected sockfd.
     TcpConnection(EventLoop* loop,
-                  const std::string& connection_name,
+                  const string& connection_name,
                   int sockfd,
                   const InetAddress& local_addr,
                   const InetAddress& peer_addr);
@@ -37,10 +36,10 @@ public:
 
     // return true if success.
     bool getTcpInfo(struct tcp_info* tcpi) const;
-    std::string getTcpInfoString() const;
+    string getTcpInfoString() const;
 
     void send(const void* data, size_t len);
-    void send(const std::string& data);
+    void send(const string& data);
 
     // This one will swap data.
     void send(Buffer* buf);
@@ -67,7 +66,7 @@ public:
         return loop_;
     }
 
-    const std::string& name() const
+    const string& name() const
     {
         return name_;
     }
@@ -151,7 +150,7 @@ private:
     void handleWrite();
     void handleClose();
     void handleError();
-    void sendInLoop(const std::string& data);
+    void sendInLoop(const string& data);
     void sendInLoop(const void* data, size_t len);
     void shutdownInLoop();
     //void shutdownAndForceCloseInLoop(double seconds);
@@ -163,7 +162,7 @@ private:
     }
 
     EventLoop*                  loop_;
-    const std::string           name_;
+    const string           name_;
     StateE                      state_;
     boost::scoped_ptr<Socket>   socket_;
     boost::scoped_ptr<Channel>  channel_;

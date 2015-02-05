@@ -2,9 +2,9 @@
 #define __BLINK_HTTP_HTTPRESPONSE_H__
 
 #include "Copyable.h"
+#include "Types.h"
 
 #include <map>
-#include <string>
 
 namespace blink
 {
@@ -35,7 +35,7 @@ public:
         status_code_ = code;
     }
 
-    void setStatusMessage(const std::string& message)
+    void setStatusMessage(const string& message)
     {
         status_message_ = message;
     }
@@ -50,27 +50,27 @@ public:
         return close_connection_;
     }
 
-    void setContextType(const std::string& context_type)
+    void setContextType(const string& context_type)
     {
         addHeader("Context-Type", context_type);
     }
 
-    void addHeader(const std::string& key, const std::string& value)
+    void addHeader(const string& key, const string& value)
     {
         headers_[key] = value;
     }
 
-    void setBody(const std::string& body)
+    void setBody(const string& body)
     {
         body_ = body;
     }
 
 private:
-    std::map<std::string, std::string>  headers_;
-    HttpStatusCode                      status_code_;        // FIXME: add http version
-    std::string                         status_message_;
-    bool                                close_connection_;
-    std::string                         body_;
+    std::map<string, string>  headers_;
+    HttpStatusCode            status_code_;        // FIXME: add http version
+    string                    status_message_;
+    bool                      close_connection_;
+    string                    body_;
 };
 
 }  // namespace blink

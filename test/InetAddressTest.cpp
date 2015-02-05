@@ -2,12 +2,11 @@
 
 #include <sys/socket.h>
 
-#include <string>
 #include <sstream>
 #include <string.h>
 #include <stdio.h>
 
-void dnsParse(std::string hostname)
+void dnsParse(const blink::string& hostname)
 {
     struct sockaddr_in sock_addr;
     memset(&sock_addr, 0, sizeof(sock_addr));
@@ -28,7 +27,7 @@ void testIpPort()
     {
         std::ostringstream os;
         os << "192.168." << i << ".255";
-        blink::InetAddress addr(os.str(), static_cast<uint16_t>(10 * i));
+        blink::InetAddress addr(os.str().c_str(), static_cast<uint16_t>(10 * i));
         printf("Ip:   %s\n", addr.toIp().c_str());
     }
     for (int i = 0; i < 255; ++i)
@@ -40,7 +39,7 @@ void testIpPort()
     {
         std::ostringstream os;
         os << "192.168.1." << i;
-        blink::InetAddress addr(os.str(), static_cast<uint16_t>(10 * i));
+        blink::InetAddress addr(os.str().c_str(), static_cast<uint16_t>(10 * i));
         printf("Ip: Port   %s\n", addr.toIpPort().c_str());
     }
 }

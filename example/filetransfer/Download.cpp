@@ -10,9 +10,9 @@ using namespace blink;
 
 const char* g_filename = NULL;
 
-std::string readFile(const char* filename)     // FIXME: use readFile() in FileTool.h
+string readFile(const char* filename)     // FIXME: use readFile() in FileTool.h
 {
-    std::string content;
+    string content;
     FILE* fp = ::fopen(filename, "rb");
     if (fp)
     {
@@ -47,7 +47,7 @@ void onConnection(const TcpConnectionPtr& connection)
         LOG_INFO << "FileServer - Sending file " << g_filename
              << " to " << connection->peerAddress().toIpPort();
         connection->setHighWaterMarkCallback(onHighWaterMark, 64 * 1024);
-        std::string file_content = readFile(g_filename);
+        string file_content = readFile(g_filename);
         connection->send(file_content);
         connection->shutdown();
         LOG_INFO << "FileServer - done";

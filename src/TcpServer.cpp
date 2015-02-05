@@ -18,7 +18,7 @@ namespace blink
 
 TcpServer::TcpServer(EventLoop* loop,
                      const InetAddress& listen_addr,
-                     const std::string& server_name,
+                     const string& server_name,
                      Option option)
     : loop_(CHECK_NOTNULL(loop)),
       hostport_(listen_addr.toIpPort()),
@@ -68,7 +68,7 @@ void TcpServer::newConnection(int sockfd, const InetAddress& peer_addr)
     char buf[32];
     snprintf(buf, sizeof(buf), "%s#%d", hostport_.c_str(), next_connection_id_);
     ++next_connection_id_;
-    std::string connection_name = name_ + buf;
+    string connection_name = name_ + buf;
     LOG_INFO << "TcpServer::newConnection [" << name_ << "] - new connection ["
              << connection_name << "] from " << peer_addr.toIpPort();
     InetAddress local_addr(sockets::getLocalAddr(sockfd));

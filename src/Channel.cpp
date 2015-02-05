@@ -67,7 +67,7 @@ void Channel::remove()
     loop_->removeChannel(this);
 }
 
-std::string Channel::reventsToString() const
+string Channel::reventsToString() const
 {
     std::ostringstream os;
     os << fd_ << ": ";

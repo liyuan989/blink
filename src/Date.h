@@ -2,9 +2,9 @@
 #define __BLINK_DATE_H__
 
 #include "Copyable.h"
+#include "Types.h"
 
 #include <algorithm>
-#include <string>
 #include <time.h>
 
 namespace blink
@@ -36,7 +36,7 @@ public:
     explicit Date(const struct tm& tm_time);
     Date(int year, int month, int day);
 
-    std::string toString() const;
+    string toString() const;
     YearMonthDay yearMonthDay() const;
 
     void swap(Date& rhs)
