@@ -146,6 +146,11 @@ public:
         return length_ == 0;
     }
 
+    const char* begin() const
+    {
+        return ptr_;
+    }
+
     const char* end() const
     {
         return ptr_ + length_;
@@ -160,6 +165,12 @@ public:
     void set(const char* buffer, int len)
     {
         ptr_ = buffer;
+        length_ = len;
+    }
+
+    void set(const void* buffer, int len)
+    {
+        ptr_ = reinterpret_cast<const char*>(buffer);
         length_ = len;
     }
 
