@@ -4,6 +4,7 @@
 #include "Copyable.h"
 #include "Endian.h"
 #include "Types.h"
+#include "StringPiece.h"
 
 #include <algorithm>
 #include <vector>
@@ -54,8 +55,7 @@ public:
     {
         Buffer temp;
         temp.ensureWriteableSize(readableSize() + reserve);
-        string readable_data = toString();
-        temp.append(readable_data.c_str(), readable_data.size());
+        temp.append(toStringPiece());
         swap(temp);
     }
 
@@ -214,6 +214,11 @@ public:
         return string(peek(), readableSize());
     }
 
+    StringPiece toStringPiece()
+    {
+        return StringPiece(peek(), static_cast<int>(readableSize()));
+    }
+
     void ensureWriteableSize(size_t len)
     {
         if (len > writeableSize())
@@ -235,9 +240,9 @@ public:
         append(static_cast<const char*>(data), len);
     }
 
-    void append(const string& data)
+    void append(const StringPiece& str)
     {
-        append(data.c_str(), data.size());
+        append(str.data(), str.size());
     }
 
     void appendInt8(int8_t x)

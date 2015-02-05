@@ -3,6 +3,7 @@
 
 #include "Copyable.h"
 #include "Types.h"
+#include "StringPiece.h"
 #include "SocketBase.h"
 
 #include <stdint.h>
@@ -38,7 +39,7 @@ public:
     }
 
     explicit InetAddress(uint16_t port = 0, bool loop_back_only = false);
-    InetAddress(const string& ip, uint16_t port);
+    InetAddress(StringArg ip, uint16_t port);
 
     string toIp() const;
     string toIpPort() const;
@@ -64,7 +65,7 @@ public:
         return addr_.sin_port;
     }
 
-    static bool resolve(const string& hostname, InetAddress* result);
+    static bool resolve(StringArg hostname, InetAddress* result);
 
 private:
     struct sockaddr_in  addr_;

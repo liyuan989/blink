@@ -3,6 +3,7 @@
 
 #include "Nocopyable.h"
 #include "Types.h"
+#include "StringPiece.h"
 
 #include <stdint.h>
 
@@ -14,12 +15,14 @@ class ReadSmallFile : Nocopyable
 public:
     static const int kBufferSize = 1024*64;
 
-    explicit ReadSmallFile(const string& filename);
+    explicit ReadSmallFile(StringArg filename);
     ~ReadSmallFile();
 
     int readToBuffer(int* size);
+
+    template<typename String>
     int readToString(int maxsize,
-                     string* destination,
+                     String* destination,
                      int64_t* filesize,
                      int64_t* creat_time,
                      int64_t* modify_time);
@@ -35,19 +38,24 @@ private:
     char  buf_[kBufferSize];
 };
 
-int readFile(const string& filename,
+template<typename String>
+int readFile(StringArg filename,
              int maxsize,
-             string* destination,
+             String* destination,
              int64_t* filesize = NULL,
              int64_t* creat_time = NULL,
-             int64_t* modify_time = NULL);
+             int64_t* modify_time = NULL)
+{
+    ReadSmallFile file(filename);
+    return file.readToString(maxsize, destination, filesize, creat_time, modify_time);
+}
 
 class AppendFile
 {
 public:
     const static int kBufferSize = 1024*64;
 
-    explicit AppendFile(const string& filename);
+    explicit AppendFile(StringArg filename);
     ~AppendFile();
 
     void appendFile(const char* destination, size_t len);

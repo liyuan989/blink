@@ -89,20 +89,21 @@ string TcpConnection::getTcpInfoString() const
 
 void TcpConnection::send(const void* data, size_t len)
 {
-    send(string(static_cast<const char*>(data), len));
+    send(StringPiece(static_cast<const char*>(data), len));
 }
 
-void TcpConnection::send(const string& data)
+void TcpConnection::send(const StringPiece& message)
 {
     if (state_ == kConnected)
     {
         if (loop_->isInLoopThread())
         {
-            sendInLoop(data);
+            sendInLoop(message);
         }
         else
         {
-            loop_->runInLoop(boost::bind(&TcpConnection::sendInLoop, this, data));
+            loop_->runInLoop(boost::bind(&TcpConnection::sendInLoop, this, message.asString()));
+            // FIXME: use std::forward<string>(message)
         }
     }
 }
@@ -123,9 +124,9 @@ void TcpConnection::send(Buffer* buf)
     }
 }
 
-void TcpConnection::sendInLoop(const string& data)
+void TcpConnection::sendInLoop(const StringPiece& message)
 {
-    sendInLoop(&*data.begin(), data.size());
+    sendInLoop(message.data(), message.size());
 }
 
 void TcpConnection::sendInLoop(const void* data, size_t len)

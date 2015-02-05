@@ -21,7 +21,7 @@ InetAddress::InetAddress(uint16_t port, bool loop_back_only)
     addr_.sin_port = sockets::hostToNetwork16(port);
 }
 
-InetAddress::InetAddress(const string& ip, uint16_t port)
+InetAddress::InetAddress(StringArg ip, uint16_t port)
 {
     memset(&addr_, 0, sizeof(addr_));
     sockets::fromIpPort(ip.c_str(), port, &addr_);
@@ -59,7 +59,7 @@ uint16_t InetAddress::toPort() const
 
 static __thread char t_resolveBuffer[1024 * 64];
 
-bool InetAddress::resolve(const string& hostname, InetAddress* result)
+bool InetAddress::resolve(StringArg hostname, InetAddress* result)
 {
     assert(result != NULL);
     struct hostent hent;

@@ -6,6 +6,7 @@
 #include "InetAddress.h"
 #include "Callbacks.h"
 #include "Types.h"
+#include "StringPiece.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -39,7 +40,7 @@ public:
     string getTcpInfoString() const;
 
     void send(const void* data, size_t len);
-    void send(const string& data);
+    void send(const StringPiece& data);
 
     // This one will swap data.
     void send(Buffer* buf);
@@ -150,7 +151,7 @@ private:
     void handleWrite();
     void handleClose();
     void handleError();
-    void sendInLoop(const string& data);
+    void sendInLoop(const StringPiece& data);
     void sendInLoop(const void* data, size_t len);
     void shutdownInLoop();
     //void shutdownAndForceCloseInLoop(double seconds);

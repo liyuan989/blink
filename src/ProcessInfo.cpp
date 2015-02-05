@@ -134,18 +134,20 @@ string hostName()
 
 string procName()
 {
-    string stat = procStat();
+    return procName(procStat()).asString();
+}
+
+StringPiece procName(const string& stat)
+{
+    StringPiece name;
     size_t left_pos = stat.find('(');
-    size_t right_pos = stat.find(')');
+    size_t right_pos = stat.rfind(')');
     if (left_pos != string::npos && right_pos != string::npos && left_pos < right_pos)
     {
         size_t len = right_pos - (left_pos + 1);
-        return string(stat, left_pos + 1, len);
+        name.set(stat.data() + left_pos + 1, len);
     }
-    else
-    {
-        return string();
-    }
+    return name;
 }
 
 string procStatus()

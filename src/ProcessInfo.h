@@ -3,6 +3,7 @@
 
 #include "Timestamp.h"
 #include "Types.h"
+#include "StringPiece.h"
 
 #include <vector>
 
@@ -17,6 +18,7 @@ int pageSize();
 bool isDebugBuild();
 string hostName();
 string procName();
+StringPiece procName(const string& stat);
 string procStatus();  // read from /proc/self/status
 string procStat();    // read from /proc/self/stat
 string threadStat();  // read from /proc/self/task/tid/stat

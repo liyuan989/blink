@@ -78,6 +78,11 @@ target_link_libraries(ProcessInfoTest blink)
 add_executable(SingletonTest SingletonTest.cpp)
 target_link_libraries(SingletonTest blink)
 
+if(GTEST_FOUND)
+    add_executable(StringPieceTest StringPieceTest.cpp)
+    target_link_libraries(StringPieceTest blink ${GTEST_BOTH_LIBRARIES})
+endif()
+
 add_executable(TcpClientTest TcpClientTest.cpp)
 target_link_libraries(TcpClientTest blink)
 

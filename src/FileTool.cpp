@@ -23,7 +23,7 @@ namespace blink
 
 const int ReadSmallFile::kBufferSize;
 
-ReadSmallFile::ReadSmallFile(const string& filename)
+ReadSmallFile::ReadSmallFile(StringArg filename)
     : fd_(::open(filename.c_str(), O_RDONLY | O_CLOEXEC)), errno_(0)
 {
     buf_[0] = '\0';
@@ -80,8 +80,9 @@ int ReadSmallFile::readToBuffer(int* size)
 //      time_t    st_ctime;   /* time of last status change */
 //  };
 
+template<typename String>
 int ReadSmallFile::readToString(int maxsize,
-                            string* destination,
+                            String* destination,
                             int64_t* filesize,
                             int64_t* creat_time,
                             int64_t* modify_time)
@@ -141,20 +142,9 @@ int ReadSmallFile::readToString(int maxsize,
     return err;
 }
 
-int readFile(const string& filename,
-             int maxsize,
-             string* destination,
-             int64_t* filesize,
-             int64_t* creat_time,
-             int64_t* modify_time)
-{
-    ReadSmallFile file(filename);
-    return file.readToString(maxsize, destination, filesize, creat_time, modify_time);
-}
-
 const int AppendFile::kBufferSize;
 
-AppendFile::AppendFile(const string& filename)
+AppendFile::AppendFile(StringArg filename)
     : fp_(::fopen(filename.c_str(), "ae")), bytes_(0) //'e' for O_CLOEXEC
 {
     assert(fp_);
@@ -192,5 +182,35 @@ void AppendFile::flush()
 {
     ::fflush(fp_);
 }
+
+template int readFile(StringArg filename,
+                      int maxsize,
+                      string* destination,
+                      int64_t* filesize,
+                      int64_t* creat_time,
+                      int64_t* modify_time);
+
+template int ReadSmallFile::readToString(int maxsize,
+                                         string* destination,
+                                         int64_t* filesize,
+                                         int64_t* creat_time,
+                                         int64_t* modify_time);
+
+#ifndef BLINK_STD_STRING
+
+template int readFile(StringArg filename,
+                      int maxsize,
+                      std::string* destination,
+                      int64_t* filesize,
+                      int64_t* creat_time,
+                      int64_t* modify_time);
+
+template int ReadSmallFile::readToString(int maxsize,
+                                         std::string* destination,
+                                         int64_t* filesize,
+                                         int64_t* creat_time,
+                                         int64_t* modify_time);
+
+#endif
 
 }  // namespace blink

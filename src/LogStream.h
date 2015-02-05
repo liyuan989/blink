@@ -4,6 +4,11 @@
 #include "Nocopyable.h"
 #include "Copyable.h"
 #include "Types.h"
+#include "StringPiece.h"
+
+#ifndef BLINK_STD_STRING
+#include <string>
+#endif
 
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
@@ -198,6 +203,20 @@ public:
     LogStream& operator<<(const string& s)
     {
         buffer_.append(s.c_str(), s.size());
+        return *this;
+    }
+
+#ifndef BLINK_STD_STRING
+    LogStream& operator<<(const std::string& s)
+    {
+        buffer_.append(s.c_str(), s.size());
+        return *this;
+    }
+#endif
+
+    LogStream& operator<<(const StringPiece& s)
+    {
+        buffer_.append(s.data(), s.size());
         return *this;
     }
 
