@@ -33,13 +33,13 @@ int main(int argc, char const *argv[])
         EventLoopThread loop_thread2;
         EventLoop* loop = loop_thread2.startLoop();
         loop->runInLoop(boost::bind(print, loop));
-        sleepMicrosecond(500 * 1000);
+        sleepMicroseconds(500 * 1000);
     }
     {   // call quit() before destruct.
         EventLoopThread loop_thread3;
         EventLoop* loop = loop_thread3.startLoop();
         loop->runInLoop(boost::bind(quit, loop));
-        sleepMicrosecond(500 * 1000);
+        sleepMicroseconds(500 * 1000);
     }
     return 0;
 }

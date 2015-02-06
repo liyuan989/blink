@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
                 client.publish(g_topic, line);
             }
             client.stop();
-            sleepMicrosecond(1000 * 1000);
+            sleepMicroseconds(1000 * 1000);
         }
         else
         {

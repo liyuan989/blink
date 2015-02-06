@@ -93,6 +93,6 @@ int main(int argc, char const *argv[])
         client.write(line);
     }
     client.disconnect();
-    sleepMicrosecond(1000 * 1000);
+    sleepMicroseconds(1000 * 1000);
     return 0;
 }

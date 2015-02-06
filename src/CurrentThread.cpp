@@ -42,7 +42,7 @@ bool isMainThread()
 //      long tv_nsec;   /* nanoseconds */
 //  };
 
-void sleepMicrosecond(int64_t microseconds)
+void sleepMicroseconds(int64_t microseconds)
 {
     struct timespec spec;
     spec.tv_sec = static_cast<time_t>(microseconds / (1000*1000));

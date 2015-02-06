@@ -145,7 +145,7 @@ class LogStream
 {
 public:
     static const int kSmallBuffer = 4000;
-    static const int kLargeBuffer = 4000*1000;
+    static const int kLargeBuffer = 4000 * 1000;
 
     typedef FixedBuffer<kSmallBuffer> Buffer;
 

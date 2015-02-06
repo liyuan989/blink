@@ -39,7 +39,7 @@ inline const char* threadName()
 
 bool isMainThread();
 
-void sleepMicrosecond(int64_t microseconds);  // implement by nanosleep.
+void sleepMicroseconds(int64_t microseconds);  // implement by nanosleep.
 
 }  // namespace blink
 

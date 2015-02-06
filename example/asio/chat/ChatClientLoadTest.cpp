@@ -152,7 +152,7 @@ int main(int argc, char const *argv[])
     {
         clients.push_back(new ChatClient(loop_pool.getNextLoop(), server_addr));
         clients[i].connect();
-        sleepMicrosecond(200 * 1000);
+        sleepMicroseconds(200 * 1000);
     }
     loop.loop();
     return 0;
