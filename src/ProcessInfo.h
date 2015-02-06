@@ -10,6 +10,7 @@
 namespace blink
 {
 
+pid_t pid();
 string pidString();
 string username();
 Timestamp startTime();
@@ -19,10 +20,18 @@ bool isDebugBuild();
 string hostName();
 string procName();
 StringPiece procName(const string& stat);
-string procStatus();  // read from /proc/self/status
-string procStat();    // read from /proc/self/stat
-string threadStat();  // read from /proc/self/task/tid/stat
-string exePath();     // read from /proc/self/exe
+
+// read from /proc/self/status
+string procStatus();
+
+// read from /proc/self/status
+string procStat();
+
+// read from /proc/self/task/tid/stat
+string threadStat();
+
+// read from /proc/self/exe
+string exePath();
 int openedFiles();
 int maxOpenFiles();
 

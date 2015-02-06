@@ -62,6 +62,11 @@ Timestamp g_startTime = Timestamp::now();
 int       g_clockTicks = static_cast<int>(::sysconf(_SC_CLK_TCK));
 int       g_pageSize = static_cast<int>(::sysconf(_SC_PAGESIZE));
 
+pid_t pid()
+{
+    return processes::getpid();
+}
+
 string pidString()
 {
     char buf[32];
@@ -247,7 +252,7 @@ int threadsNumber()
 std::vector<pid_t> threads()
 {
     std::vector<pid_t> result;
-    t_pids = & result;
+    t_pids = &result;
     scanDir("/proc/self/task", taskDirFilter);
     t_pids = NULL;
     return result;
