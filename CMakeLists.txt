@@ -55,6 +55,12 @@ if(BOOSTTEST_LIBRARY)
     message(STATUS "found boost_unit_test_framework")
 endif()
 
+find_library(TCMALLOC_LIBRARY NAMES tcmalloc_and_profiler)
+find_path(TCMALLOC_INCLUDE_DIR google/heap-profiler.h)
+if(TCMALLOC_LIBRARY AND TCMALLOC_INCLUDE_DIR)
+    message(STATUS "found tcmalloc")
+endif()
+
 find_package(GTest)
 if(GTEST_FOUND)
     message(STATUS "found Gtest")

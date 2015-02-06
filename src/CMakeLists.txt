@@ -41,11 +41,10 @@ set(SRCS
  TimerQueue.cpp
  Timestamp.cpp
  TimeZone.cpp
- http/HttpContext.cpp
- http/HttpRequest.cpp
- http/HttpResponse.cpp
- http/HttpServer.cpp
  )
 
 add_library(blink ${SRCS})
 target_link_libraries(blink pthread rt ${Boost_LIBRARIES})
+
+add_subdirectory(http)
+add_subdirectory(inspect)

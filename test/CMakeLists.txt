@@ -54,11 +54,11 @@ target_link_libraries(FileToolTest blink)
 
 if(GTEST_FOUND)
     add_executable(HttpRequest_unittest HttpRequest_unittest.cpp)
-    target_link_libraries(HttpRequest_unittest blink ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(HttpRequest_unittest blink_http ${GTEST_BOTH_LIBRARIES})
 endif()
 
 add_executable(HttpServerTest HttpServerTest.cpp)
-target_link_libraries(HttpServerTest blink)
+target_link_libraries(HttpServerTest blink_http)
 
 add_executable(InetAddressTest InetAddressTest.cpp)
 target_link_libraries(InetAddressTest blink)
