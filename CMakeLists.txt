@@ -56,7 +56,7 @@ if(BOOSTTEST_LIBRARY)
 endif()
 
 find_library(TCMALLOC_LIBRARY NAMES tcmalloc_and_profiler)
-find_path(TCMALLOC_INCLUDE_DIR google/heap-profiler.h)
+find_path(TCMALLOC_INCLUDE_DIR gperftools/heap-profiler.h)
 if(TCMALLOC_LIBRARY AND TCMALLOC_INCLUDE_DIR)
     message(STATUS "found tcmalloc")
 endif()
