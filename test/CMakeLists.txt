@@ -63,6 +63,9 @@ target_link_libraries(HttpServerTest blink_http)
 add_executable(InetAddressTest InetAddressTest.cpp)
 target_link_libraries(InetAddressTest blink)
 
+add_executable(InspectorTest InspectorTest.cpp)
+target_link_libraries(InspectorTest blink_inspect)
+
 add_executable(LogFileTest LogFileTest.cpp)
 target_link_libraries(LogFileTest blink)
 
