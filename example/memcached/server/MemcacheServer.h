@@ -8,6 +8,13 @@
 #include "TcpServer.h"
 #include "MutexLock.h"
 
+namespace boost
+{
+
+std::size_t hash_value(const blink::string& str);
+
+}
+
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 #include <boost/array.hpp>
@@ -15,7 +22,7 @@
 namespace boost
 {
 
-std::size_t hash_value(const blink::string& str)
+inline std::size_t hash_value(const blink::string& str)
 {
     return hash_range(str.begin(), str.end());
 }
@@ -31,6 +38,8 @@ public:
         uint16_t  udp_port;
         uint16_t  gperf_port;
         int       threads;
+
+        Options();
     };
 
     MemcacheServer(blink::EventLoop* loop, const Options& options);
@@ -44,7 +53,7 @@ public:
 
     void setThreadNumber(int threads)
     {
-        server_.setThreadNumer(threads);
+        server_.setThreadNumber(threads);
     }
 
     time_t startTime() const
@@ -80,7 +89,7 @@ private:
         mutable blink::MutexLock  mutex;
     };
 
-    struct States;
+    struct Stats;
 
     static const int kShareds = 4096;
 
@@ -91,7 +100,7 @@ private:
     boost::unordered_map<blink::string, SessionPtr>  sessions_;
     boost::array<MapWithLock, kShareds>              shards_;
     blink::TcpServer                                 server_;
-    boost::scoped_ptr<States>                        stats_;
+    boost::scoped_ptr<Stats>                         stats_;
 
     // server_ is not guarded by mutex_, but here because it has to destruct before sessions_
 };

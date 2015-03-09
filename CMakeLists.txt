@@ -55,6 +55,11 @@ if(BOOSTTEST_LIBRARY)
     message(STATUS "found boost_unit_test_framework")
 endif()
 
+find_library(BOOSTPO_LIBRARY NAMES boost_program_options)
+if(BOOSTPO_LIBRARY)
+    message(STATUS "found boost_program_options")
+endif()
+
 find_library(TCMALLOC_LIBRARY NAMES tcmalloc_and_profiler)
 find_path(TCMALLOC_INCLUDE_DIR gperftools/heap-profiler.h)
 if(TCMALLOC_LIBRARY AND TCMALLOC_INCLUDE_DIR)

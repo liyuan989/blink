@@ -28,8 +28,9 @@ public:
         kInvalid,
         kSet,
         kAdd,
-        kReplaced,
+        kReplace,
         kAppend,
+        kPrepend,
         kCas,
     };
 
@@ -92,9 +93,9 @@ public:
         return hash_;
     }
 
-    void setCas(uint64_t cas)
+    void setCas(uint64_t cas_arg)
     {
-        cas_ = cas;
+        cas_ = cas_arg;
     }
 
     size_t neededBytes() const

@@ -72,7 +72,7 @@ private:
     void onMessage(const blink::TcpConnectionPtr& connection,
                    blink::Buffer* buf,
                    blink::Timestamp receive_time);
-    void onWriteComplete(const blink::TcpConnectionPtr& connection);
+    //void onWriteComplete(const blink::TcpConnectionPtr& connection);
     void receiveValue(blink::Buffer* buf);
     void discardValue(blink::Buffer* buf);
     // TODO: highWaterMark
@@ -81,8 +81,8 @@ private:
     bool processRequest(blink::StringPiece request);
     void resetRequest();
     void reply(blink::StringPiece message);
-    bool doUpdate(Tokenizer::iterator& begin, Tokenizer::iterator& end);
-    bool doDelete(Tokenizer::iterator& begin, Tokenizer::iterator& end);
+    bool doUpdate(Tokenizer::iterator& begin, Tokenizer::iterator end);
+    void doDelete(Tokenizer::iterator& begin, Tokenizer::iterator end);
 
     MemcacheServer*          owner_;
     blink::TcpConnectionPtr  connection_;
