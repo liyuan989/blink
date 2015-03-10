@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
     EventLoopThreadPool pool(&loop);
 
     int value_len = 100;
-    Client::Operation operation = set ? Client::kGet : Client::kGet;
+    Client::Operation operation = set ? Client::kSet : Client::kGet;
 
     double memoryMiB = 1.0 * clients * keys * (32 + 80 + value_len + 8) / 1024 / 1024;
     LOG_WARN << "estimated memcached_server memory usage "
