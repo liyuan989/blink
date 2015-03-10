@@ -1,7 +1,7 @@
 #include "Session.h"
 #include "MemcacheServer.h"
 
-#ifndef HAVE_TCMALLOC
+#ifdef HAVE_TCMALLOC
 #include <gperftools/malloc_extension.h>
 #endif
 
@@ -382,6 +382,7 @@ bool Session::doUpdate(Tokenizer::iterator& begin, Tokenizer::iterator end)
     if (!good)
     {
         reply("CLIENT_ERROR bad command line format\r\n");
+        return true;
     }
 
     if (bytes > 1024 * 1024)
