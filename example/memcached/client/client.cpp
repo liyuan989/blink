@@ -63,12 +63,11 @@ private:
         {
             connection_ = connection;
             connected_->countDown();
-            //printf("connected_ = %d\n", connected_->getCount());
         }
         else
         {
             connection_.reset();
-            finished_->countDown();
+            client_.getLoop()->queueInLoop(boost::bind(&CountDownLatch::countDown, finished_));
         }
     }
 
@@ -120,9 +119,7 @@ private:
         if (acked_ == requests_)
         {
             connection_->shutdown();
-            //finished_->countDown();
         }
-        //std::cout << "acked_ = " << acked_ << std::endl;
     }
 
     void fill(Buffer* buf)
