@@ -27,7 +27,10 @@ public:
     void handleEvent(Timestamp receive_time);
     void tie(const boost::shared_ptr<void>& rhs);
     void remove();
-    string reventsToString() const;    // DEBUG
+
+    // for debug
+    string reventsToString() const;
+    string eventsToString() const;
 
     void setReadCallback(const ReadEventCallback callback)
     {
@@ -127,6 +130,8 @@ public:
 private:
     void update();
     void handleEventWithGuard(Timestamp receive_time);
+
+    static string eventsToString(int fd, int ev);
 
     EventLoop*             loop_;
     const int              fd_;

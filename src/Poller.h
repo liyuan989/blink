@@ -75,6 +75,8 @@ private:
     void fillActiveChannels(int number_events, ChannelList* active_channels) const;
     void update(int operation, Channel* channel);
 
+    static const char* operationToString(int op);
+
     typedef std::vector<epoll_event> EventList;
 
     int        epollfd_;

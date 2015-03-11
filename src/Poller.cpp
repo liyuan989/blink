@@ -83,7 +83,10 @@ EPollPoller::~EPollPoller()
 
 Timestamp EPollPoller::poll(int timeout_ms, ChannelList* active_channels)
 {
-    int number_events = ::epoll_wait(epollfd_, &*events_.begin(), static_cast<int>(events_.size()), timeout_ms);
+    LOG_TRACE << "fd total count " << channels_.size();
+    int number_events = ::epoll_wait(epollfd_, &*events_.begin(),
+                                     static_cast<int>(events_.size()),
+                                     timeout_ms);
     int saved_errno = errno;
     Timestamp now(Timestamp::now());
     if (number_events > 0)
@@ -113,8 +116,9 @@ Timestamp EPollPoller::poll(int timeout_ms, ChannelList* active_channels)
 void EPollPoller::updateChannel(Channel* channel)
 {
     Poller::assertInLoopThread();
-    LOG_TRACE << "fd = " << channel->fd() << " events = " << channel->events();
     const int index = channel->index();
+    LOG_TRACE << "fd = " << channel->fd() << " events = " << channel->events()
+              << "index = " << index;
     if (index == kNew || index == kDeleted)
     {
         int fd = channel->fd();
@@ -195,16 +199,33 @@ void EPollPoller::update(int operation, Channel* channel)
     event.events = channel->events();
     event.data.ptr = channel;
     int fd = channel->fd();
+    LOG_TRACE << "epoll_ctl op = " << operationToString(operation);
     if (::epoll_ctl(epollfd_, operation, fd, &event) < 0)
     {
         if (operation == EPOLL_CTL_DEL)
         {
-            LOG_ERROR << "epoll_ctl op=" << operation << " fd=" << fd;
+            LOG_ERROR << "epoll_ctl op = " << operationToString(operation) << " fd = " << fd;
         }
         else
         {
-            LOG_FATAL << "epoll_ctl op=" << operation << " fd=" << fd;
+            LOG_FATAL << "epoll_ctl op = " << operationToString(operation) << " fd = " << fd;
         }
+    }
+}
+
+const char* EPollPoller::operationToString(int op)
+{
+    switch (op)
+    {
+        case EPOLL_CTL_ADD:
+            return "ADD";
+        case EPOLL_CTL_DEL:
+            return "DEL";
+        case EPOLL_CTL_MOD:
+            return "MOD";
+        default:
+            assert(false && "ERROR op");
+            return "Unknown Operation";
     }
 }
 
@@ -309,7 +330,8 @@ void PollPoller::removeChannel(Channel* channel)
 
 void PollPoller::fillActiveChannels(int number_events, ChannelList* active_channels) const
 {
-    for (PollFdList::const_iterator iter = pollfds_.begin(); iter != pollfds_.end() && number_events > 0; ++iter)
+    for (PollFdList::const_iterator iter = pollfds_.begin();
+         iter != pollfds_.end() && number_events > 0; ++iter)
     {
         if (iter->revents > 0)
         {
