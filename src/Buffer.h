@@ -76,6 +76,18 @@ public:
         return begin() + write_index_;
     }
 
+    void haveWritten(size_t len)
+    {
+        assert(len <= writeableSize());
+        write_index_ += len;
+    }
+
+    void unwrite(size_t len)
+    {
+        assert(len <= readableSize());
+        write_index_ -= len;
+    }
+
     const char* peek() const
     {
         return begin() + read_index_;
@@ -336,18 +348,6 @@ private:
     const char* begin() const
     {
         return &*buffer_.begin();
-    }
-
-    void haveWritten(size_t len)
-    {
-        assert(len <= writeableSize());
-        write_index_ += len;
-    }
-
-    void unwrite(size_t len)
-    {
-        assert(len <= readableSize());
-        write_index_ -= len;
     }
 
     void makeSpace(size_t len)
