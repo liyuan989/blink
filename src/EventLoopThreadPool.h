@@ -20,7 +20,7 @@ class EventLoopThreadPool : Nocopyable
 public:
     typedef boost::function<void (EventLoop*)> ThreadInitCallback;
 
-    EventLoopThreadPool(EventLoop* base_loop, const string& name);
+    EventLoopThreadPool(EventLoop* base_loop, const string& name_arg);
     ~EventLoopThreadPool();
 
     void start(const ThreadInitCallback& cb = ThreadInitCallback());
@@ -37,7 +37,7 @@ public:
     // If loops_ is empty, return the base_loop_ anyway.
     std::vector<EventLoop*> getAllLoops();
 
-    string name() const
+    const string& name() const
     {
         return name_;
     }

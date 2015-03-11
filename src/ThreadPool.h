@@ -28,7 +28,7 @@ public:
     void run(const Task& task);
     void stop();
 
-    string name() const
+    const string& name() const
     {
         return name_;
     }

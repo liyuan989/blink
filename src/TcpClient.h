@@ -29,7 +29,7 @@ public:
         return loop_;
     }
 
-    string name() const
+    const string& name() const
     {
         return name_;
     }
