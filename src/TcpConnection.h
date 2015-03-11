@@ -87,6 +87,11 @@ public:
         return state_ == kConnected;
     }
 
+    bool disconnected() const
+    {
+        return state_ == kDisconnected;
+    }
+
     void setContext(const boost::any& context)
     {
         context_ = context;
