@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
 #ifdef SO_REUSEPORT
     LOG_WARN << "SO_REUSEPORT";
     EventLoop loop;
-    EventLoopThreadPool thread_pool(&loop);
+    EventLoopThreadPool thread_pool(&loop, "shorurl");
     if (num_threads > 1)
     {
         thread_pool.setThreadNumber(num_threads);

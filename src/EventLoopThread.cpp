@@ -8,10 +8,10 @@
 namespace blink
 {
 
-EventLoopThread::EventLoopThread(const ThreadInitCallback& cb)
+EventLoopThread::EventLoopThread(const ThreadInitCallback& cb, const string& name)
     : loop_(NULL),
-      exiting_(NULL),
-      thread_(boost::bind(&EventLoopThread::ThreadFunc, this), "EventLoopThread"),
+      exiting_(false),
+      thread_(boost::bind(&EventLoopThread::ThreadFunc, this), name),
       mutex_(),
       cond_(mutex_),
       callback_(cb)

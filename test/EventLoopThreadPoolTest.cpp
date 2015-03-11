@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
     loop.runAfter(20, boost::bind(&EventLoop::quit, &loop));
     {
         printf("Single thread: %p\n", &loop);
-        EventLoopThreadPool loop_thread_pool1(&loop);
+        EventLoopThreadPool loop_thread_pool1(&loop, "thread_pool1");
         loop_thread_pool1.setThreadNumber(0);
         loop_thread_pool1.start(init);
         assert(loop_thread_pool1.getNextLoop() == &loop);
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
     }
     {
         printf("Another thread:\n");
-        EventLoopThreadPool loop_thread_pool2(&loop);
+        EventLoopThreadPool loop_thread_pool2(&loop, "thread_pool2");
         loop_thread_pool2.setThreadNumber(1);
         loop_thread_pool2.start(init);
         EventLoop* next_loop = loop_thread_pool2.getNextLoop();
@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
     }
     {
         printf("Three threads:\n");
-        EventLoopThreadPool loop_thread_pool3(&loop);
+        EventLoopThreadPool loop_thread_pool3(&loop, "thread_pool3");
         loop_thread_pool3.setThreadNumber(3);
         loop_thread_pool3.start(init);
         EventLoop* next_loop = loop_thread_pool3.getNextLoop();

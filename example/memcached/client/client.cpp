@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
     LOG_WARN << "Connecting " << server_addr.toIpPort();
 
     EventLoop loop;
-    EventLoopThreadPool pool(&loop);
+    EventLoopThreadPool pool(&loop, "memcached_client");
 
     int value_len = 100;
     Client::Operation operation = set ? Client::kSet : Client::kGet;

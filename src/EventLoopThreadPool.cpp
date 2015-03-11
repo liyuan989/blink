@@ -4,11 +4,14 @@
 
 #include <assert.h>
 
+#include <stdio.h>
+
 namespace blink
 {
 
-EventLoopThreadPool::EventLoopThreadPool(EventLoop* base_loop)
+EventLoopThreadPool::EventLoopThreadPool(EventLoop* base_loop, const string& name_arg)
     : base_loop_(base_loop),
+      name_(name_arg),
       started_(false),
       number_threads_(0),
       next_(0),
@@ -28,7 +31,9 @@ void EventLoopThreadPool::start(const ThreadInitCallback& cb)
     started_ = true;
     for (int i = 0; i < number_threads_; ++i)
     {
-        EventLoopThread* pthread = new EventLoopThread(cb);
+        char buf[name_.size() + 32];
+        snprintf(buf, sizeof(buf), "%s%d", name_.c_str(), i);
+        EventLoopThread* pthread = new EventLoopThread(cb, buf);
         threads_.push_back(pthread);
         loops_.push_back(pthread->startLoop());
     }

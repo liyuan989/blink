@@ -2,6 +2,7 @@
 #define __BLINK_EVENTLOOPTHREADPOOL_H__
 
 #include "Nocopyable.h"
+#include "Types.h"
 
 #include <boost/function.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
@@ -19,7 +20,7 @@ class EventLoopThreadPool : Nocopyable
 public:
     typedef boost::function<void (EventLoop*)> ThreadInitCallback;
 
-    EventLoopThreadPool(EventLoop* base_loop);
+    EventLoopThreadPool(EventLoop* base_loop, const string& name);
     ~EventLoopThreadPool();
 
     void start(const ThreadInitCallback& cb = ThreadInitCallback());
@@ -36,6 +37,11 @@ public:
     // If loops_ is empty, return the base_loop_ anyway.
     std::vector<EventLoop*> getAllLoops();
 
+    string name() const
+    {
+        return name_;
+    }
+
     bool started() const
     {
         return started_;
@@ -48,6 +54,7 @@ public:
 
 private:
     EventLoop*                          base_loop_;
+    string                              name_;
     bool                                started_;
     int                                 number_threads_;
     int                                 next_;

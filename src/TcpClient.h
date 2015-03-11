@@ -15,7 +15,7 @@ typedef boost::shared_ptr<Connector> ConnectorPtr;
 class TcpClient : Nocopyable
 {
 public:
-    TcpClient(EventLoop* loop, const InetAddress& server_addr, const string& name);
+    TcpClient(EventLoop* loop, const InetAddress& server_addr, const string& name_arg);
 
     // Force out-line destructor, for scoped_ptr member.
     ~TcpClient();
@@ -27,6 +27,11 @@ public:
     EventLoop* getLoop() const
     {
         return loop_;
+    }
+
+    string name() const
+    {
+        return name_;
     }
 
     bool retry() const

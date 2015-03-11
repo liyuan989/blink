@@ -88,7 +88,7 @@ public:
            int timeout,
            int thread_count)
         : loop_(loop),
-          thread_pool_(loop),
+          thread_pool_(loop, "pingpong-client"),
           session_count_(session_count),
           timeout_(timeout)
     {

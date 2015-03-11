@@ -13,11 +13,11 @@
 namespace blink
 {
 
-ThreadPool::ThreadPool(const string& name)
+ThreadPool::ThreadPool(const string& name_arg)
     : mutex_(),
       not_empty_(mutex_),
       not_full_(mutex_),
-      name_(name),
+      name_(name_arg),
       max_queue_size_(0),
       running_(false)
 {

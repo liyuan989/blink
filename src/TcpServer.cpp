@@ -24,7 +24,7 @@ TcpServer::TcpServer(EventLoop* loop,
       hostport_(listen_addr.toIpPort()),
       name_(server_name),
       acceptor_(new Acceptor(loop, listen_addr, option == kReusePort)),
-      thread_pool_(new EventLoopThreadPool(loop)),
+      thread_pool_(new EventLoopThreadPool(loop, name_)),
       connection_callback_(defaultConnectionCallback),
       message_callback_(defaultMessageCallback),
       next_connection_id_(1)

@@ -142,7 +142,7 @@ int main(int argc, char const *argv[])
     InetAddress server_addr(argv[1], static_cast<uint16_t>(atoi(argv[2])));
     EventLoop loop;
     g_loop = &loop;
-    EventLoopThreadPool loop_pool(&loop);
+    EventLoopThreadPool loop_pool(&loop, "char-loadtest");
     loop_pool.setThreadNumber(threads);
     loop_pool.start();
     g_receiveTime.reserve(g_connections);

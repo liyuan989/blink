@@ -22,10 +22,10 @@ void removeConnector(const ConnectorPtr& connector)
     // TODO
 }
 
-TcpClient::TcpClient(EventLoop* loop, const InetAddress& server_addr, const string& name)
+TcpClient::TcpClient(EventLoop* loop, const InetAddress& server_addr, const string& name_arg)
     : loop_(CHECK_NOTNULL(loop)),
       connector_(new Connector(loop, server_addr)),
-      name_(name),
+      name_(name_arg),
       connection_callback_(defaultConnectionCallback),
       message_callback_(defaultMessageCallback),
       retry_(false),
