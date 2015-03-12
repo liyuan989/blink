@@ -73,6 +73,18 @@ if(GTEST_FOUND)
     include_directories(${GTEST_INCLUDE_DIRS})
 endif()
 
+find_package(Protobuf)
+if(PROTOBUF_FOUND)
+    message(STATUS "found Protobuf")
+    include_directories(${PROTOBUF_INCLUDE_DIRS})
+endif()
+
+find_package(ZLIB)
+if(ZLIB_FOUND)
+    message(STATUS "found Zlib")
+    include_directories(${ZLIB_INCLUDE_DIRS})
+endif()
+
 message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
 message(STATUS "CMAKE_CXX_FLAGS = " ${CMAKE_CXX_FLAGS})
 message(STATUS "LIBRARY_OUTPUT_PATH = " ${LIBRARY_OUTPUT_PATH})
