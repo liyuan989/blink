@@ -48,3 +48,9 @@ target_link_libraries(blink pthread rt ${Boost_LIBRARIES})
 
 add_subdirectory(http)
 add_subdirectory(inspect)
+
+if(PROTOBUF_FOUND AND ZLIB_FOUND)
+    add_subdirectory(protobuf)
+else()
+    add_subdirectory(protobuf EXCLUDE_FROM_ALL)
+endif()

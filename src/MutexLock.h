@@ -21,22 +21,22 @@ __END_DECLS
 
 #endif // NDEBUG
 
-#define MCHECK(ret) \
-{ \
-    __typeof__(ret) errnum = (ret); \
-    if (__builtin_expect(errnum != 0, 0)) \
-    { \
-        __assert_perror_fail(errnum, __FILE__, __LINE__, __func__); \
-    } \
+#define MCHECK(ret)                                                  \
+{                                                                    \
+    __typeof__(ret) errnum = (ret);                                  \
+    if (__builtin_expect(errnum != 0, 0))                            \
+    {                                                                \
+        __assert_perror_fail(errnum, __FILE__, __LINE__, __func__);  \
+    }                                                                \
 }
 
 #else  // CHECK_PTHREAD_RETURN_VALUE
 
-#define MCHECK(ret) \
-{ \
-    __typeof__(ret) errnum = (ret); \
-    assert(errnum == 0); \
-    (void)errnum; \
+#define MCHECK(ret)                  \
+{                                    \
+    __typeof__(ret) errnum = (ret);  \
+    assert(errnum == 0);             \
+    (void)errnum;                    \
 }
 
 #endif  // CHECK_PTHREAD_RETURN_VALUE

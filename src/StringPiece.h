@@ -43,9 +43,7 @@
 #include "Types.h"
 
 #ifndef BLINK_STD_STRING
-
 #include <string>
-
 #endif
 
 #include <iosfwd>  // for ostream forward-declaration
