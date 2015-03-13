@@ -84,15 +84,14 @@ int32_t ProtobufCodecLite::checksum(const void* buf, int len)
     return static_cast<int32_t>(::adler32(1, static_cast<const Bytef*>(buf), static_cast<uInt>(len)));
 }
 
-void ProtobufCodecLite::onMessasge(const TcpConnectionPtr& connection,
+void ProtobufCodecLite::onMessage(const TcpConnectionPtr& connection,
                                    Buffer* buf,
                                    Timestamp receive_time)
 {
     while (buf->readableSize() >= static_cast<uint32_t>(kMinMessageLen + kHeaderLen))
     {
         const int32_t len = buf->peekInt32();
-        //int l = blink::sockets::networkToHost32(len);
-        LOG_ERROR << "len = " << len;
+        LOG_TRACE << "len = " << len;
         if (len > kMaxMessageLen || len < kMinMessageLen)
         {
             error_callback_(connection, buf, receive_time, kInvalidLength);
@@ -135,7 +134,7 @@ ProtobufCodecLite::ErrorCode ProtobufCodecLite::parse(const char* buf,
     ErrorCode error = kNoError;
     if (validateChecksum(buf, len))
     {
-        if (memcmp(buf, tag_.data(), tag_.size()))
+        if (memcmp(buf, tag_.data(), tag_.size()) == 0)
         {
             // parse from buffer
             const char* data = buf + tag_.size();

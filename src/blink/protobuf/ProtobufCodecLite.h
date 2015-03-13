@@ -98,7 +98,7 @@ public:
 
     void send(const TcpConnectionPtr& connection,
               const ::google::protobuf::Message& message);
-    void onMessasge(const TcpConnectionPtr& connection,
+    void onMessage(const TcpConnectionPtr& connection,
                     Buffer* buf,
                     Timestamp receive_time);
     virtual bool parseFromBuffer(StringPiece buf, ::google::protobuf::Message* message);
