@@ -125,8 +125,8 @@ TEST(BufferTest, testBufferReadInteger)
     EXPECT_EQ(buf.readableSize(), 4);
     EXPECT_EQ(buf.peekInt8(), 'H');
     int top16 = buf.peekInt16();
-    EXPECT_EQ(top16, 256 * 'T' + 'H');  // little endian
-    EXPECT_EQ(buf.peekInt32(), top16 + 65536 * 'T' + 256 * 65536 * 'P'); // little endian
+    EXPECT_EQ(top16, 'H' * 256 + 'T');  // little endian
+    EXPECT_EQ(buf.peekInt32(), top16 *65536 + 'T' * 256  + 'P'); // little endian
 
     EXPECT_EQ(buf.readInt8(), 'H');
     EXPECT_EQ(buf.readInt16(), 256 * 'T' + 'T');

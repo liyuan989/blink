@@ -129,8 +129,8 @@ BOOST_AUTO_TEST_CASE(testBufferReadInteger)
     BOOST_CHECK_EQUAL(buf.readableSize(), 4);
     BOOST_CHECK_EQUAL(buf.peekInt8(), 'H');
     int top16 = buf.peekInt16();
-    BOOST_CHECK_EQUAL(top16, 256 * 'T' + 'H');  // little endian
-    BOOST_CHECK_EQUAL(buf.peekInt32(), top16 + 65536 * 'T' + 256 * 65536 * 'P'); // little endian
+    BOOST_CHECK_EQUAL(top16, 256 * 'H' + 'T');  // little endian
+    BOOST_CHECK_EQUAL(buf.peekInt32(), top16 * 65536 + 'T' * 256 + 'P'); // little endian
 
     BOOST_CHECK_EQUAL(buf.readInt8(), 'H');
     BOOST_CHECK_EQUAL(buf.readInt16(), 256 * 'T' + 'T');

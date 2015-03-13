@@ -105,7 +105,7 @@ public:
         assert(readableSize() >= sizeof(int16_t));
         int16_t x = 0;
         memcpy(&x, peek(), sizeof(x));
-        return x;
+        return sockets::networkToHost16(x);
     }
 
     int32_t peekInt32() const
@@ -113,7 +113,7 @@ public:
         assert(readableSize() >= sizeof(int32_t));
         int32_t x = 0;
         memcpy(&x, peek(), sizeof(x));
-        return x;
+        return sockets::networkToHost32(x);
     }
 
     int64_t peekInt64() const
@@ -121,7 +121,7 @@ public:
         assert(readableSize() >= sizeof(int64_t));
         int64_t x = 0;
         memcpy(&x, peek(), sizeof(x));
-        return x;
+        return sockets::networkToHost64(x);
     }
 
     const char* findCRLF() const
