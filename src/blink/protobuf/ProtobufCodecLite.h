@@ -146,7 +146,7 @@ public:
                                 const RawMessageCallback& raw_callback = RawMessageCallback(),
                                 const ErrorCallback error_callback = ProtobufCodecLite::defaultErrorCallback)
         : message_callback_(message_callback),
-          codec_(&MSG::dafault_instance(),
+          codec_(&MSG::default_instance(),
                  TAG,
                  boost::bind(&ProtobufCodecLiteT::onRpcMessage, this, _1, _2, _3),
                  raw_callback,
@@ -180,9 +180,9 @@ public:
         message_callback_(connection, down_pointer_cast<MSG>(message), receive_time);
     }
 
-    void fillEmtpyBuffer(Buffer* buf, const MSG& message)
+    void fillEmptyBuffer(Buffer* buf, const MSG& message)
     {
-        codec_.fillEmptyBUffer(buf, message);
+        codec_.fillEmptyBuffer(buf, message);
     }
 
 private:

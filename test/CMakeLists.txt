@@ -22,7 +22,7 @@ endif()
 
 if(GTEST_FOUND)
     add_executable(Buffer_GoogleTest Buffer_GoogleTest.cpp)
-    target_link_libraries(Buffer_GoogleTest blink ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(Buffer_GoogleTest blink gtest)
 endif()
 
 add_executable(CountDownLatchTest CountDownLatchTest.cpp)
@@ -54,7 +54,7 @@ target_link_libraries(FileToolTest blink)
 
 if(GTEST_FOUND)
     add_executable(HttpRequest_unittest HttpRequest_unittest.cpp)
-    target_link_libraries(HttpRequest_unittest blink_http ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(HttpRequest_unittest blink_http gtest)
 endif()
 
 add_executable(HttpServerTest HttpServerTest.cpp)
@@ -77,6 +77,12 @@ target_link_libraries(LogTest blink)
 
 add_executable(ProcessInfoTest ProcessInfoTest.cpp)
 target_link_libraries(ProcessInfoTest blink)
+
+if(PROTOBUF_FOUND AND ZLIB_FOUND)
+    add_executable(RpcCodecTest RpcCodecTest.cpp)
+    set_target_properties(RpcCodecTest PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
+    target_link_libraries(RpcCodecTest blink_protorpc_wire blink_protobuf_codec)
+endif()
 
 add_executable(SingletonTest SingletonTest.cpp)
 target_link_libraries(SingletonTest blink)

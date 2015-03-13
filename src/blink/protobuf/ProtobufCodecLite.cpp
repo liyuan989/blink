@@ -91,6 +91,8 @@ void ProtobufCodecLite::onMessasge(const TcpConnectionPtr& connection,
     while (buf->readableSize() >= static_cast<uint32_t>(kMinMessageLen + kHeaderLen))
     {
         const int32_t len = buf->peekInt32();
+        //int l = blink::sockets::networkToHost32(len);
+        LOG_ERROR << "len = " << len;
         if (len > kMaxMessageLen || len < kMinMessageLen)
         {
             error_callback_(connection, buf, receive_time, kInvalidLength);
