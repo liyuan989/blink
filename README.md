@@ -20,7 +20,7 @@
 # Build
 -------
 
-**It must be built by cmake >= 2.6 at lease**
+**It must be built by cmake >= 2.6 at least**
 
 **To compile release library into /lib/release, release examples and test into bin/release:**
 
