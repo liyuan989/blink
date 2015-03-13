@@ -54,7 +54,7 @@ if(PROTOBUF_FOUND AND ZLIB_FOUND)
     add_subdirectory(protorpc)
 else()
     add_subdirectory(protobuf EXCLUDE_FROM_ALL)
-    add_subdirectory(protobuf EXCLUDE_FROM_ALL)
+    add_subdirectory(protorpc EXCLUDE_FROM_ALL)
 endif()
 
 install(TARGETS blink DESTINATION lib)
