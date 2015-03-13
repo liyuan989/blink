@@ -1,12 +1,12 @@
-#include "Codec.h"
+#include <example/asio/chat/Codec.h>
 
-#include "TcpClient.h"
-#include "EventLoop.h"
-#include "EventLoopThread.h"
-#include "EventLoopThreadPool.h"
-#include "MutexLock.h"
-#include "CurrentThread.h"
-#include "Log.h"
+#include <blink/TcpClient.h>
+#include <blink/EventLoop.h>
+#include <blink/EventLoopThread.h>
+#include <blink/EventLoopThreadPool.h>
+#include <blink/MutexLock.h>
+#include <blink/CurrentThread.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>

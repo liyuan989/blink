@@ -1,6 +1,6 @@
-#include "Singleton.h"
-#include "Thread.h"
-#include "CurrentThread.h"
+#include <blink/Singleton.h>
+#include <blink/Thread.h>
+#include <blink/CurrentThread.h>
 
 #include <stdio.h>
 

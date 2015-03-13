@@ -1,5 +1,5 @@
-#include "StringPiece.h"
-#include "Types.h"
+#include <blink/StringPiece.h>
+#include <blink/Types.h>
 
 #include <gtest/gtest.h>
 

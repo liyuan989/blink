@@ -1,8 +1,8 @@
 #ifndef __EXAMPLE_HUB_PUBSUB_H__
 #define __EXAMPLE_HUB_PUBSUB_H__
 
-#include "TcpClient.h"
-#include "Nocopyable.h"
+#include <blink/TcpClient.h>
+#include <blink/Nocopyable.h>
 
 // FIXME: destructor is not thread safe.
 class PubSubClient : blink::Nocopyable

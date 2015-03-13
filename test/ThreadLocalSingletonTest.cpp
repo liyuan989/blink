@@ -1,6 +1,6 @@
-#include "ThreadLocalSingleton.h"
-#include "CurrentThread.h"
-#include "Thread.h"
+#include <blink/ThreadLocalSingleton.h>
+#include <blink/CurrentThread.h>
+#include <blink/Thread.h>
 
 #include <boost/bind.hpp>
 

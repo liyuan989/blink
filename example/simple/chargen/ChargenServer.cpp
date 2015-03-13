@@ -1,8 +1,8 @@
-#include "ChargenServer.h"
+#include <example/simple/chargen/ChargenServer.h>
 
-#include "CurrentThread.h"
-#include "Timestamp.h"
-#include "Log.h"
+#include <blink/CurrentThread.h>
+#include <blink/Timestamp.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

@@ -1,4 +1,4 @@
-#include "WeakCallback.h"
+#include <blink/WeakCallback.h>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>

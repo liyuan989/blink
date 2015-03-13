@@ -1,11 +1,11 @@
-#include "DaytimeServer.h"
+#include <example/simple/daytime/DaytimeServer.h>
 
-#include "Nocopyable.h"
-#include "TcpServer.h"
-#include "EventLoop.h"
-#include "InetAddress.h"
-#include "CurrentThread.h"
-#include "Log.h"
+#include <blink/Nocopyable.h>
+#include <blink/TcpServer.h>
+#include <blink/EventLoop.h>
+#include <blink/InetAddress.h>
+#include <blink/CurrentThread.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

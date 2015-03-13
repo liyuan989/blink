@@ -1,6 +1,7 @@
-#include "FastCgi.h"
-#include "Endian.h"
-#include "Log.h"
+#include <example/fastcgi/FastCgi.h>
+
+#include <blink/Endian.h>
+#include <blink/Log.h>
 
 using namespace blink;
 

@@ -1,7 +1,7 @@
-#include "EchoClient.h"
+#include <example/simple/echo/EchoClient.h>
 
-#include "CurrentThread.h"
-#include "Log.h"
+#include <blink/CurrentThread.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

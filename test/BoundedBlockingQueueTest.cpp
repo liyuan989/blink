@@ -1,8 +1,8 @@
-#include "BoundedBlockingQueue.h"
-#include "Thread.h"
-#include "CountDownLatch.h"
-#include "CurrentThread.h"
-#include "Timestamp.h"
+#include <blink/BoundedBlockingQueue.h>
+#include <blink/Thread.h>
+#include <blink/CountDownLatch.h>
+#include <blink/CurrentThread.h>
+#include <blink/Timestamp.h>
 
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/bind.hpp>

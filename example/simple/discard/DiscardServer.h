@@ -1,10 +1,10 @@
 #ifndef __EXAMPLE_DISCARDSERVER_H__
 #define __EXAMPLE_DISCARDSERVER_H__
 
-#include "Nocopyable.h"
-#include "TcpServer.h"
-#include "EventLoop.h"
-#include "InetAddress.h"
+#include <blink/Nocopyable.h>
+#include <blink/TcpServer.h>
+#include <blink/EventLoop.h>
+#include <blink/InetAddress.h>
 
 class DiscardServer : blink::Nocopyable
 {

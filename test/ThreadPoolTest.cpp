@@ -1,6 +1,6 @@
-#include "ThreadPool.h"
-#include "CurrentThread.h"
-#include "Log.h"
+#include <blink/ThreadPool.h>
+#include <blink/CurrentThread.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

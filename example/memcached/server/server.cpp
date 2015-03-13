@@ -1,7 +1,8 @@
-#include "MemcacheServer.h"
-#include "EventLoop.h"
-#include "EventLoopThread.h"
-#include "inspect/Inspector.h"
+#include <example/memcached/server/MemcacheServer.h>
+
+#include <blink/inspect/Inspector.h>
+#include <blink/EventLoopThread.h>
+#include <blink/EventLoop.h>
 
 #include <boost/program_options.hpp>
 

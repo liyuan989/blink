@@ -1,6 +1,6 @@
-#include "EchoServer.h"
+#include <example/simple/echo/EchoServer.h>
 
-#include "Log.h"
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

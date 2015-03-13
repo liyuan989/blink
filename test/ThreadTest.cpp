@@ -1,6 +1,6 @@
-#include "Thread.h"
-#include "ProcessBase.h"
-#include "CurrentThread.h"
+#include <blink/Thread.h>
+#include <blink/ProcessBase.h>
+#include <blink/CurrentThread.h>
 
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>

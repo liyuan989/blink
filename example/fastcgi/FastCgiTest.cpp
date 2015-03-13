@@ -1,7 +1,8 @@
-#include "FastCgi.h"
-#include "TcpServer.h"
-#include "EventLoop.h"
-#include "Log.h"
+#include <example/fastcgi/FastCgi.h>
+
+#include <blink/TcpServer.h>
+#include <blink/EventLoop.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

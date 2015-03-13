@@ -1,12 +1,12 @@
 #ifndef __EXAMPLE_MEMCACHED_MEMCACHESERVER_H__
 #define __EXAMPLE_MEMCACHED_MEMCACHESERVER_H__
 
-#include "Item.h"
-#include "Session.h"
+#include <example/memcached/server/Item.h>
+#include <example/memcached/server/Session.h>
 
-#include "Nocopyable.h"
-#include "TcpServer.h"
-#include "MutexLock.h"
+#include <blink/Nocopyable.h>
+#include <blink/TcpServer.h>
+#include <blink/MutexLock.h>
 
 namespace boost
 {

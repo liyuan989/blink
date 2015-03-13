@@ -1,8 +1,8 @@
 #ifndef __EXAMPLE_FASTCGI_H__
 #define __EXAMPLE_FASTCGI_H__
 
-#include "TcpConnection.h"
-#include "Nocopyable.h"
+#include <blink/TcpConnection.h>
+#include <blink/Nocopyable.h>
 
 #include <map>
 

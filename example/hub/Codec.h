@@ -1,7 +1,7 @@
 #ifndef __EXAMPLE_HUB_CODEC_H__
 #define __EXAMPLE_HUB_CODEC_H__
 
-#include "Buffer.h"
+#include <blink/Buffer.h>
 
 enum ParseResult
 {

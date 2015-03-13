@@ -1,7 +1,7 @@
-#include "inspect/Inspector.h"
-#include "EventLoop.h"
-#include "ProcessInfo.h"
-#include "Log.h"
+#include <blink/inspect/Inspector.h>
+#include <blink/EventLoop.h>
+#include <blink/ProcessInfo.h>
+#include <blink/Log.h>
 
 using namespace blink;
 

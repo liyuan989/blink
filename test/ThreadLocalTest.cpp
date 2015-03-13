@@ -1,6 +1,6 @@
-#include "ThreadLocal.h"
-#include "CurrentThread.h"
-#include "Thread.h"
+#include <blink/ThreadLocal.h>
+#include <blink/CurrentThread.h>
+#include <blink/Thread.h>
 
 #include <stdio.h>
 

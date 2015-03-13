@@ -1,6 +1,6 @@
-#include "TcpClient.h"
-#include "EventLoop.h"
-#include "CurrentThread.h"
+#include <blink/TcpClient.h>
+#include <blink/EventLoop.h>
+#include <blink/CurrentThread.h>
 
 #include <boost/bind.hpp>
 

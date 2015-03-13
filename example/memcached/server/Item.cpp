@@ -1,6 +1,7 @@
-#include "Item.h"
-#include "Buffer.h"
-#include "LogStream.h"
+#include <example/memcached/server/Item.h>
+
+#include <blink/Buffer.h>
+#include <blink/LogStream.h>
 
 #include <boost/unordered_map.hpp>
 

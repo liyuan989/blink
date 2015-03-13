@@ -1,11 +1,11 @@
-#include "../chargen/ChargenServer.h"
-#include "../daytime/DaytimeServer.h"
-#include "../discard/DiscardServer.h"
-#include "../echo/EchoServer.h"
-#include "../time/TimeServer.h"
+#include "example/simple/chargen/ChargenServer.h"
+#include "example/simple/daytime/DaytimeServer.h"
+#include "example/simple/discard/DiscardServer.h"
+#include "example/simple/echo/EchoServer.h"
+#include "example/simple/time/TimeServer.h"
 
-#include "EventLoop.h"
-#include "InetAddress.h"
+#include <blink/EventLoop.h>
+#include <blink/InetAddress.h>
 
 int main(int argc, char const *argv[])
 {

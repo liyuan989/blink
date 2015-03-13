@@ -1,7 +1,8 @@
-#include "Buffer.h"
-#include "stdio.h"
+#include <blink/Buffer.h>
 
 #include <fcntl.h>
+
+#include <stdio.h>
 
 #define BOOST_TEST_MAIN
 #define BOOST_TEST_MODULE BufferTest

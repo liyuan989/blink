@@ -1,4 +1,4 @@
-#include "LogStream.h"
+#include <blink/LogStream.h>
 
 #include <stdio.h>
 

@@ -1,7 +1,7 @@
-#include "EchoServer.h"
+#include <example/idleconnection/EchoServer.h>
 
-#include "EventLoop.h"
-#include "Log.h"
+#include <blink/EventLoop.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

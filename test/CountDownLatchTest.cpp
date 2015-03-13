@@ -1,6 +1,6 @@
-#include "CountDownLatch.cpp"
-#include "ThreadPool.h"
-#include "Log.h"
+#include <blink/CountDownLatch.cpp>
+#include <blink/ThreadPool.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>

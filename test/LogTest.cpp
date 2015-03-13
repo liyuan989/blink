@@ -1,4 +1,4 @@
-#include "Log.h"
+#include <blink/Log.h>
 
 #include <string>
 #include <stdlib.h>

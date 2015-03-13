@@ -1,6 +1,6 @@
-#include "LogFile.h"
-#include "Log.h"
-#include "TimeZone.h"
+#include <blink/LogFile.h>
+#include <blink/Log.h>
+#include <blink/TimeZone.h>
 
 #include <boost/scoped_ptr.hpp>
 

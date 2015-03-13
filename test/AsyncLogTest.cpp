@@ -1,8 +1,8 @@
-#include "AsyncLog.h"
-#include "Log.h"
-#include "Thread.h"
-#include "CurrentThread.h"
-#include "Timestamp.h"
+#include <blink/AsyncLog.h>
+#include <blink/Log.h>
+#include <blink/Thread.h>
+#include <blink/CurrentThread.h>
+#include <blink/Timestamp.h>
 
 #include <boost/scoped_ptr.hpp>
 

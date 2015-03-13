@@ -1,6 +1,6 @@
-#include "ChargenClient.h"
+#include <example/simple/chargen/ChargenClient.h>
 
-#include "Log.h"
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

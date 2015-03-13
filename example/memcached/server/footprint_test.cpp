@@ -1,6 +1,7 @@
-#include "MemcacheServer.h"
-#include <inspect/ProcessInspector.h>
-#include <EventLoop.h>
+#include <example/memcached/server/MemcacheServer.h>
+
+#include <blink/inspect/ProcessInspector.h>
+#include <blink/EventLoop.h>
 
 #ifdef HAVE_TCMALLOC
 #include <gperftools/heap-profiler.h>

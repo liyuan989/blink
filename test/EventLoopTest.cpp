@@ -1,6 +1,6 @@
-#include "EventLoop.h"
-#include "Thread.h"
-#include "CurrentThread.h"
+#include <blink/EventLoop.h>
+#include <blink/Thread.h>
+#include <blink/CurrentThread.h>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>

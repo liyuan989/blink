@@ -1,6 +1,6 @@
-#include "EventLoopThreadPool.h"
-#include "EventLoop.h"
-#include "CurrentThread.h"
+#include <blink/EventLoopThreadPool.h>
+#include <blink/EventLoop.h>
+#include <blink/CurrentThread.h>
 
 #include <boost/bind.hpp>
 

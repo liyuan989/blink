@@ -1,9 +1,9 @@
 #ifndef __EXAMPLE_MEMCACHED_SERVER_H__
 #define __EXAMPLE_MEMCACHED_SERVER_H__
 
-#include "Nocopyable.h"
-#include "Types.h"
-#include "StringPiece.h"
+#include <blink/Nocopyable.h>
+#include <blink/Types.h>
+#include <blink/StringPiece.h>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>

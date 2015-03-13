@@ -1,12 +1,12 @@
 #ifndef __EXAMPLE_MEMCACHED_SERVER_SESSION_H__
 #define __EXAMPLE_MEMCACHED_SERVER_SESSION_H__
 
-#include "Item.h"
+#include <example/memcached/server/Item.h>
 
-#include <Nocopyable.h>
-#include <StringPiece.h>
-#include <TcpConnection.h>
-#include <Log.h>
+#include <blink/Nocopyable.h>
+#include <blink/StringPiece.h>
+#include <blink/TcpConnection.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>

@@ -1,7 +1,8 @@
-#include "MemcacheServer.h"
-#include "EventLoop.h"
-#include "Atomic.h"
-#include "Log.h"
+#include <example/memcached/server/MemcacheServer.h>
+
+#include <blink/EventLoop.h>
+#include <blink/Atomic.h>
+#include <blink/Log.h>
 
 #include <boost/bind.hpp>
 

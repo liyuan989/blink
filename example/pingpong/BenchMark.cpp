@@ -1,7 +1,7 @@
-#include "EventLoop.h"
-#include "Channel.h"
-#include "Thread.h"
-#include "Log.h"
+#include <blink/EventLoop.h>
+#include <blink/Channel.h>
+#include <blink/Thread.h>
+#include <blink/Log.h>
 
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/bind.hpp>

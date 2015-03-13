@@ -1,8 +1,8 @@
-#include "EventLoop.h"
-#include "EventLoopThread.h"
-#include "Thread.h"
-#include "CountDownLatch.h"
-#include "CurrentThread.h"
+#include <blink/EventLoop.h>
+#include <blink/EventLoopThread.h>
+#include <blink/Thread.h>
+#include <blink/CountDownLatch.h>
+#include <blink/CurrentThread.h>
 
 #include <boost/bind.hpp>
 

@@ -1,11 +1,11 @@
 #ifndef __EXAMPLE_CODEC_H__
 #define __EXAMPLE_CODEC_H__
 
-#include "Nocopyable.h"
-#include "TcpConnection.h"
-#include "Endian.h"
-#include "Buffer.h"
-#include "Log.h"
+#include <blink/Nocopyable.h>
+#include <blink/TcpConnection.h>
+#include <blink/Endian.h>
+#include <blink/Buffer.h>
+#include <blink/Log.h>
 
 #include <boost/function.hpp>
 

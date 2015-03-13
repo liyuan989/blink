@@ -1,8 +1,8 @@
-#include "PubSubClient.h"
+#include <example/hub/PubSubClient.h>
 
-#include "EventLoop.h"
-#include "EventLoopThread.h"
-#include "ProcessInfo.h"
+#include <blink/EventLoop.h>
+#include <blink/EventLoopThread.h>
+#include <blink/ProcessInfo.h>
 
 #include <iostream>
 #include <stdio.h>

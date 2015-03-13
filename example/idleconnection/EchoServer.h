@@ -1,8 +1,8 @@
 #ifndef __EXAMPLE_IDLECONNECTION_ECHOSERVER_H__
 #define __EXAMPLE_IDLECONNECTION_ECHOSERVER_H__
 
-#include "Nocopyable.h"
-#include "TcpServer.h"
+#include <blink/Nocopyable.h>
+#include <blink/TcpServer.h>
 
 #include <boost/circular_buffer.hpp>
 #include <boost/unordered_set.hpp>

@@ -1,5 +1,5 @@
-#include "PubSubClient.h"
-#include "Codec.h"
+#include <example/hub/PubSubClient.h>
+#include <example/hub/Codec.h>
 
 #include <boost/bind.hpp>
 

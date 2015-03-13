@@ -1,6 +1,6 @@
-#include "http/HttpRequest.h"
-#include "http/HttpContext.h"
-#include "Buffer.h"
+#include <blink/http/HttpRequest.h>
+#include <blink/http/HttpContext.h>
+#include <blink/Buffer.h>
 
 #include <gtest/gtest.h>
 

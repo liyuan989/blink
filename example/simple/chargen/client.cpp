@@ -1,9 +1,9 @@
-#include "ChargenClient.h"
+#include <example/simple/chargen/ChargenClient.h>
 
-#include "EventLoop.h"
-#include "InetAddress.h"
-#include "CurrentThread.h"
-#include "Log.h"
+#include <blink/EventLoop.h>
+#include <blink/InetAddress.h>
+#include <blink/CurrentThread.h>
+#include <blink/Log.h>
 
 #include <unistd.h>
 
