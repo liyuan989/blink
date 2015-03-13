@@ -91,7 +91,7 @@ message(STATUS "LIBRARY_OUTPUT_PATH = " ${LIBRARY_OUTPUT_PATH})
 
 #SET(CMAKE_VERBOSE_MAKEFILE on)
 
-add_subdirectory(src/blink)
+add_subdirectory(src)
 
 if(NOT CMAKE_BUILD_NO_TEST)
     add_subdirectory(test)
