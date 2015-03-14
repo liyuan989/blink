@@ -19,6 +19,7 @@ if(TCMALLOC_LIBRARY AND TCMALLOC_INCLUDE_DIR)
 endif()
 
 install(TARGETS blink_protorpc_wire DESTINATION lib)
+install(TARGETS blink_protorpc DESTINATION lib)
 
 file(GLOB HEADERS "*.h")
 install(FILES ${HEADERS} DESTINATION include/protorpc)
