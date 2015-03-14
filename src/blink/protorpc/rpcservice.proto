@@ -8,7 +8,7 @@ option py_generic_services = true;
 //option java_outer_classname = "RpcServiceProto";
 
 //import "google/protobuf/descriptor.proto";
-import "rpc.proto"
+import "rpc.proto";
 
 message ListRpcRequest
 {
