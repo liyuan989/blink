@@ -81,7 +81,7 @@ target_link_libraries(ProcessInfoTest blink)
 if(PROTOBUF_FOUND AND ZLIB_FOUND)
     add_executable(RpcCodecTest RpcCodecTest.cpp)
     set_target_properties(RpcCodecTest PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
-    target_link_libraries(RpcCodecTest blink_protorpc_wire blink_protobuf_codec)
+    target_link_libraries(RpcCodecTest blink_protorpc_wire blink_protobuf)
 endif()
 
 add_executable(SingletonTest SingletonTest.cpp)
