@@ -100,7 +100,7 @@ void ProtobufCodecLite::onMessage(const TcpConnectionPtr& connection,
         else if (buf->readableSize() >= implicit_cast<size_t>(kHeaderLen + len))
         {
             if (raw_callback_ &&
-                raw_callback_(connection, StringPiece(buf->peek(), kHeaderLen + len), receive_time))
+                !raw_callback_(connection, StringPiece(buf->peek(), kHeaderLen + len), receive_time))
             {
                 buf->reset(kHeaderLen + len);
                 continue;
