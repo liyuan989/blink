@@ -52,6 +52,12 @@ target_link_libraries(ExceptionTest blink)
 add_executable(FileToolTest FileToolTest.cpp)
 target_link_libraries(FileToolTest blink)
 
+if(ZLIB_FOUND)
+    add_executable(GzipFileTest GzipFileTest.cpp)
+    set_target_properties(GzipFileTest PROPERTIES COMPILE_FLAGS "-std=c++11")
+    target_link_libraries(GzipFileTest blink z)
+endif()
+
 if(GTEST_FOUND)
     add_executable(HttpRequest_unittest HttpRequest_unittest.cpp)
     target_link_libraries(HttpRequest_unittest blink_http gtest)
