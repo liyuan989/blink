@@ -61,6 +61,6 @@ int main(int argc, char* argv[])
             printf("passed!\n");
         }
     }
-
+    unlink(filename);
     return 0;
 }

@@ -127,3 +127,8 @@ target_link_libraries(TimeZoneTest blink)
 
 add_executable(WeakCallbackTest WeakCallbackTest.cpp)
 target_link_libraries(WeakCallbackTest blink)
+
+if(GTEST_FOUND AND ZLIB_FOUND)
+    add_executable(ZlibStreamTest ZlibStreamTest.cpp)
+    target_link_libraries(ZlibStreamTest blink gtest z)
+endif()
