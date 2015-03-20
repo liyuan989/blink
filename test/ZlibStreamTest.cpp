@@ -5,40 +5,62 @@
 
 using namespace blink;
 
-TEST(testZlib, OutputStream)
+TEST(testZlib, Stream)
 {
     Buffer output;
     {
-        ZlibOutputStream stream(&output);
+        ZlibCompressStream stream(&output);
         EXPECT_EQ(0, output.readableSize());
     }
     EXPECT_EQ(8, output.readableSize());
+
+    Buffer output_raw;
+    {
+        ZlibDecompressStream stream_decompress(&output_raw);
+        EXPECT_EQ(0, output_raw.readableSize());
+    }
+    EXPECT_EQ(0, output_raw.readableSize());
 }
 
-TEST(testZlib, OutputStream1)
+TEST(testZlib, Stream1)
 {
     Buffer output;
-    ZlibOutputStream stream(&output);
+    ZlibCompressStream stream(&output);
     EXPECT_EQ(Z_OK, stream.zlibErrorCode());
     stream.finish();
     EXPECT_EQ(Z_STREAM_END, stream.zlibErrorCode());
+
+    Buffer output_raw;
+    ZlibDecompressStream stream_decompress(&output_raw);
+    EXPECT_EQ(Z_OK, stream_decompress.ZlibErrorCode());
+    stream_decompress.finish();
+    EXPECT_EQ(Z_STREAM_END, stream_decompress.ZlibErrorCode());
 }
 
-TEST(testZlib, OutputStream2)
+TEST(testZlib, Stream2)
 {
     Buffer output;
-    ZlibOutputStream stream(&output);
+    ZlibCompressStream stream(&output);
     EXPECT_EQ(Z_OK, stream.zlibErrorCode());
     EXPECT_TRUE(stream.write("012345678901234567890123456789"));
     stream.finish();
     printf("total: %zd bytes\n", output.readableSize());
     EXPECT_EQ(Z_STREAM_END, stream.zlibErrorCode());
+
+    Buffer output_raw;
+    ZlibDecompressStream stream_decompress(&output_raw);
+    EXPECT_EQ(Z_OK, stream_decompress.ZlibErrorCode());
+    EXPECT_TRUE(stream_decompress.write(&output));
+    stream_decompress.finish();
+    EXPECT_STREQ("012345678901234567890123456789", output_raw.toString().c_str());
+    printf("total: %zd bytes\n", output_raw.readableSize());
+    EXPECT_EQ(Z_STREAM_END, stream_decompress.ZlibErrorCode());
 }
 
-TEST(testZlib, OutputStream3)
+TEST(testZlib, Stream3)
 {
     Buffer output;
-    ZlibOutputStream stream(&output);
+    ZlibCompressStream stream(&output);
     EXPECT_EQ(Z_OK, stream.zlibErrorCode());
     for (int i = 0; i < 1024 * 1024; ++i)
     {
@@ -49,10 +71,10 @@ TEST(testZlib, OutputStream3)
     EXPECT_EQ(Z_STREAM_END, stream.zlibErrorCode());
 }
 
-TEST(testZlib, OutputStream4)
+TEST(testZlib, Stream4)
 {
     Buffer output;
-    ZlibOutputStream stream(&output);
+    ZlibCompressStream stream(&output);
     EXPECT_EQ(Z_OK, stream.zlibErrorCode());
     string input;
     for (int i = 0; i < 32768; ++i)
@@ -66,12 +88,27 @@ TEST(testZlib, OutputStream4)
     stream.finish();
     printf("total: %zd bytes\n", output.readableSize());
     EXPECT_EQ(Z_STREAM_END, stream.zlibErrorCode());
+
+    Buffer output_raw;
+    ZlibDecompressStream stream_decompress(&output_raw);
+    EXPECT_EQ(Z_OK, stream_decompress.ZlibErrorCode());
+    stream_decompress.write(&output);
+    stream_decompress.finish();
+    string expect;
+    expect.reserve(input.size() * 10);
+    for (int i = 0; i < 10; ++i)
+    {
+        expect += input;
+    }
+    EXPECT_EQ(expect, output_raw.toString());
+    printf("total: %zd bytes\n", output_raw.readableSize());
+    EXPECT_EQ(Z_STREAM_END, stream_decompress.ZlibErrorCode());
 }
 
-TEST(testZlib, OutputStream5)
+TEST(testZlib, Stream5)
 {
     Buffer output;
-    ZlibOutputStream stream(&output);
+    ZlibCompressStream stream(&output);
     EXPECT_EQ(Z_OK, stream.zlibErrorCode());
     string input(1024 * 1024, '_');
     for (int i = 0; i < 64; ++i)
