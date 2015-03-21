@@ -6,8 +6,6 @@ add_custom_command(OUTPUT echo.pb.h echo.pb.cc
  DEPENDS echo.proto
  VERBATIM)
 
-include_directories(&{CMAKE_BINARY_DIR})
-
 add_executable(protobuf_rpcbench_client client.cpp echo.pb.cc)
 set_target_properties(protobuf_rpcbench_client PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
 target_link_libraries(protobuf_rpcbench_client blink_protorpc protobuf)

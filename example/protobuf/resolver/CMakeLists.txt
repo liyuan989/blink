@@ -6,8 +6,6 @@ add_custom_command(OUTPUT resolver.pb.h resolver.pb.cc
  DEPENDS resolver.proto
  VERBATIM)
 
-include_directories(&{CMAKE_BINARY_DIR})
-
 add_executable(protobuf_resolver_client client.cpp resolver.pb.cc)
 set_target_properties(protobuf_resolver_client PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
 target_link_libraries(protobuf_resolver_client blink_protorpc protobuf)

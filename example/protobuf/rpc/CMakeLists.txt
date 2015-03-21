@@ -6,8 +6,6 @@ add_custom_command(OUTPUT sudoku.pb.h sudoku.pb.cc
  DEPENDS sudoku.proto
  VERBATIM)
 
-include_directories(&{CMAKE_BINARY_DIR})
-
 add_executable(protobuf_rpc_client client.cpp sudoku.pb.cc)
 set_target_properties(protobuf_rpc_client PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
 target_link_libraries(protobuf_rpc_client blink_protorpc protobuf)

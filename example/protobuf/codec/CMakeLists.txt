@@ -6,8 +6,6 @@ add_custom_command(OUTPUT query.pb.h query.pb.cc
  DEPENDS query.proto
  VERBATIM)
 
-include_directories(${CMAKE_BINARY_DIR})
-
 add_executable(codec_test codec_test.cpp codec.cpp query.pb.cc)
 set_target_properties(codec_test PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
 target_link_libraries(codec_test blink protobuf z)

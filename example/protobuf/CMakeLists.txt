@@ -1,3 +1,6 @@
+include_directories(${CMAKE_BINARY_DIR})
+include_directories(${CMAKE_BINARY_DIR}/src)
+
 add_subdirectory(resolver)
 add_subdirectory(rpc)
 add_subdirectory(rpcbench)

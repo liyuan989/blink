@@ -86,6 +86,7 @@ target_link_libraries(ProcessInfoTest blink)
 
 if(PROTOBUF_FOUND AND ZLIB_FOUND)
     add_executable(RpcCodecTest RpcCodecTest.cpp)
+    include_directories(${CMAKE_BINARY_DIR}/src)
     set_target_properties(RpcCodecTest PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
     target_link_libraries(RpcCodecTest blink_protorpc_wire blink_protobuf)
 endif()
