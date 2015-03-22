@@ -1,5 +1,5 @@
-#ifndef __EXAMPLE_CODEC_H__
-#define __EXAMPLE_CODEC_H__
+#ifndef __EXAMPLE_ZEROMQ_CODEC_H__
+#define __EXAMPLE_ZEROMQ_CODEC_H__
 
 #include <blink/Nocopyable.h>
 #include <blink/TcpConnection.h>
