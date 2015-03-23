@@ -85,6 +85,12 @@ if(ZLIB_FOUND)
     include_directories(${ZLIB_INCLUDE_DIRS})
 endif()
 
+find_path(CARES_INCLUDE_DIR ares.h)
+find_library(CARES_LIBRARY NAMES cares)
+if(CARES_INCLUDE_DIR AND CARES_LIBRARY)
+    message(STATUS "found cares")
+endif()
+
 message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
 message(STATUS "CMAKE_CXX_FLAGS = " ${CMAKE_CXX_FLAGS})
 message(STATUS "LIBRARY_OUTPUT_PATH = " ${LIBRARY_OUTPUT_PATH})
