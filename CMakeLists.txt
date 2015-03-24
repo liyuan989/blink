@@ -91,6 +91,12 @@ if(CARES_INCLUDE_DIR AND CARES_LIBRARY)
     message(STATUS "found cares")
 endif()
 
+find_package(CURL)
+if(CURL_FOUND)
+    message(STATUS "found curl")
+    include_directories(${CURL_INCLUDE_DIRS})
+endif()
+
 message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
 message(STATUS "CMAKE_CXX_FLAGS = " ${CMAKE_CXX_FLAGS})
 message(STATUS "LIBRARY_OUTPUT_PATH = " ${LIBRARY_OUTPUT_PATH})
