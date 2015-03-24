@@ -86,7 +86,6 @@ private:
         if (startWith(line, "HTTP/1.1 200") || startWith(line, "HTTP/1.0 200"))
         {
             found_ = true;
-
         }
         if (line == "Accept-Ranges: bytes\r\n")
         {
