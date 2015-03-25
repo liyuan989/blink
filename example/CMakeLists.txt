@@ -14,6 +14,13 @@ endif()
 
 add_subdirectory(fastcgi)
 add_subdirectory(filetransfer)
+
+if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
+    add_subdirectory(hiredis)
+else()
+    add_subdirectory(hiredis EXCLUDE_FROM_ALL)
+endif()
+
 add_subdirectory(hub)
 add_subdirectory(idleconnection)
 add_subdirectory(maxconnection)

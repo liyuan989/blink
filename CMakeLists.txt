@@ -97,6 +97,12 @@ if(CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
 endif()
 
+find_path(HIREDIS_INCLUDE_DIR hiredis/hiredis.h)
+find_library(HIREDIS_LIBRARY NAMES hiredis)
+if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
+    message(STATUS "found hiredis")
+endif()
+
 message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
 message(STATUS "CMAKE_CXX_FLAGS = " ${CMAKE_CXX_FLAGS})
 message(STATUS "LIBRARY_OUTPUT_PATH = " ${LIBRARY_OUTPUT_PATH})
