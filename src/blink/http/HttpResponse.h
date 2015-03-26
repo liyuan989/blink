@@ -52,7 +52,7 @@ public:
 
     void setContextType(const string& context_type)
     {
-        addHeader("Context-Type", context_type);
+        addHeader("Content-Type", context_type);
     }
 
     void addHeader(const string& key, const string& value)
