@@ -5,3 +5,6 @@ target_link_libraries(plot_test blink gd)
 
 add_executable(procmon procmon.cpp plot.cpp)
 target_link_libraries(procmon blink_http gd)
+
+add_executable(dummyload dummyload.cpp)
+target_link_libraries(dummyload blink)

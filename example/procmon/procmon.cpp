@@ -388,7 +388,7 @@ private:
         return getLong(stat, "btime ");
     }
 
-    // ------------------ data member -------------------------------
+    // ------------------ data members -------------------------------
 
     struct CpuTime
     {

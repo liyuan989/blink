@@ -4,6 +4,8 @@
 #include <blink/Nocopyable.h>
 #include <blink/Types.h>
 
+#include <sys/types.h>  // ssize_t
+
 #include <vector>
 
 typedef struct gdImageStruct* gdImagePtr;
@@ -18,7 +20,7 @@ public:
 
 private:
     blink::string toPng();
-    int getX(long i, long total) const;
+    int getX(ssize_t i, ssize_t total) const;
     int getY(double value) const;
     void label(double max_value) const;
 
