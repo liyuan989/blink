@@ -103,7 +103,6 @@ void fixed()
 {
     while (true)
     {
-        printf("111\n");
         load(g_percent);
     }
 }
