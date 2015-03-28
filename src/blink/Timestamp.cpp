@@ -28,11 +28,6 @@ Timestamp Timestamp::now()
     return Timestamp(seconds * kMicrosecondsPerSecond + tv.tv_usec);
 }
 
-Timestamp Timestamp::invalid()
-{
-    return Timestamp();
-}
-
 string Timestamp::toString() const
 {
     char buf[32] = {0};

@@ -78,6 +78,12 @@ void ThreadPool::stop()
     std::for_each(threads_.begin(), threads_.end(), boost::bind(&Thread::join, _1));
 }
 
+size_t ThreadPool::queueSize() const
+{
+    MutexLockGuard guard(mutex_);
+    return queue_.size();
+}
+
 bool ThreadPool::isFull() const
 {
     assert(mutex_.isLockedByCurrentThread());

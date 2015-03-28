@@ -25,7 +25,21 @@ public:
     }
 
     static Timestamp now();
-    static Timestamp invalid();
+
+    static Timestamp invalid()
+    {
+        return Timestamp();
+    }
+
+    static Timestamp fromUnixTime(time_t t)
+    {
+        return fromUnixTime(t, 0);
+    }
+
+    static Timestamp fromUnixTime(time_t t, int microseconds)
+    {
+        return Timestamp(static_cast<int64_t>(t) * kMicrosecondsPerSecond + microseconds);
+    }
 
     string toString() const;
     string toFormattedString(bool show_microseconds = true) const;

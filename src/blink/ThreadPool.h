@@ -27,6 +27,7 @@ public:
     void start(int num_threads);
     void run(const Task& task);
     void stop();
+    size_t queueSize() const;
 
     const string& name() const
     {
@@ -48,7 +49,7 @@ private:
     void runInThread();
     Task take();
 
-    MutexLock                  mutex_;
+    mutable MutexLock          mutex_;
     Condition                  not_empty_;
     Condition                  not_full_;
     string                     name_;
