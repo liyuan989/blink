@@ -1,0 +1,5 @@
+if(PROTOBUF_FOUND)
+    add_subdirectory(logging)
+else()
+    add_subdirectory(logging EXCLUDE_FROM_ALL)
+endif()

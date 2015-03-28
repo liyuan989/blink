@@ -1,3 +1,4 @@
+add_subdirectory(ace)
 add_subdirectory(asio)
 
 if(CARES_INCLUDE_DIR AND CARES_LIBRARY)
