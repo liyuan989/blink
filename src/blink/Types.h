@@ -111,7 +111,7 @@ inline To down_cast(From* f)
     // completely.
     if (false)
     {
-        implicit_cast<From, To>(f);
+        implicit_cast<From*, To>(0);
     }
 
 #if !defined(NDEBUG) && !defined(GOOGLE_PROTOBUF_NO_RTTI)
