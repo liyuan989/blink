@@ -124,7 +124,7 @@ int ReadSmallFile::readToString(int maxsize,
         while (destination->size() < implicit_cast<size_t>(maxsize))
         {
             size_t nread = std::min(implicit_cast<size_t>(maxsize) - destination->size(), sizeof(buf_));
-            int n = ::read(fd_, buf_, nread);
+            ssize_t n = ::read(fd_, buf_, nread);
             if (n > 0)
             {
                 destination->append(buf_, n);

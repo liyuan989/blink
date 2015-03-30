@@ -117,31 +117,6 @@ private:
     void   (*cookie_)();
 };
 
-template<typename T>
-size_t convert(char* buf, T val)  // int to string conversion.  such as int a = 97 convert to char s[2] = {'9','7'}
-{
-    const char digits[] = "9876543210123456789";
-    const char* zero = digits + 9;
-    T i = val;
-    char* p = buf;
-    do
-    {
-        int lsd = static_cast<int>(i % 10);
-        i /= 10;
-        *p = zero[lsd];
-        ++p;
-    } while (i != 0);
-
-    if (val < 0)
-    {
-        *p = '-';
-        ++p;
-    }
-    *p = '\0';
-    std::reverse(buf, p);
-    return p - buf;
-}
-
 class LogStream
 {
 public:
@@ -230,14 +205,7 @@ private:
     void staticCheck();
 
     template<typename T>
-    void formatInteger(T x)
-    {
-        if (buffer_.availableSize() >= kMaxNumericSize)
-        {
-            size_t len = convert(buffer_.current(), x);
-            buffer_.add(len);
-        }
-    }
+    void formatInteger(T x);
 
     Buffer buffer_;
     static const int kMaxNumericSize = 32;

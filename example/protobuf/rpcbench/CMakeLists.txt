@@ -6,6 +6,8 @@ add_custom_command(OUTPUT echo.pb.h echo.pb.cc
  DEPENDS echo.proto
  VERBATIM)
 
+set_source_files_properties(echo.pb.cc PROPERTIES COMPILE_FLAGS "-Wno-conversion -Wno-shadow")
+
 add_executable(protobuf_rpcbench_client client.cpp echo.pb.cc)
 set_target_properties(protobuf_rpcbench_client PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
 target_link_libraries(protobuf_rpcbench_client blink_protorpc protobuf)

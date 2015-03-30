@@ -26,7 +26,7 @@ struct Transition
     time_t  local_time;
     int     local_time_index;
 
-    Transition(time_t gmt, time_t local, time_t index)
+    Transition(time_t gmt, time_t local, int index)
         : gmt_time(gmt), local_time(local), local_time_index(index)
     {
     }

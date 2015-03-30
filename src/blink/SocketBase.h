@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 #include <sys/uio.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <netdb.h>
 
 #include <stdint.h>
@@ -14,10 +15,10 @@ namespace blink
 namespace sockets
 {
 
-unsigned long hton_long(unsigned long hostlong);
-unsigned short hton_short(unsigned short hostshort);
-unsigned long ntoh_long(unsigned long netlong);
-unsigned short ntoh_short(unsigned short netshort);
+uint32_t hton_long(uint32_t hostlong);
+uint16_t hton_short(uint16_t hostshort);
+uint32_t ntoh_long(uint32_t netlong);
+uint16_t ntoh_short(uint16_t netshort);
 
 void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr);
 void toIp(char* buf, size_t size, const struct sockaddr_in& addr);
@@ -89,8 +90,8 @@ int bind(int sockfd, struct sockaddr* my_addr, int addrlen);
 int listen(int sockfd, int backlog);
 int accept(int sockfd, struct sockaddr* addr, int* addrlen);
 int accept4(int sockfd, struct sockaddr* addr, int* addrlen, int flags);
-int read(int fd, void* buf, unsigned int n);
-int write(int fd, const void* buf, unsigned int n);
+ssize_t read(int fd, void* buf, size_t n);
+ssize_t write(int fd, const void* buf, size_t n);
 int close(int fd);
 int shutdown(int sockfd, int howto);
 

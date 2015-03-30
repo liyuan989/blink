@@ -4,6 +4,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 using namespace blink;
 
 int main(int argc, char const *argv[])
@@ -19,14 +22,14 @@ int main(int argc, char const *argv[])
     read_file.readToString(1024*64, &str, &filesize, &creat_time, &modify_time);
     printf("str = %s\n", str.c_str());
     printf("buf = %s\n", read_file.buffer());
-    printf("filesize = %lld\n", filesize);
-    printf("creat_time = %lld\n", creat_time);
-    printf("modify_time = %lld\n", modify_time);
+    printf("filesize = %" PRIu64 "\n", filesize);
+    printf("creat_time = %" PRIu64 "\n", creat_time);
+    printf("modify_time = %" PRIu64 "\n", modify_time);
     printf("readbytes = %d\n", n);
 
     AppendFile append_file(string("1.txt"));
     append_file.appendFile(s, strlen(s));
     append_file.flush();
-    printf("writebytes = %d\n", append_file.writtenBytes());
+    printf("writebytes = %zd\n", append_file.writtenBytes());
     return 0;
 }

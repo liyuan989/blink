@@ -16,10 +16,10 @@ using namespace blink;
 class BlockingQueueTest
 {
 public:
-    BlockingQueueTest(size_t num)
+    BlockingQueueTest(int num)
         : task_queue_(), latch_(num), threads_()
     {
-        for (size_t i = 1; i <= num; ++i)
+        for (int i = 1; i <= num; ++i)
         {
             char buf[64];
             snprintf(buf, sizeof(buf), "working thread %d", i);
@@ -28,16 +28,16 @@ public:
         }
     }
 
-    void run(size_t times)
+    void run(int times)
     {
         printf("waiting for countdown latch...\n");
         latch_.wait();
-        for (size_t i = 1; i <= times; ++i)
+        for (int i = 1; i <= times; ++i)
         {
             char buf[32];
             snprintf(buf, sizeof(buf), "hey boy %d", i);
             task_queue_.put(string(buf));
-            printf("tid = %d, put data = %s, size = %d\n", tid(), buf, task_queue_.size());
+            printf("tid = %d, put data = %s, size = %zd\n", tid(), buf, task_queue_.size());
         }
     }
 
@@ -59,7 +59,7 @@ private:
         while (running)
         {
             string data = task_queue_.take();
-            printf("thread tid: %d  data: %s  size: %d\n", tid(), data.c_str(), task_queue_.size());
+            printf("thread tid: %d  data: %s  size: %zd\n", tid(), data.c_str(), task_queue_.size());
             running = (data != "stop");
         }
         printf("%s stopped! tid: %d\n", threadName(), tid());
@@ -73,10 +73,10 @@ private:
 class BlockingQueueBench
 {
 public:
-    BlockingQueueBench(size_t num)
+    BlockingQueueBench(int num)
         : task_queue_(), latch_(num), threads_()
     {
-        for (size_t i = 1; i <= num; ++i)
+        for (int i = 1; i <= num; ++i)
         {
             char buf[64];
             snprintf(buf, sizeof(buf), "working thread %d", i);

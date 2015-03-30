@@ -39,7 +39,7 @@ public:
     bool getTcpInfo(struct tcp_info* tcpi) const;
     string getTcpInfoString() const;
 
-    void send(const void* data, size_t len);
+    void send(const void* data, int len);
     void send(const StringPiece& data);
 
     // This one will swap data.

@@ -87,7 +87,7 @@ string TcpConnection::getTcpInfoString() const
     return buf;
 }
 
-void TcpConnection::send(const void* data, size_t len)
+void TcpConnection::send(const void* data, int len)
 {
     send(StringPiece(static_cast<const char*>(data), len));
 }

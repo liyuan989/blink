@@ -40,30 +40,34 @@ const struct sockaddr_in* sockaddr_in_cast(const struct sockaddr* addr)
     return static_cast<const struct sockaddr_in*>(implicit_cast<const void*>(addr));
 }
 
-unsigned long hton_long(unsigned long hostlong)
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
+uint32_t hton_long(uint32_t hostlong)
 {
     return htonl(hostlong);
 }
 
-unsigned short hton_short(unsigned short hostshort)
+uint16_t hton_short(uint16_t hostshort)
 {
     return htons(hostshort);
 }
 
-unsigned long ntoh_long(unsigned long netlong)
+uint32_t ntoh_long(uint32_t netlong)
 {
     return ntohl(netlong);
 }
 
-unsigned short ntoh_short(unsigned short netshort)
+uint16_t ntoh_short(uint16_t netshort)
 {
     return ntohs(netshort);
 }
 
+#pragma GCC diagnostic error "-Wold-style-cast"
+
 void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr)
 {
     assert(size >= INET_ADDRSTRLEN);
-    ::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
+    ::inet_ntop(AF_INET, &addr.sin_addr, buf, static_cast<socklen_t>(size));
     size_t end = strlen(buf);
     uint16_t port = networkToHost16(addr.sin_port);
     assert(size > end);
@@ -73,7 +77,7 @@ void toIpPort(char* buf, size_t size, const struct sockaddr_in& addr)
 void toIp(char* buf, size_t size, const struct sockaddr_in& addr)
 {
     assert(size >= INET_ADDRSTRLEN);
-    ::inet_ntop(AF_INET, &addr.sin_addr, buf, size);
+    ::inet_ntop(AF_INET, &addr.sin_addr, buf, static_cast<socklen_t>(size));
 }
 
 void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr)
@@ -194,12 +198,12 @@ int accept4(int sockfd, struct sockaddr* addr, int* addrlen, int flags)
     return val;
 }
 
-int read(int fd, void* buf, unsigned int n)
+ssize_t read(int fd, void* buf, size_t n)
 {
     return ::read(fd, buf, n);
 }
 
-int write(int fd, const void* buf, unsigned int n)
+ssize_t write(int fd, const void* buf, size_t n)
 {
     return ::write(fd, buf, n);
 }
@@ -380,7 +384,9 @@ int openListenFd(int port)
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = sockets::hton_short(static_cast<unsigned short>(port));
+#pragma GCC diagnostic ignored "-Wold-style-cast"
     serveraddr.sin_addr.s_addr = sockets::hton_long(INADDR_ANY);
+#pragma GCC diagnostic error "-Wold-style-cast"
     if (sockets::bind(listenfd, sockets::sockaddr_cast(&serveraddr), sizeof(serveraddr)) < 0)
     {
         return -1;

@@ -150,7 +150,7 @@ StringPiece procName(const string& stat)
     if (left_pos != string::npos && right_pos != string::npos && left_pos < right_pos)
     {
         size_t len = right_pos - (left_pos + 1);
-        name.set(stat.data() + left_pos + 1, len);
+        name.set(stat.data() + left_pos + 1, static_cast<int>(len));
     }
     return name;
 }

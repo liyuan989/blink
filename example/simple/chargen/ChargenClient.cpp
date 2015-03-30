@@ -34,5 +34,5 @@ void ChargenClient::onConnection(const TcpConnectionPtr& connection)
 void ChargenClient::onMessage(const TcpConnectionPtr& connection, Buffer* buf, Timestamp time)
 {
     string msg = buf->resetAllToString();
-    printf("received data size = %d bytes.\n", msg.size());
+    printf("received data size = %zd bytes.\n", msg.size());
 }

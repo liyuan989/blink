@@ -4,6 +4,10 @@
 
 #include <sys/time.h>
 
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+
 #include <inttypes.h>
 #include <stdio.h>
 
@@ -33,7 +37,7 @@ string Timestamp::toString() const
     char buf[32] = {0};
     int64_t seconds = microseconds_since_epoch_ / kMicrosecondsPerSecond;
     int64_t microseconds = microseconds_since_epoch_ % kMicrosecondsPerSecond;
-    snprintf(buf, sizeof(buf) - 1, "%" PRId64".06%" PRId64"", seconds, microseconds);
+    snprintf(buf, sizeof(buf) - 1, "%" PRId64 ".06%" PRId64 "", seconds, microseconds);
     return buf;
 }
 

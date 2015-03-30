@@ -131,7 +131,7 @@ template<typename MSG, const char* TAG, typename CODEC = ProtobufCodecLite>
 class ProtobufCodecLiteT
 {
 #ifndef NDEBUG
-    BOOST_STATIC_ASSERT(boost::is_base_of<ProtobufCodecLite, CODEC>::value);
+    BOOST_STATIC_ASSERT((boost::is_base_of<ProtobufCodecLite, CODEC>::value));
 #endif
 
 public:

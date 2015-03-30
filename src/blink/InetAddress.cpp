@@ -10,13 +10,19 @@
 namespace blink
 {
 
+// INADDR_ANY use (type)value casting.
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+static const in_addr_t kInaddrAny = INADDR_ANY;
+static const in_addr_t kInaddrLoopback = INADDR_LOOPBACK;
+#pragma GCC diagnostic error "-Wold-style-cast"
+
 BOOST_STATIC_ASSERT(sizeof(InetAddress) == sizeof(struct sockaddr_in));
 
 InetAddress::InetAddress(uint16_t port, bool loop_back_only)
 {
     memset(&addr_, 0, sizeof(addr_));
     addr_.sin_family = AF_INET;
-    in_addr_t ip = loop_back_only ? INADDR_LOOPBACK : INADDR_ANY;     // in_addr_t equal to uint32_t
+    in_addr_t ip = loop_back_only ? kInaddrLoopback : kInaddrAny;     // in_addr_t equal to uint32_t
     addr_.sin_addr.s_addr = sockets::hostToNetwork32(ip);
     addr_.sin_port = sockets::hostToNetwork16(port);
 }

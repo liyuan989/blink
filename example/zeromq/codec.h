@@ -52,7 +52,7 @@ public:
     {
         blink::Buffer buf;
         buf.append(&*message.begin(), message.size());
-        buf.prependInt32(message.size());
+        buf.prependInt32(static_cast<int32_t>(message.size()));
         connection->send(&buf);
     }
 

@@ -54,7 +54,7 @@ void ProtobufCodecLite::fillEmptyBuffer(Buffer* buf, const ::google::protobuf::M
     buf->appendInt32(checksum_val);
     assert(buf->readableSize() == tag_.size() + byte_szie + kChecksumLen);
     (void)byte_szie;
-    int len = sockets::hostToNetwork32(buf->readableSize());
+    int32_t len = sockets::hostToNetwork32(static_cast<uint32_t>(buf->readableSize()));
     buf->prepend(&len, sizeof(len));
 }
 

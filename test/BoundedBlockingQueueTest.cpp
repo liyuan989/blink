@@ -16,10 +16,10 @@ using namespace blink;
 class BoundedBlockingQueueBench
 {
 public:
-    BoundedBlockingQueueBench(size_t num)
+    BoundedBlockingQueueBench(int num)
         : task_queue_(num), latch_(num), threads_()
     {
-        for (size_t i = 1; i <= num; ++i)
+        for (int i = 1; i <= num; ++i)
         {
             char buf[64];
             snprintf(buf, sizeof(buf), "working thread %d", i);

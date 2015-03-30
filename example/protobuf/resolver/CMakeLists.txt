@@ -6,6 +6,8 @@ add_custom_command(OUTPUT resolver.pb.h resolver.pb.cc
  DEPENDS resolver.proto
  VERBATIM)
 
+set_source_files_properties(resolver.pb.cc PROPERTIES COMPILE_FLAGS "-Wno-conversion -Wno-shadow")
+
 add_executable(protobuf_resolver_client client.cpp resolver.pb.cc)
 set_target_properties(protobuf_resolver_client PROPERTIES COMPILE_FLAGS "-Wno-error=shadow")
 target_link_libraries(protobuf_resolver_client blink_protorpc protobuf)

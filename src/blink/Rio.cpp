@@ -39,7 +39,6 @@ ssize_t Rio::readBytes(void* usrbuf, size_t n)
         {
             break;
         }
-        printf("n = %d\n", n_read);
         n_left -= n_read;
         bufp += n_read;
     }
@@ -158,7 +157,7 @@ ssize_t Rio::rioRead(char* usrbuf, size_t n)
     }
     while (count_ <= 0)
     {
-        if ((count_ = ::read(fd_, bufptr_, buf_.size())) < 0)
+        if ((count_ = static_cast<int>(::read(fd_, bufptr_, buf_.size()))) < 0)
         {
             if (errno != EINTR)
             {
@@ -176,7 +175,7 @@ ssize_t Rio::rioRead(char* usrbuf, size_t n)
         }
     }
 
-    int count = n;
+    int count = static_cast<int>(n);
     if (count_ < static_cast<int>(n))
     {
         count = count_;
