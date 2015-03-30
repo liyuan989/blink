@@ -32,6 +32,8 @@ int createEventfd()
     return event_fd;
 }
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
 class IgnoreSigPipe
 {
 public:
