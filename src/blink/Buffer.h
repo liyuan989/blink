@@ -26,7 +26,7 @@ public:
     {
         assert(readableSize() == 0);
         assert(writeableSize() == size);
-        assert(prependableSize() == kPrependSize);
+        assert(prependableSize() == static_cast<size_t>(kPrependSize));
     }
 
     ssize_t readData(int fd, int* err);
@@ -358,7 +358,7 @@ private:
         }
         else
         {
-            assert(kPrependSize <= read_index_);
+            assert(static_cast<size_t>(kPrependSize) <= read_index_);
             size_t readable_size = readableSize();
             std::copy(begin() + read_index_, begin() + write_index_, begin() + kPrependSize);
             read_index_ = kPrependSize;
