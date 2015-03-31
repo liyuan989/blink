@@ -12,7 +12,6 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 namespace blink
 {
@@ -95,7 +94,7 @@ struct hostent* gethostbyname(const char* name)
     struct hostent* val = ::gethostbyname(name);
     if (val == NULL)
     {
-        fprintf(stderr, "gethostbyname error: %s\n", ::hstrerror(h_errno));
+        LOG_ERROR << "gethostbyname error: " << ::hstrerror(h_errno);
     }
     return val;
 }
@@ -105,7 +104,7 @@ struct hostent* gethostbyaddr(const char* addr, int len, int type)
     struct hostent* val = ::gethostbyaddr(addr, len, type);
     if (val == NULL)
     {
-        fprintf(stderr, "gethostbyaddr error: %s\n", ::hstrerror(h_errno));
+        LOG_ERROR << "gethostbyaddr error: " << ::hstrerror(h_errno);
     }
     return val;
 }
@@ -127,7 +126,7 @@ int getaddrinfo(const char* hostname, const char* service, const struct addrinfo
     int val = ::getaddrinfo(hostname, service, hints, result);
     if (val != 0)
     {
-        fprintf(stderr, "getaddrinfo error: %s\n", ::gai_strerror(val));
+        LOG_ERROR << "getaddrinfo error: " << ::gai_strerror(val);
     }
     return val;
 }
@@ -138,19 +137,14 @@ int getnameinfo(const struct sockaddr* addr, socklen_t addrlen, char* host, sock
     int val = ::getnameinfo(addr, addrlen, host, hostlen, serv, servlen, flags);
     if (val != 0)
     {
-        fprintf(stderr, "getnameinfo error: %s\n", ::gai_strerror(val));
+        LOG_ERROR << "getnameinfo error: " << ::gai_strerror(val);
     }
     return val;
 }
 
 int socket(int domain, int type, int protocol)
 {
-    int val = ::socket(domain, type, protocol);
-    if (val < 0)
-    {
-        fprintf(stderr, "socket error\n");
-    }
-    return val;
+    return ::socket(domain, type, protocol);
 }
 
 int connect(int sockfd, struct sockaddr* server_addr, int addrlen)
@@ -160,42 +154,22 @@ int connect(int sockfd, struct sockaddr* server_addr, int addrlen)
 
 int bind(int sockfd, struct sockaddr* my_addr, int addrlen)
 {
-    int val = ::bind(sockfd, my_addr, addrlen);
-    if (val < 0)
-    {
-        fprintf(stderr, "bind error\n");
-    }
-    return val;
+    return ::bind(sockfd, my_addr, addrlen);
 }
 
 int listen(int sockfd, int backlog)
 {
-    int val = ::listen(sockfd, backlog);
-    if (val < 0)
-    {
-        fprintf(stderr, "listen error\n");
-    }
-    return val;
+    return ::listen(sockfd, backlog);
 }
 
 int accept(int sockfd, struct sockaddr* addr, int* addrlen)
 {
-    int val = ::accept(sockfd, addr, static_cast<socklen_t*>(static_cast<void*>(addrlen)));
-    if (val < 0)
-    {
-        fprintf(stderr, "accept error\n");
-    }
-    return val;
+    return ::accept(sockfd, addr, static_cast<socklen_t*>(static_cast<void*>(addrlen)));
 }
 
 int accept4(int sockfd, struct sockaddr* addr, int* addrlen, int flags)
 {
-    int val = ::accept4(sockfd, addr, static_cast<socklen_t*>(static_cast<void*>(addrlen)), flags);
-    if (val < 0)
-    {
-        fprintf(stderr, "accept4 error\n");
-    }
-    return val;
+    return ::accept4(sockfd, addr, static_cast<socklen_t*>(static_cast<void*>(addrlen)), flags);
 }
 
 ssize_t read(int fd, void* buf, size_t n)
@@ -220,12 +194,7 @@ int close(int fd)
 
 int shutdown(int sockfd, int howto)
 {
-    int val = ::shutdown(sockfd, howto);
-    if (val < 0)
-    {
-        fprintf(stderr, "shutdown error\n");
-    }
-    return val;
+    return ::shutdown(sockfd, howto);
 }
 
 ssize_t readv(int fd, const struct iovec* iov, int iovcnt)
@@ -257,35 +226,39 @@ int createNonblocking()
     return sockfd;
 }
 
+#if VALGRIND || defined (NO_ACCEPT4)
+
 bool setNonBlockAndCloseOnExec(int sockfd)
 {
     int flags = ::fcntl(sockfd, F_GETFL, 0);
     if (flags < 0)
     {
-        fprintf(stderr, "fcntl error\n");
+        LOG_ERROR << "setNonBlockAndCloseOnExec()";
         return false;
     }
     flags |= O_NONBLOCK;
     if (::fcntl(sockfd, F_SETFL, flags) < 0)
     {
-        fprintf(stderr, "fcntl error\n");
+        LOG_ERROR << "setNonBlockAndCloseOnExec()";
         return false;
     }
 
     flags = ::fcntl(sockfd, F_GETFL, 0);
     if (flags < 0)
     {
-        fprintf(stderr, "fcntl error\n");
+        LOG_ERROR << "setNonBlockAndCloseOnExec()";
         return false;
     }
     flags |= FD_CLOEXEC;
     if (::fcntl(sockfd, F_SETFL, flags) < 0)
     {
-        fprintf(stderr, "fcntl error\n");
+        LOG_ERROR << "setNonBlockAndCloseOnExec()";
         return false;
     }
     return true;
 }
+
+#endif
 
 int getSocketError(int sockfd)
 {
@@ -351,7 +324,6 @@ int openClientFd(char* hostname, int port)
         hostp = sockets::gethostbyname(hostname);
         if (hostp == NULL)
         {
-            fprintf(stderr, "gethostbyname error: %s\n", ::hstrerror(h_errno));
             return -2;
         }
         memcpy(&serveraddr.sin_addr.s_addr, &hostp->h_addr_list[0], hostp->h_length);
@@ -377,7 +349,7 @@ int openListenFd(int port)
     const int optval = 1;
     if (::setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, implicit_cast<const void*>(&optval), sizeof(int)) < 0)
     {
-        fprintf(stderr, "setsockopt error\n");
+        LOG_ERROR << "openListenFd - setsockopt error";
         return -1;
     }
     struct sockaddr_in serveraddr;

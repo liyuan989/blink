@@ -23,7 +23,7 @@ bool Socket::getTcpInfo(struct tcp_info* tcpi) const
 #ifdef TCP_INFO
     assert(tcpi != NULL);
     socklen_t len = sizeof(*tcpi);
-    memset(&len, 0, sizeof(tcpi));
+    memset(tcpi, 0, len);
     int val = ::getsockopt(sockfd_, SOL_TCP, TCP_INFO, tcpi, &len);
     if (val < 0)
     {

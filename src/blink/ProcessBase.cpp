@@ -1,4 +1,5 @@
 #include <blink/ProcessBase.h>
+#include <blink/Log.h>
 
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -7,7 +8,6 @@
 
 #include <errno.h>
 #include <string.h>
-#include <stdio.h>
 
 namespace blink
 {
@@ -50,7 +50,7 @@ pid_t fork()
     pid_t val = ::fork();
     if (val < 0)
     {
-        fprintf(stderr, "fork error: %s\n", strerror(errno));
+        LOG_ERROR << "fork error: " << strerror(errno);
     }
     return val;
 }
@@ -58,12 +58,9 @@ pid_t fork()
 pid_t waitpid(pid_t pid, int* status, int options)
 {
     pid_t val = ::waitpid(pid, status, options);
-    if (val < 0)
+    if (val < 0 && errno == EINTR)
     {
-        if (errno == EINTR)
-        {
-            fprintf(stderr, "pidwait error: %s\n", strerror(errno));
-        }
+        LOG_ERROR << "pidwait error: " << strerror(errno);
     }
     return val;
 }
@@ -71,12 +68,9 @@ pid_t waitpid(pid_t pid, int* status, int options)
 pid_t wait(int* status)
 {
     pid_t val = ::wait(status);
-    if (val < 0)
+    if (val < 0 && errno == EINTR)
     {
-        if (errno == EINTR)
-        {
-            fprintf(stderr, "wait error: %s\n", strerror(errno));
-        }
+        LOG_ERROR << "wait error: " << strerror(errno);
     }
     return val;
 }
@@ -86,7 +80,7 @@ int execve(const char* filename, char* const argv[], char* const envp[])
     int val = ::execve(filename, argv, envp);
     if (val < 0)
     {
-        fprintf(stderr, "execve error: %s\n", strerror(errno));
+        LOG_ERROR << "execve error: " << strerror(errno);
     }
     return val;
 }
@@ -101,7 +95,7 @@ int setpgid(pid_t pid, pid_t pgid)
     int val = ::setpgid(pid, pgid);
     if (val < 0)
     {
-        fprintf(stderr, "setpgid error: %s\n", strerror(errno));
+        LOG_ERROR << "setpgid error: " << strerror(errno);
     }
     return val;
 }
@@ -111,7 +105,7 @@ int kill(pid_t pid, int sig)
     int val = ::kill(pid, sig);
     if (val < 0)
     {
-        fprintf(stderr, "kill error: %s\n", strerror(errno));
+        LOG_ERROR << "kill error: " << strerror(errno);
     }
     return val;
 }
@@ -142,7 +136,7 @@ int sigaction(int signum, struct sigaction* act, struct sigaction* oldact)
     int val = ::sigaction(signum, act, oldact);
     if (val < 0)
     {
-        fprintf(stderr, "sigaction error: %s\n", strerror(errno));
+        LOG_ERROR << "sigaction error: " << strerror(errno);
     }
     return val;
 }
@@ -152,7 +146,7 @@ int sigprocmask(int how, const sigset_t* set, sigset_t* oldset)
     int val = ::sigprocmask(how, set, oldset);
     if (val < 0)
     {
-        fprintf(stderr, "sigprocmask error: %s\n", strerror(errno));
+        LOG_ERROR << "sigprocmask error: " << strerror(errno);
     }
     return val;
 }
@@ -162,7 +156,7 @@ int sigemptyset(sigset_t* set)
     int val = ::sigemptyset(set);
     if (val < 0)
     {
-        fprintf(stderr, "sigemptyset error: %s\n", strerror(errno));
+        LOG_ERROR << "sigemptyset error: " << strerror(errno);
     }
     return val;
 }
@@ -172,7 +166,7 @@ int sigfillset(sigset_t* set)
     int val = ::sigfillset(set);
     if (val < 0)
     {
-        fprintf(stderr, "sigfillset error: %s\n", strerror(errno));
+        LOG_ERROR << "sigfillset error: " << strerror(errno);
     }
     return val;
 }
@@ -182,7 +176,7 @@ int sigaddset(sigset_t* set, int signum)
     int val = ::sigaddset(set, signum);
     if (val < 0)
     {
-        fprintf(stderr, "sigaddset error: %s\n", strerror(errno));
+        LOG_ERROR << "sigaddset error: " << strerror(errno);
     }
     return val;
 }
@@ -192,6 +186,7 @@ int sigdelset(sigset_t* set, int signum)
     int val = ::sigdelset(set, signum);
     if (val < 0)
     {
+        LOG_ERROR << "sigdelset error: " << strerror(errno);
         return val;
     }
     return val;
@@ -202,7 +197,7 @@ int sigismember(const sigset_t* set, int signum)
     int val = ::sigismember(set, signum);
     if (val < 0)
     {
-        fprintf(stderr, "sigismember error: %s\n", strerror(errno));
+        LOG_ERROR << "sigismember error: " << strerror(errno);
     }
     return val;
 }
