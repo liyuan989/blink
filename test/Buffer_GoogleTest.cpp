@@ -162,9 +162,9 @@ void testFile()
     buffer.readData(fd1, &err1);
     string s1 = buffer.resetAllToString();
     printf("%s\n", s1.c_str());
-    printf("%d\n", buffer.bufferCapacity());
-    printf("%d\n", buffer.writeableSize());
-    printf("%d\n", buffer.readableSize());
+    printf("%zd\n", buffer.bufferCapacity());
+    printf("%zd\n", buffer.writeableSize());
+    printf("%zd\n", buffer.readableSize());
 }
 
 int main(int argc, char* argv[])

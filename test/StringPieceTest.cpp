@@ -77,7 +77,7 @@ TEST(testStringPiece, String)
     EXPECT_EQ('9', piece1[8]);
 
     StringPiece piece2;
-    piece2.set(base.c_str(), base.size());
+    piece2.set(base.c_str(), static_cast<int>(base.size()));
     EXPECT_EQ(9, piece1.size());
     EXPECT_FALSE(piece1.empty());
     EXPECT_EQ("123456789", string(piece2.data(), piece2.size()));
