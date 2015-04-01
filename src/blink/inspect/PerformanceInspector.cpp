@@ -21,6 +21,7 @@ void PerformanceInspector::registerCommands(Inspector* inspector)
     inspector->add("pprof", "cmdline", PerformanceInspector::cmdline, "get command cmdline");
     inspector->add("pprof", "memstats", PerformanceInspector::memstats, "get memory stats");
     inspector->add("pprof", "memhistogram", PerformanceInspector::memhistogram, "get memory histogram");
+    inspector->add("pprof", "releasefreememory", PerformanceInspector::releaseFreeMemory, "release free memory");
 }
 
 string PerformanceInspector::heap(HttpRequest::Method, const Inspector::ArgList&)
@@ -83,6 +84,15 @@ string PerformanceInspector::memhistogram(HttpRequest::Method, const Inspector::
         s << i << " " << histogram[i] << "\n";
     }
     return s.buffer().toString();
+}
+
+string PerformanceInspector::releaseFreeMemory(HttpRequest::Method, const Inspector::ArgList&)
+{
+    char buf[256];
+    snprintf(buf, sizeof(256), "memory release rate: %d\nAll free memory released.\n",
+             MallocExtension::instance()->GetMemoryReleaseRate());
+    MallocExtension::instance()->ReleaseFreeMemory();
+    return buf;
 }
 
 }  // namespace blink

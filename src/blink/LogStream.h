@@ -92,6 +92,11 @@ public:
         return string(buf_, current_ - buf_);
     }
 
+    StringPiece toStringPiece() const
+    {
+        return StringPiece(buf_, current_ - buf_)
+    }
+
     const char* debugString() const
     {
         *current_ = '\0';
@@ -193,6 +198,12 @@ public:
     LogStream& operator<<(const StringPiece& s)
     {
         buffer_.append(s.data(), s.size());
+        return *this;
+    }
+
+    LogStream& operator<<(const Buffer& v)
+    {
+        *this << v.toStringPiece();
         return *this;
     }
 
