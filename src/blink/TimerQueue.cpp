@@ -167,7 +167,7 @@ std::vector<TimerQueue::Entry> TimerQueue::getExpired(Timestamp now)
 #ifdef UINTPTR_MAX
     Entry sentry(now, reinterpret_cast<Timer*>(UINTPTR_MAX));
 #else
-    Entry sentry(now, reinterpret_cast<Timer*>(static_cast<unsigned int>(-1)));
+    Entry sentry(now, reinterpret_cast<Timer*>(static_cast<unsigned long int>(-1)));
 #endif
     TimerList::iterator end = timers_.lower_bound(sentry);
     assert(end == timers_.end() || now < end->first);
