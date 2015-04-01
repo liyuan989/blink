@@ -94,7 +94,7 @@ public:
 
     StringPiece toStringPiece() const
     {
-        return StringPiece(buf_, current_ - buf_)
+        return StringPiece(buf_, static_cast<int>(current_ - buf_));
     }
 
     const char* debugString() const

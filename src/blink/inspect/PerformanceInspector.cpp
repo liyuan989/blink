@@ -89,7 +89,7 @@ string PerformanceInspector::memhistogram(HttpRequest::Method, const Inspector::
 string PerformanceInspector::releaseFreeMemory(HttpRequest::Method, const Inspector::ArgList&)
 {
     char buf[256];
-    snprintf(buf, sizeof(256), "memory release rate: %d\nAll free memory released.\n",
+    snprintf(buf, sizeof(256), "memory release rate: %f\nAll free memory released.\n",
              MallocExtension::instance()->GetMemoryReleaseRate());
     MallocExtension::instance()->ReleaseFreeMemory();
     return buf;
