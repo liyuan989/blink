@@ -346,7 +346,7 @@ void TcpConnection::handleError()
 {
     int err = sockets::getSocketError(channel_->fd());
     LOG_ERROR << "TcpConnection::handleError [" << name_ << "] - SO_ERROR = "
-              << err << " " << blink::strerror_rb(err);
+              << err << " " << blink::strerror_tl(err);
 }
 
 }  // namespace blink

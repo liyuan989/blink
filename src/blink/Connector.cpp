@@ -171,7 +171,7 @@ void Connector::handleWrite()
         int err = sockets::getSocketError(sockfd);
         if (err)
         {
-            LOG_WARN << "Connector::handleWrite - SO_ERROR = " << err << strerror_rb(err);
+            LOG_WARN << "Connector::handleWrite - SO_ERROR = " << err << strerror_tl(err);
             retry(sockfd);
         }
         else if (sockets::isSelfConnect(sockfd))
@@ -205,7 +205,7 @@ void Connector::handleError()
     {
         int sockfd = removeAndResetChannel();
         int err = sockets::getSocketError(sockfd);
-        LOG_TRACE << "SO_ERROR = " << err << strerror_rb(err);
+        LOG_TRACE << "SO_ERROR = " << err << strerror_tl(err);
         retry(sockfd);
     }
 }

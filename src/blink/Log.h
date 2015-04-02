@@ -10,7 +10,7 @@
 namespace blink
 {
 
-const char* strerror_rb(int saved_errno);
+const char* strerror_tl(int saved_errno);
 
 class TimeZone;
 

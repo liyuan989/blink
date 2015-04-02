@@ -168,7 +168,7 @@ void AppendFile::appendFile(const char* destination, size_t len)
             int err = ::ferror(fp_);
             if (err)
             {
-                fprintf(stderr, "AppendFile::appendFile() failed: %s\n", strerror_rb(err));
+                fprintf(stderr, "AppendFile::appendFile() failed: %s\n", strerror_tl(err));
                 break;
             }
         }

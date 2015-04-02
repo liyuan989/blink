@@ -57,7 +57,7 @@ TcpClient::~TcpClient()
     {
         assert(loop_ = connection->getLoop());
         // not 100% safe, if we are in different thread.
-        CloseCallback cb = boost::bind(&detail::removeConnection, loop_, _1);
+        CloseCallback cb = boost::bind(detail::removeConnection, loop_, _1);
         loop_->runInLoop(boost::bind(&TcpConnection::setCloseCallback, connection, cb));
         if (unique)
         {

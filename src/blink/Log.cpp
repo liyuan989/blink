@@ -12,14 +12,12 @@
 namespace blink
 {
 
+namespace detail
+{
+
 __thread char   t_error_buf[512];
 __thread char   t_time[32];
 __thread time_t t_lastsecond;
-
-const char* strerror_rb(int saved_errno)
-{
-    return ::strerror_r(saved_errno, t_error_buf, sizeof(t_error_buf));
-}
 
 Log::LogLevel initLogLevel()
 {
@@ -37,9 +35,16 @@ Log::LogLevel initLogLevel()
     }
 }
 
-Log::LogLevel g_logLevel = initLogLevel();
-const char*   kLogLevelName[Log::NUM_LOG_LEVELS] = {"TRACE ", "DEBUG ", "INFO  ", "WARN  ", "ERROR ", "FATAL "};
-const int     kLogLevelNamelength = 6;
+void defaultOutput(const char* message, size_t len)
+{
+    size_t n = ::fwrite(message, STDOUT_FILENO, len, stdout);
+    (void)n;
+}
+
+void defaultFlush()
+{
+    ::fflush(stdout);
+}
 
 class LogStringHelper
 {
@@ -54,7 +59,24 @@ public:
     const size_t  len_;
 };
 
-inline LogStream& operator<<(LogStream& log_stream, LogStringHelper helper)
+}  // namespace detail
+
+const char* strerror_tl(int saved_errno)
+{
+    return ::strerror_r(saved_errno, detail::t_error_buf, sizeof(detail::t_error_buf));
+}
+
+Log::LogLevel g_logLevel = detail::initLogLevel();
+
+const char* kLogLevelName[Log::NUM_LOG_LEVELS] = {"TRACE ", "DEBUG ", "INFO  ", "WARN  ", "ERROR ", "FATAL "};
+const int kLogLevelNameLength = 6;
+
+Log::OutputFunc g_logOutput = detail::defaultOutput;
+Log::FlushFunc g_logFlush = detail::defaultFlush;
+
+TimeZone g_logTimeZone(3600 * 8, "UTC+8");   // default timezone:  UTC +8, time of Beijing(UTC+8)
+
+inline LogStream& operator<<(LogStream& log_stream, detail::LogStringHelper helper)
 {
     log_stream.append(helper.str_, helper.len_);
     return log_stream;
@@ -66,31 +88,16 @@ inline LogStream& operator<<(LogStream& log_stream, const Log::SourceFile& file)
     return log_stream;
 }
 
-void defaultOutput(const char* message, size_t len)
-{
-    size_t n = ::fwrite(message, STDOUT_FILENO, len, stdout);
-    (void)n;
-}
-
-void defaultFlush()
-{
-    ::fflush(stdout);
-}
-
-Log::OutputFunc  g_output = defaultOutput;
-Log::FlushFunc   g_flush = defaultFlush;
-TimeZone         g_logTimeZone(3600 * 8, "UTC+8");   // default timezone:  UTC +8, time of Beijing(UTC+8)
-
 Log::Impl::Impl(LogLevel level, int saved_errno, const SourceFile& file, int line)
     : time_(Timestamp::now()), stream_(), level_(level), line_(line), basename_(file)
 {
     formatTime();
     current_thread::tid();
-    stream_ << LogStringHelper(current_thread::tidString(), current_thread::tidStringLength());
-    stream_ << LogStringHelper(kLogLevelName[level], kLogLevelNamelength);
+    stream_ << detail::LogStringHelper(current_thread::tidString(), current_thread::tidStringLength());
+    stream_ << detail::LogStringHelper(kLogLevelName[level], kLogLevelNameLength);
     if (saved_errno != 0)
     {
-        stream_ << strerror_rb(saved_errno) << " (errno = " << saved_errno << ") ";
+        stream_ << strerror_tl(saved_errno) << " (errno = " << saved_errno << ") ";
     }
 }
 
@@ -120,9 +127,9 @@ void Log::Impl::formatTime()
     int64_t microseconds_since_epoch = time_.microSecondsSinceEpoch();
     time_t seconds = static_cast<time_t>(microseconds_since_epoch / Timestamp::kMicrosecondsPerSecond);
     int microseconds = static_cast<int>(microseconds_since_epoch % Timestamp::kMicrosecondsPerSecond);
-    if (seconds != t_lastsecond)
+    if (seconds != detail::t_lastsecond)
     {
-        t_lastsecond = seconds;
+        detail::t_lastsecond = seconds;
         struct tm tm_time;
         if (g_logTimeZone.valid())
         {
@@ -132,8 +139,9 @@ void Log::Impl::formatTime()
         {
             gmtime_r(&seconds, &tm_time);
         }
-        int len = snprintf(t_time, sizeof(t_time), "%4d%02d%02d %02d:%02d:%02d", tm_time.tm_year + 1900,
-                           tm_time.tm_mon + 1, tm_time.tm_mday, tm_time.tm_hour, tm_time.tm_min, tm_time.tm_sec);
+        int len = snprintf(detail::t_time, sizeof(detail::t_time), "%4d%02d%02d %02d:%02d:%02d",
+                           tm_time.tm_year + 1900, tm_time.tm_mon + 1, tm_time.tm_mday,
+                           tm_time.tm_hour, tm_time.tm_min, tm_time.tm_sec);
         assert(len == 17);
         (void)len;
     }
@@ -141,13 +149,13 @@ void Log::Impl::formatTime()
     {
         Format fmt(".%06d ", microseconds);
         assert(fmt.length() == 8);
-        stream_ << LogStringHelper(t_time, 17) << LogStringHelper(fmt.data(), 8);
+        stream_ << detail::LogStringHelper(detail::t_time, 17) << detail::LogStringHelper(fmt.data(), 8);
     }
     else
     {
         Format fmt(".%06dZ ", microseconds);
         assert(fmt.length() == 9);
-        stream_ << LogStringHelper(t_time, 17) << LogStringHelper(fmt.data(), 9);
+        stream_ << detail::LogStringHelper(detail::t_time, 17) << detail::LogStringHelper(fmt.data(), 9);
     }
 }
 
@@ -181,10 +189,10 @@ Log::~Log()
 {
     impl_.finish();
     const LogStream::Buffer& buf(stream().buffer());
-    g_output(buf.data(), buf.usedSize());
+    g_logOutput(buf.data(), buf.usedSize());
     if (impl_.level_ == FATAL)
     {
-        g_flush();
+        g_logFlush();
         abort();
     }
 }
@@ -196,12 +204,12 @@ void Log::setLogLevel(LogLevel level)
 
 void Log::setOutput(OutputFunc func)
 {
-    g_output = func;
+    g_logOutput = func;
 }
 
 void Log::setFlush(FlushFunc func)
 {
-    g_flush = func;
+    g_logFlush = func;
 }
 
 void Log::setTimeZone(const TimeZone& timezone)
