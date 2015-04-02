@@ -99,7 +99,7 @@ private:
     {
         mutex_.assertLockted();
         log_record_.set_level(1);
-        log_record_.set_thread_id(tid());
+        log_record_.set_thread_id(current_thread::tid());
         log_record_.set_timestamp(Timestamp::now().microSecondsSinceEpoch());
         log_record_.set_message(message.data(), message.size());
     }
@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 
     // wait for disconnect, then safe to destruct LogClient (esp. TcpClient).
     // otherwise, mutex_ is used after destructor.
-    sleepMicroseconds(1000 * 1000);
+    current_thread::sleepMicroseconds(1000 * 1000);
     google::protobuf::ShutdownProtobufLibrary();
     return 0;
 }

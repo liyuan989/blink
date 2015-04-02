@@ -12,7 +12,7 @@ using namespace blink;
 
 void threadInitCallbac(EventLoop* loop)
 {
-    printf("thead tid = %d init in %p\n", tid(), loop);
+    printf("thead tid = %d init in %p\n", current_thread::tid(), loop);
 }
 
 void threadConnectionCallnack(const TcpConnectionPtr& connection)

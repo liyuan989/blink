@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "Usage: %s <port> <threads>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     Log::setLogLevel(Log::WARN);
     InetAddress listen_addr(static_cast<uint16_t>(atoi(argv[1])));
     EventLoop loop;

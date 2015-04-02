@@ -13,12 +13,12 @@ using namespace blink;
 
 void print(EventLoop* loop = NULL)
 {
-    printf("main(): pid = %d, tid = %d, loop = %p\n", getpid(), tid(), loop);
+    printf("main(): pid = %d, tid = %d, loop = %p\n", getpid(), current_thread::tid(), loop);
 }
 
 void init(EventLoop* loop)
 {
-    printf("init(): pid = %d, tid = %d, loop = %p\n", getpid(), tid(), loop);
+    printf("init(): pid = %d, tid = %d, loop = %p\n", getpid(), current_thread::tid(), loop);
 }
 
 int main(int argc, char const *argv[])

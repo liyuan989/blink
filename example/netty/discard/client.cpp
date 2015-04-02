@@ -71,7 +71,7 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "usage: %s <host> <port>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid" << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid" << current_thread::tid();
     int size = 512;
     if (argc >= 4)
     {

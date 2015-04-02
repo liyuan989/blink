@@ -51,7 +51,7 @@ string PerformanceInspector::profile(HttpRequest::Method, const Inspector::ArgLi
     if (ProfilerStart(filename.c_str()))
     {
         // FIXME: async
-        sleepMicroseconds(30 * 1000 * 1000);
+        current_thread::sleepMicroseconds(30 * 1000 * 1000);
         ProfilerStop();
         readFile(filename, 1024 * 1024, &profile);
         ::unlink(filename.c_str());

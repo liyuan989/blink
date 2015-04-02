@@ -82,7 +82,7 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "usage: %s <ip> <port>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     EventLoopThread loop_thread;
     InetAddress server_addr(argv[1], static_cast<uint16_t>(atoi(argv[2])));
     ChatClient client(loop_thread.startLoop(), server_addr);
@@ -93,6 +93,6 @@ int main(int argc, char const *argv[])
         client.write(line);
     }
     client.disconnect();
-    sleepMicroseconds(1000 * 1000);
+    current_thread::sleepMicroseconds(1000 * 1000);
     return 0;
 }

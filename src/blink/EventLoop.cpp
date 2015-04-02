@@ -61,7 +61,7 @@ EventLoop::EventLoop()
       event_handling_(false),
       calling_pending_functors_(false),
       iteration_(0),
-      thread_id_(blink::tid()),
+      thread_id_(current_thread::tid()),
       poller_(Poller::newDefualtPoller(this)),
       timer_queue_(new TimerQueue(this)),
       wakeup_fd_(createEventfd()),
@@ -85,7 +85,7 @@ EventLoop::EventLoop()
 EventLoop::~EventLoop()
 {
     LOG_DEBUG << "EventLoop " << this << " of thread " << thread_id_
-              << " destructs in thread " << blink::tid();
+              << " destructs in thread " << current_thread::tid();
     wakeup_channel_->disableAll();
     wakeup_channel_->remove();
     ::close(wakeup_fd_);
@@ -217,7 +217,7 @@ void EventLoop::abortNotInLoopThread()
 {
     LOG_FATAL << "EventLoop::abortNotInLoopThread - EventLoop " << this
               << " was created in thread_id_ = " << thread_id_
-              << ", current thread id = " << blink::tid();
+              << ", current thread id = " << current_thread::tid();
 }
 
 void EventLoop::handleRead()

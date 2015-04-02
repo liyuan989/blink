@@ -19,9 +19,9 @@ namespace blink
 
 void resetAfterFork()
 {
-    blink::t_cache_tid = 0;
-    blink::t_thread_name = "main";
-    tid();
+    current_thread::t_cache_tid = 0;
+    current_thread::t_thread_name = "main";
+    current_thread::tid();
 }
 
 class ThreadNameInitializer
@@ -29,8 +29,8 @@ class ThreadNameInitializer
 public:
     ThreadNameInitializer()
     {
-        blink::t_thread_name = "main";
-        blink::tid();
+        current_thread::t_thread_name = "main";
+        current_thread::tid();
         threads::pthread_atfork(NULL, NULL, resetAfterFork);
     }
 };
@@ -51,24 +51,24 @@ public:
 
     void runInThread()
     {
-        pid_t tid = blink::tid();
+        pid_t tid = current_thread::tid();
         boost::shared_ptr<pid_t> ptid = weak_tid_.lock();
         if (ptid)
         {
             *ptid = tid;
             ptid.reset();
         }
-        blink::t_thread_name = name_.empty() ? "Thread" : name_.c_str();
-        ::prctl(PR_SET_NAME, blink::t_thread_name);
+        current_thread::t_thread_name = name_.empty() ? "Thread" : name_.c_str();
+        ::prctl(PR_SET_NAME, current_thread::t_thread_name);
 
         try
         {
             func_();
-            blink::t_thread_name = "finished";
+            current_thread::t_thread_name = "finished";
         }
         catch (const Exception& e)
         {
-            blink::t_thread_name = "crashed";
+            current_thread::t_thread_name = "crashed";
             fprintf(stderr, "exception caught in Thread %s\n", name_.c_str());
             fprintf(stderr, "reason: %s\n", e.what());
             fprintf(stderr, "stack trace: %s\n", e.stackTrace());
@@ -76,14 +76,14 @@ public:
         }
         catch (const std::exception& e)
         {
-            blink::t_thread_name = "crashed";
+            current_thread::t_thread_name = "crashed";
             fprintf(stderr, "exception caught in Thread %s\n", name_.c_str());
             fprintf(stderr, "reason: %s\n", e.what());
             abort();
         }
         catch (...)
         {
-            blink::t_thread_name = "crashed";
+            current_thread::t_thread_name = "crashed";
             fprintf(stderr, "unknown exception caught in Thread %s\n", name_.c_str());
             throw;
         }

@@ -6,6 +6,9 @@
 namespace blink
 {
 
+namespace current_thread
+{
+
 extern __thread int t_cache_tid;
 extern __thread char t_tid_string[32];
 extern __thread int t_tid_string_length;
@@ -40,6 +43,8 @@ inline const char* threadName()
 bool isMainThread();
 
 void sleepMicroseconds(int64_t microseconds);  // implement by nanosleep.
+
+}  // namespace current_thread
 
 }  // namespace blink
 

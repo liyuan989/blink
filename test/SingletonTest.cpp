@@ -12,11 +12,13 @@ public:
     Singletontest()
         : message_("none")
     {
-        printf("constructing,  tid = %d  name: %s  addr: %p\n", tid(), threadName(), this);
+        printf("constructing,  tid = %d  name: %s  addr: %p\n",
+               current_thread::tid(), current_thread::threadName(), this);
     }
     ~Singletontest()
     {
-        printf("destroying, message: %s  tid = %d  name: %s addr: %p\n", message_.c_str(), tid(), threadName(), this);
+        printf("destroying, message: %s  tid = %d  name: %s addr: %p\n",
+               message_.c_str(), current_thread::tid(), current_thread::threadName(), this);
     }
 
     void setMessage(const string& msg)
@@ -38,11 +40,13 @@ class SingletonTestNoDestroy
 public:
     SingletonTestNoDestroy()
     {
-        printf("SingletonTestNoDestroy constructing,  tid = %d  name: %s  addr: %p\n", tid(), threadName(), this);
+        printf("SingletonTestNoDestroy constructing,  tid = %d  name: %s  addr: %p\n",
+               current_thread::tid(), current_thread::threadName(), this);
     }
     ~SingletonTestNoDestroy()
     {
-        printf("SingletonTestNoDestroy destroying,  tid = %d  name: %s  addr: %p\n", tid(), threadName(), this);
+        printf("SingletonTestNoDestroy destroying,  tid = %d  name: %s  addr: %p\n",
+               current_thread::tid(), current_thread::threadName(), this);
     }
 
     void no_destroy()
@@ -63,7 +67,7 @@ int main(int argc, char const *argv[])
     thread.start();
     thread.join();
 
-    printf("tid = %d Singletontest::message_ = %s\n", tid(),
+    printf("tid = %d Singletontest::message_ = %s\n", current_thread::tid(),
            Singleton<Singletontest>::getInstance().message().c_str());
     Singleton<SingletonTestNoDestroy>::getInstance();
     printf("sizeof(SingletonTestNoDestroy) = %zd addr = %p\n",

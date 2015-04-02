@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Usage: %s <ipaddr> <port>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << tid();
+    LOG_INFO << "pid = " << getpid();
     EventLoop loop;
     InetAddress server_addr(argv[1], static_cast<uint16_t>(atoi(argv[2])));
     RpcClient client(&loop, server_addr);

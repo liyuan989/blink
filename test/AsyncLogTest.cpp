@@ -29,7 +29,8 @@ void func()
     char buf[64];
     for (int i = 1; i <= 1000; ++i)
     {
-        snprintf(buf, sizeof(buf), "%s: tid = %d, the %d print", threadName(), tid(), i);
+        snprintf(buf, sizeof(buf), "%s: tid = %d, the %d print",
+                 current_thread::threadName(), current_thread::tid(), i);
         LOG_INFO << buf;
     }
 }
@@ -77,7 +78,7 @@ int main(int argc, char const *argv[])
     thread2.join();
     thread3.join();
 
-    printf("main thread: %d\n", tid());
+    printf("main thread: %d\n", current_thread::tid());
     bench(argc > 1 ? true : false);
     async_log->stop();
     printf("main end!\n");

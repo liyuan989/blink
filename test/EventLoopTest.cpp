@@ -15,13 +15,13 @@ boost::scoped_ptr<EventLoop> g_loop;
 
 void cb()
 {
-    printf("cb() pid = %d tid = %d\n", getpid(), tid());
+    printf("cb() pid = %d tid = %d\n", getpid(), current_thread::tid());
     EventLoop another_loop;
 }
 
 void func()
 {
-    printf("func() pid = %d tid = %d\n", getpid(), tid());
+    printf("func() pid = %d tid = %d\n", getpid(), current_thread::tid());
     assert(EventLoop::getEventLoopOfCurrentThread() == NULL);
     EventLoop loop;
     assert(EventLoop::getEventLoopOfCurrentThread() == &loop);
@@ -31,7 +31,7 @@ void func()
 
 int main(int argc, char const *argv[])
 {
-    printf("main() pid = %d tid = %d\n", getpid(), tid());
+    printf("main() pid = %d tid = %d\n", getpid(), current_thread::tid());
     assert(EventLoop::getEventLoopOfCurrentThread() == NULL);
     EventLoop loop;
     assert(EventLoop::getEventLoopOfCurrentThread() == &loop);

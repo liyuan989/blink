@@ -14,12 +14,12 @@ class Test
 public:
     Test()
     {
-        printf("tid = %d, constructing addr: %p\n", tid(), this);
+        printf("tid = %d, constructing addr: %p\n", current_thread::tid(), this);
     }
 
     ~Test()
     {
-        printf("tid = %d, destructing addr: %p, Test name: %s\n", tid(), this, name_.c_str());
+        printf("tid = %d, destructing addr: %p, Test name: %s\n", current_thread::tid(), this, name_.c_str());
     }
 
     void setName(const string& namemsg)
@@ -39,7 +39,7 @@ private:
 void print()
 {
     printf("tid = %d, singleton obj name: %s\n",
-           tid(), ThreadLocalSingleton<Test>::getInstance().name().c_str());
+           current_thread::tid(), ThreadLocalSingleton<Test>::getInstance().name().c_str());
 }
 
 void func(string change)

@@ -69,7 +69,7 @@ private:
 
 int main(int argc, char const *argv[])
 {
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     int max_connections = 5;
     if (argc > 1)
     {

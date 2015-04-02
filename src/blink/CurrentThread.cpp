@@ -14,6 +14,9 @@
 namespace blink
 {
 
+namespace current_thread
+{
+
 __thread int t_cache_tid = 0;
 __thread char t_tid_string[32];
 __thread int t_tid_string_length = 6;
@@ -49,6 +52,8 @@ void sleepMicroseconds(int64_t microseconds)
     spec.tv_nsec = static_cast<long>(microseconds % (1000*1000) * 1000);
     ::nanosleep(&spec, NULL);
 }
+
+}  // namespace current_thread
 
 }  // namespace blink
 

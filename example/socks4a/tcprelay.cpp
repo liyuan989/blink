@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Usage: %s <ip> <port> <listen_port>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     {
         // set max virtual memory to 256MB
         size_t kOneMB = 1024 * 1024;

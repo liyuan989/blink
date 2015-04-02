@@ -51,7 +51,7 @@ public:
 private:
     void threadCallback()
     {
-        printf("thread id: %d  name: %s\n", tid(), threadName());
+        printf("thread id: %d  name: %s\n", current_thread::tid(), current_thread::threadName());
         latch_.countDown();
         std::map<int, int> delay_map;
         bool running = true;
@@ -65,10 +65,11 @@ private:
             }
             running = data.valid();
         }
-        printf("%s stopped! tid: %d\n", threadName(), tid());
+        printf("%s stopped! tid: %d\n", current_thread::threadName(), current_thread::tid());
         for (std::map<int, int>::iterator it = delay_map.begin(); it != delay_map.end(); ++it)
         {
-            printf("%s: tid = %d  delay = %d(usec)  count = %d\n", threadName(), tid(), it->first, it->second);
+            printf("%s: tid = %d  delay = %d(usec)  count = %d\n",
+                   current_thread::threadName(), current_thread::tid(), it->first, it->second);
         }
     }
 

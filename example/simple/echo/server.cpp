@@ -11,7 +11,7 @@ using namespace blink;
 
 int main(int argc, char const *argv[])
 {
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     LOG_INFO << "sizeof TcpConnection = " << sizeof(TcpConnection);
     EventLoop loop;
     InetAddress listen_addr(9600);

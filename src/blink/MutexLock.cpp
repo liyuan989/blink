@@ -38,7 +38,7 @@ void MutexLock::unlock()
 
 bool MutexLock::isLockedByCurrentThread() const
 {
-    return holder_ == blink::tid();
+    return holder_ == current_thread::tid();
 }
 
 void MutexLock::assertLockted() const
@@ -48,7 +48,7 @@ void MutexLock::assertLockted() const
 
 void MutexLock::setHolder()
 {
-    holder_ = blink::tid();
+    holder_ = current_thread::tid();
 }
 
 MutexLockGuard::MutexLockGuard(MutexLock& mutex)

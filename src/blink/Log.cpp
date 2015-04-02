@@ -85,8 +85,8 @@ Log::Impl::Impl(LogLevel level, int saved_errno, const SourceFile& file, int lin
     : time_(Timestamp::now()), stream_(), level_(level), line_(line), basename_(file)
 {
     formatTime();
-    tid();
-    stream_ << LogStringHelper(tidString(), tidStringLength());
+    current_thread::tid();
+    stream_ << LogStringHelper(current_thread::tidString(), current_thread::tidStringLength());
     stream_ << LogStringHelper(kLogLevelName[level], kLogLevelNamelength);
     if (saved_errno != 0)
     {

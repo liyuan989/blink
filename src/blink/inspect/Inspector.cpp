@@ -54,7 +54,7 @@ Inspector::Inspector(EventLoop* loop,
       process_inspector_(new ProcessInspector),
       system_inspector_(new SystemInspector)
 {
-    assert(isMainThread());
+    assert(current_thread::isMainThread());
     assert(g_inspector == NULL);
     g_inspector = this;
     server_.setHttpCallback(boost::bind(&Inspector::onRequest, this, _1, _2));
@@ -69,7 +69,7 @@ Inspector::Inspector(EventLoop* loop,
 
 Inspector::~Inspector()
 {
-    assert(isMainThread());
+    assert(current_thread::isMainThread());
     g_inspector = NULL;
 }
 

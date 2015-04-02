@@ -76,7 +76,7 @@ private:
 
 int main(int argc, char const *argv[])
 {
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     if (argc > 1)
     {
         g_numberThreads = atoi(argv[1]);

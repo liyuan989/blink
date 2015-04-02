@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     {
         n_threads = atoi(argv[1]);
     }
-    LOG_INFO << "pid = " << tid() << " threads = " << n_threads;
+    LOG_INFO << "pid = " << getpid() << " threads = " << n_threads;
     EventLoop loop;
     echo::EchoServiceImpl impl;
     RpcServer server(&loop, InetAddress(9600), "RpcServer");

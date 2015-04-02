@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Usage: %s <listen_port>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     uint16_t port = static_cast<uint16_t>(atoi(argv[2]));
     InetAddress listen_addr(port);
     EventLoop loop;

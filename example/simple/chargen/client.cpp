@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "usage: %s <ip> <port>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     EventLoop loop;
     InetAddress server_addr(argv[1], static_cast<uint16_t>(atoi(argv[2])));
     ChargenClient client(&loop, server_addr, "ChargenClient");

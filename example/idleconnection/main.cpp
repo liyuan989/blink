@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
     {
         idle_seconds = atoi(argv[1]);
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid()
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid()
              << "idle seconds = " << idle_seconds;
     EchoServer server(&loop, listen_addr, idle_seconds);
     server.start();

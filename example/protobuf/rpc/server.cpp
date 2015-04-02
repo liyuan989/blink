@@ -30,7 +30,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-    LOG_INFO << "pid = " << tid();
+    LOG_INFO << "pid = " << getpid();
     EventLoop loop;
     InetAddress listen_addr(9600);
     sudoku::SudokuServiceImpl impl;

@@ -94,7 +94,7 @@ void load(int percent)
             g_cond.wakeupAll();
         }
 
-        sleepMicroseconds(10 * 1000);
+        current_thread::sleepMicroseconds(10 * 1000);
     }
     assert(count == percent);
 }

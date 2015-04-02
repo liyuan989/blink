@@ -138,7 +138,7 @@ int main(int argc, char const *argv[])
     {
         threads = atoi(argv[4]);
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     InetAddress server_addr(argv[1], static_cast<uint16_t>(atoi(argv[2])));
     EventLoop loop;
     g_loop = &loop;
@@ -152,7 +152,7 @@ int main(int argc, char const *argv[])
     {
         clients.push_back(new ChatClient(loop_pool.getNextLoop(), server_addr));
         clients[i].connect();
-        sleepMicroseconds(200 * 1000);
+        current_thread::sleepMicroseconds(200 * 1000);
     }
     loop.loop();
     return 0;

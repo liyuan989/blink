@@ -14,12 +14,12 @@ using namespace blink;
 
 void testThreadFunc1()
 {
-    printf("Thread1: pid = %d  tid = %d\n", processes::getpid(), tid());
+    printf("Thread1: pid = %d  tid = %d\n", processes::getpid(), current_thread::tid());
 }
 
 void testThreadFunc2(int data)
 {
-    printf("Thread2: pid = %d  tid = %d  data = %d\n", processes::getpid(), tid(), data);
+    printf("Thread2: pid = %d  tid = %d  data = %d\n", processes::getpid(), current_thread::tid(), data);
 }
 
 class Test
@@ -33,13 +33,14 @@ public:
     void testThreadFunc3(const string& msg)
     {
         printf("Thread3: pid = %d  tid = %d  member = %s  msg = %s\n",
-               processes::getpid(), tid(), s_.c_str(), msg.c_str());
+               processes::getpid(), current_thread::tid(), s_.c_str(), msg.c_str());
     }
 
     void testThreadFunc4()
     {
         sleep(2);
-        printf("Thread4: pid = %d  tid = %d  member = %s\n", processes::getpid(), tid(), s_.c_str());
+        printf("Thread4: pid = %d  tid = %d  member = %s\n",
+               processes::getpid(), current_thread::tid(), s_.c_str());
     }
 
 private:
@@ -48,7 +49,7 @@ private:
 
 int main(int argc, char const *argv[])
 {
-    printf("main: pid = %d  tid =  %d\n", processes::getpid(), tid());
+    printf("main: pid = %d  tid =  %d\n", processes::getpid(), current_thread::tid());
 
     Thread thread1(boost::bind(testThreadFunc1), string("test thread1"));
     thread1.start();

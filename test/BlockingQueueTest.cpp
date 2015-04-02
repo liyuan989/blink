@@ -37,7 +37,7 @@ public:
             char buf[32];
             snprintf(buf, sizeof(buf), "hey boy %d", i);
             task_queue_.put(string(buf));
-            printf("tid = %d, put data = %s, size = %zd\n", tid(), buf, task_queue_.size());
+            printf("tid = %d, put data = %s, size = %zd\n", current_thread::tid(), buf, task_queue_.size());
         }
     }
 
@@ -53,16 +53,17 @@ public:
 private:
     void threadCallback()
     {
-        printf("thread id: %d  name: %s\n", tid(), threadName());
+        printf("thread id: %d  name: %s\n", current_thread::tid(), current_thread::threadName());
         latch_.countDown();
         bool running = true;
         while (running)
         {
             string data = task_queue_.take();
-            printf("thread tid: %d  data: %s  size: %zd\n", tid(), data.c_str(), task_queue_.size());
+            printf("thread tid: %d  data: %s  size: %zd\n",
+                   current_thread::tid(), data.c_str(), task_queue_.size());
             running = (data != "stop");
         }
-        printf("%s stopped! tid: %d\n", threadName(), tid());
+        printf("%s stopped! tid: %d\n", current_thread::threadName(), current_thread::tid());
     }
 
     BlockingQueue<string>  task_queue_;
@@ -107,7 +108,7 @@ public:
 private:
     void threadCallback()
     {
-        printf("thread id: %d  name: %s\n", tid(), threadName());
+        printf("thread id: %d  name: %s\n", current_thread::tid(), current_thread::threadName());
         latch_.countDown();
         std::map<int, int> delay_map;
         bool running = true;
@@ -121,14 +122,15 @@ private:
             }
             running = data.valid();
         }
-        printf("%s stopped! tid: %d\n", threadName(), tid());
+        printf("%s stopped! tid: %d\n", current_thread::threadName(), current_thread::tid());
         for (std::map<int, int>::iterator it = delay_map.begin(); it != delay_map.end(); ++it)
         {
-            printf("%s: tid = %d  delay = %d(usec)  count = %d\n", threadName(), tid(), it->first, it->second);
+            printf("%s: tid = %d  delay = %d(usec)  count = %d\n",
+                   current_thread::threadName(), current_thread::tid(), it->first, it->second);
         }
     }
 
-    BlockingQueue<Timestamp>  task_queue_;
+    BlockingQueue<Timestamp>    task_queue_;
     CountDownLatch              latch_;
     boost::ptr_vector<Thread>   threads_;
 };

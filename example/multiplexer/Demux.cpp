@@ -244,7 +244,7 @@ void DemuxServer::sendServerPacket(int connection_id, Buffer* buf)
 
 int main(int argc, char const *argv[])
 {
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     EventLoop loop;
     InetAddress listen_addr(kListenPort);
     if (argc > 1)

@@ -97,7 +97,7 @@ public:
 
     bool isInLoopThread() const
     {
-        return thread_id_ == blink::tid();
+        return thread_id_ == current_thread::tid();
     }
 
     bool eventHandling() const

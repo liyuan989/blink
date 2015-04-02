@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
         n_clients = atoi(argv[4]);
     }
 
-    LOG_INFO << "pid = " << tid() << " threads = " << n_threads
+    LOG_INFO << "pid = " << getpid() << " threads = " << n_threads
              << " clients = " << n_clients;
     CountDownLatch all_connected(n_clients);
     CountDownLatch all_finished(n_clients);

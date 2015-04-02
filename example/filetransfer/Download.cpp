@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
         return 1;
     }
-    LOG_INFO << "pid = " << getpid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid();
     g_filename = argv[1];
     EventLoop loop;
     TcpServer server(&loop, InetAddress(9600), "FileServer");

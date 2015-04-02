@@ -7,7 +7,7 @@ using namespace blink;
 
 int main(int argc, char const *argv[])
 {
-    LOG_INFO << "pid = " << pid() << ", tid = " << tid();
+    LOG_INFO << "pid = " << pid() << ", tid = " << current_thread::tid();
     EventLoop loop;
     Inspector inspector(&loop, InetAddress(9600), "Inspector");
     loop.loop();

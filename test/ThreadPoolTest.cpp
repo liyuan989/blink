@@ -11,12 +11,12 @@ using namespace blink;
 
 void print()
 {
-    LOG_INFO << "tid=" << tid();
+    LOG_INFO << "tid=" << current_thread::tid();
 }
 
 void printString(const string& s)
 {
-    LOG_INFO << "tid=" << tid() << " " << s.c_str();
+    LOG_INFO << "tid=" << current_thread::tid() << " " << s.c_str();
 }
 
 void test(size_t size)

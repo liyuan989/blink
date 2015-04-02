@@ -172,7 +172,7 @@ string procStat()
 string threadStat()
 {
     char buf[64];
-    snprintf(buf, sizeof(buf), "/proc/self/task/%d/stat", tid());
+    snprintf(buf, sizeof(buf), "/proc/self/task/%d/stat", current_thread::tid());
     string result;
     readFile(buf, 65536, &result);
     return result;

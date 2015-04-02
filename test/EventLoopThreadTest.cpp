@@ -14,7 +14,7 @@ using namespace blink;
 
 void print(EventLoop* p = NULL)
 {
-    printf("print: pid = %d, tid = %d. loop = %p\n", getpid(), tid(), p);
+    printf("print: pid = %d, tid = %d. loop = %p\n", getpid(), current_thread::tid(), p);
 }
 
 void quit(EventLoop* p)
@@ -33,13 +33,13 @@ int main(int argc, char const *argv[])
         EventLoopThread loop_thread2;
         EventLoop* loop = loop_thread2.startLoop();
         loop->runInLoop(boost::bind(print, loop));
-        sleepMicroseconds(500 * 1000);
+        current_thread::sleepMicroseconds(500 * 1000);
     }
     {   // call quit() before destruct.
         EventLoopThread loop_thread3;
         EventLoop* loop = loop_thread3.startLoop();
         loop->runInLoop(boost::bind(quit, loop));
-        sleepMicroseconds(500 * 1000);
+        current_thread::sleepMicroseconds(500 * 1000);
     }
     return 0;
 }
