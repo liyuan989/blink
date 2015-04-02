@@ -23,6 +23,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 template<int SIZE>
 class FixedBuffer : Nocopyable
 {
@@ -122,13 +125,15 @@ private:
     void   (*cookie_)();
 };
 
+}  // namespace detail
+
 class LogStream
 {
 public:
     static const int kSmallBuffer = 4000;
     static const int kLargeBuffer = 4000 * 1000;
 
-    typedef FixedBuffer<kSmallBuffer> Buffer;
+    typedef detail::FixedBuffer<kSmallBuffer> Buffer;
 
     void append(const char* data, size_t len);
     void reset();

@@ -12,6 +12,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 void removeConnection(EventLoop* loop, const TcpConnectionPtr& connection)
 {
     loop->queueInLoop(boost::bind(&TcpConnection::connectDestroyed, connection));
@@ -21,6 +24,8 @@ void removeConnector(const ConnectorPtr& connector)
 {
     // TODO
 }
+
+}  // namespace detail
 
 TcpClient::TcpClient(EventLoop* loop, const InetAddress& server_addr, const string& name_arg)
     : loop_(CHECK_NOTNULL(loop)),
@@ -52,7 +57,7 @@ TcpClient::~TcpClient()
     {
         assert(loop_ = connection->getLoop());
         // not 100% safe, if we are in different thread.
-        CloseCallback cb = boost::bind(&blink::removeConnection, loop_, _1);
+        CloseCallback cb = boost::bind(&detail::removeConnection, loop_, _1);
         loop_->runInLoop(boost::bind(&TcpConnection::setCloseCallback, connection, cb));
         if (unique)
         {
@@ -62,7 +67,7 @@ TcpClient::~TcpClient()
     else
     {
         connector_->stop();
-        loop_->runAfter(1, boost::bind(removeConnector, connector_));
+        loop_->runAfter(1, boost::bind(detail::removeConnector, connector_));
     }
 }
 

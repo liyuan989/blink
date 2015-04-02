@@ -12,6 +12,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 template<typename T>
 struct has_no_destroy     // can not check inherited member function.
 {                         // http://stackoverflow.com/questions/1966362/sfinae-to-check-for-inherited-member-functions
@@ -27,6 +30,8 @@ struct has_no_destroy     // can not check inherited member function.
 template<typename T>
 const bool has_no_destroy<T>::value;
 
+}  // namespace detail
+
 template<typename T>
 class Singleton : Nocopyable
 {
@@ -41,7 +46,7 @@ public:
 private:
     static void init()
     {
-        if (!has_no_destroy<T>::value)
+        if (!detail::has_no_destroy<T>::value)
         {
             value_ = new T();
             ::atexit(destroy);

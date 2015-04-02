@@ -9,6 +9,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 void defaultHttpCallback(const HttpRequest& request, HttpResponse* response)
 {
     response->setStatusCode(HttpResponse::kNotFound);
@@ -16,12 +19,14 @@ void defaultHttpCallback(const HttpRequest& request, HttpResponse* response)
     response->setCloseConnection(true);
 }
 
+}  // namespace detail
+
 HttpServer::HttpServer(EventLoop* loop,
                        const InetAddress& listen_addr,
                        const string& name,
                        TcpServer::Option option)
     : server_(loop, listen_addr, name),
-      http_callback_(defaultHttpCallback)
+      http_callback_(detail::defaultHttpCallback)
 {
     server_.setConnectionCallback(boost::bind(&HttpServer::onConnection, this, _1));
     server_.setMessageCallback(boost::bind(&HttpServer::onMessage, this, _1, _2, _3));

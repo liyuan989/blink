@@ -8,6 +8,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 BOOST_STATIC_ASSERT(sizeof(int) >= sizeof(int32_t));
 
 int getJulianDayNumber(int year, int month, int day)
@@ -33,16 +36,20 @@ Date::YearMonthDay getYearMonthDay(int julian_day_number)
     return result;
 }
 
+}  // namespace detail
+
 const int Date::kDaysPerWeek;
-const int Date::kJuliandayOf1970_01_01 = getJulianDayNumber(1970, 1, 1);
+const int Date::kJuliandayOf1970_01_01 = detail::getJulianDayNumber(1970, 1, 1);
 
 Date::Date(const struct tm& tm_time)
-    : julian_day_number_(getJulianDayNumber(tm_time.tm_year + 1900, tm_time.tm_mon + 1, tm_time.tm_mday))
+    : julian_day_number_(detail::getJulianDayNumber(tm_time.tm_year + 1900,
+                                                    tm_time.tm_mon + 1,
+                                                    tm_time.tm_mday))
 {
 }
 
 Date::Date(int years, int months, int days)
-    : julian_day_number_(getJulianDayNumber(years, months, days))
+    : julian_day_number_(detail::getJulianDayNumber(years, months, days))
 {
 }
 
@@ -56,7 +63,7 @@ string Date::toString() const
 
 Date::YearMonthDay Date::yearMonthDay() const
 {
-    return getYearMonthDay(julian_day_number_);
+    return detail::getYearMonthDay(julian_day_number_);
 }
 
 }  // namespace blink

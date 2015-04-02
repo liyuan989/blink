@@ -17,6 +17,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 int createTimerfd()
 {
     int timerfd = ::timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
@@ -77,9 +80,11 @@ void resetTimerfd(int timerfd, Timestamp expiration)
     }
 }
 
+}  // namespace detail
+
 TimerQueue::TimerQueue(EventLoop* loop)
     : loop_(loop),
-      timerfd_(createTimerfd()),
+      timerfd_(detail::createTimerfd()),
       timerfd_channel_(loop, timerfd_),
       timers_(),
       active_timers_(),
@@ -119,7 +124,7 @@ void TimerQueue::addTimerInLoop(Timer* timer)
     bool earliest_changed = insert(timer);
     if (earliest_changed)
     {
-        resetTimerfd(timerfd_, timer->expiration());
+        detail::resetTimerfd(timerfd_, timer->expiration());
     }
 }
 
@@ -148,7 +153,7 @@ void TimerQueue::handleRead()
 {
     loop_->assertInLoopThread();
     Timestamp now(Timestamp::now());
-    readTimerfd(timerfd_, now);
+    detail::readTimerfd(timerfd_, now);
     std::vector<Entry> expired = getExpired(now);
     calling_expired_timers_ = true;
     canceling_timers_.clear();
@@ -207,7 +212,7 @@ void TimerQueue::reset(const std::vector<Entry>& expired, Timestamp now)
     }
     if (next_expire.valid())
     {
-        resetTimerfd(timerfd_, next_expire);
+        detail::resetTimerfd(timerfd_, next_expire);
     }
 }
 

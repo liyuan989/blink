@@ -20,6 +20,9 @@ namespace blink
 
 const int kSecondsPerDay = 60 * 60 * 24;
 
+namespace detail
+{
+
 struct Transition
 {
     time_t  gmt_time;
@@ -136,13 +139,18 @@ private:
     FILE*  fp_;
 };
 
+}  // namespace detail
+
 struct TimeZone::Data
 {
-    std::vector<Transition>   transition;
-    std::vector<LocalTime>    local_time;
-    std::vector<string>  name;
-    string               abbreviation;
+    std::vector<detail::Transition>   transition;
+    std::vector<detail::LocalTime>    local_time;
+    std::vector<string>               name;
+    string                            abbreviation;
 };
+
+namespace detail
+{
 
 bool readTimeZoneFile(const char* zone_file, TimeZone::Data* data)
 {
@@ -238,10 +246,12 @@ const LocalTime* findLocalTime(const TimeZone::Data& data, Transition sentry, Co
     return result;
 }
 
+}  // namespace detail
+
 TimeZone::TimeZone(const char* zonefile)
     : data_(new TimeZone::Data)
 {
-    if (!readTimeZoneFile(zonefile, data_.get()))
+    if (!detail::readTimeZoneFile(zonefile, data_.get()))
     {
         data_.reset();
     }
@@ -250,7 +260,7 @@ TimeZone::TimeZone(const char* zonefile)
 TimeZone::TimeZone(int east_of_utc, const char* timezone_name)
     : data_(new TimeZone::Data)
 {
-    data_->local_time.push_back(LocalTime(east_of_utc, false, 0));
+    data_->local_time.push_back(detail::LocalTime(east_of_utc, false, 0));
     data_->abbreviation = timezone_name;
 }
 
@@ -281,8 +291,8 @@ struct tm TimeZone::toLocalTime(time_t seconds_since_epoch) const
     memset(&result, 0, sizeof(result));
     assert(data_ != NULL);
     const Data& data(*data_);
-    Transition sentry(seconds_since_epoch, 0, 0);
-    const LocalTime* local = findLocalTime(data, sentry, Comp(true));
+    detail::Transition sentry(seconds_since_epoch, 0, 0);
+    const detail::LocalTime* local = detail::findLocalTime(data, sentry, detail::Comp(true));
 
     if (local)
     {
@@ -301,8 +311,8 @@ time_t TimeZone::fromLocalTime(const struct tm& tm_time) const
     const Data& data(*data_);
     struct tm temp = tm_time;
     time_t seconds = ::timegm(&temp);
-    Transition sentry(0, seconds, 0);
-    const LocalTime* local = findLocalTime(data, sentry, Comp(false));
+    detail::Transition sentry(0, seconds, 0);
+    const detail::LocalTime* local = detail::findLocalTime(data, sentry, detail::Comp(false));
 
     if (tm_time.tm_isdst)
     {

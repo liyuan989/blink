@@ -17,6 +17,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 void resetAfterFork()
 {
     current_thread::t_cache_tid = 0;
@@ -103,6 +106,8 @@ void* startThread(void* arg)
     return NULL;
 }
 
+}  // namespace detail
+
 AtomicInt32 Thread::num_created_;
 
 Thread::Thread(const ThreadFunc& func, const string& thread_name)
@@ -133,8 +138,8 @@ void Thread::start()
 {
     assert(!started_);
     started_ = true;
-    ThreadData* data = new ThreadData(func_, name_, tid_);
-    if (threads::pthread_create(&pthread_id_, NULL, startThread, data) != 0)
+    detail::ThreadData* data = new detail::ThreadData(func_, name_, tid_);
+    if (threads::pthread_create(&pthread_id_, NULL, detail::startThread, data) != 0)
     {
         started_ = false;
         delete data;

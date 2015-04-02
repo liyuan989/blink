@@ -8,6 +8,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 template<typename T>
 class AtomicInteger : Nocopyable
 {
@@ -66,15 +69,17 @@ private:
     volatile T value_;
 };
 
-typedef AtomicInteger<int64_t> AtomicInt64;
-typedef AtomicInteger<int32_t> AtomicInt32;
-typedef AtomicInteger<int16_t> AtomicInt16;
-typedef AtomicInteger<int8_t>  AtomicInt8;
+}  // namespace detail
 
-typedef AtomicInteger<uint64_t> AtomicUint64;
-typedef AtomicInteger<uint32_t> AtomicUint32;
-typedef AtomicInteger<uint16_t> AtomicUint16;
-typedef AtomicInteger<uint8_t>  AtomicUint8;
+typedef detail::AtomicInteger<int64_t> AtomicInt64;
+typedef detail::AtomicInteger<int32_t> AtomicInt32;
+typedef detail::AtomicInteger<int16_t> AtomicInt16;
+typedef detail::AtomicInteger<int8_t>  AtomicInt8;
+
+typedef detail::AtomicInteger<uint64_t> AtomicUint64;
+typedef detail::AtomicInteger<uint32_t> AtomicUint32;
+typedef detail::AtomicInteger<uint16_t> AtomicUint16;
+typedef detail::AtomicInteger<uint8_t>  AtomicUint8;
 
 }  // namespace blink
 

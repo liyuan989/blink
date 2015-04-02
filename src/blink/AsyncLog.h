@@ -20,9 +20,9 @@ class TimeZone;
 
 class AsyncLog : Nocopyable
 {
-    typedef FixedBuffer<LogStream::kLargeBuffer>  Buffer;
-    typedef boost::ptr_vector<Buffer>             BufferVector;
-    typedef boost::ptr_vector<Buffer>::auto_type  BufferPtr;
+    typedef detail::FixedBuffer<LogStream::kLargeBuffer>  Buffer;
+    typedef boost::ptr_vector<Buffer>                     BufferVector;
+    typedef boost::ptr_vector<Buffer>::auto_type          BufferPtr;
 
 public:
     AsyncLog(const string& basename, size_t roll_size, int flush_interval = 3);

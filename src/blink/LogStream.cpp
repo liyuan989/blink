@@ -9,6 +9,9 @@
 namespace blink
 {
 
+namespace detail
+{
+
 template<typename T>
 size_t convert(char* buf, T val)  // int to string conversion.  such as int a = 97 convert to char s[2] = {'9','7'}
 {
@@ -51,6 +54,8 @@ size_t convertHex(char* buf, uintptr_t val)  // ptr address to string convertion
     std::reverse(buf, p);
     return p - buf;
 }
+
+}  // namespace detail
 
 const int LogStream::kSmallBuffer;
 const int LogStream::kLargeBuffer;
@@ -120,7 +125,7 @@ LogStream& LogStream::operator<<(const void* x)
         char* cur = buffer_.current();
         cur[0] = '0';
         cur[1] = 'x';
-        size_t len = convertHex(cur + 2, p);
+        size_t len = detail::convertHex(cur + 2, p);
         buffer_.add(len + 2);
     }
     return *this;
@@ -149,7 +154,7 @@ void LogStream::formatInteger(T x)
 {
     if (buffer_.availableSize() >= static_cast<size_t>(kMaxNumericSize))
     {
-        size_t len = convert(buffer_.current(), x);
+        size_t len = detail::convert(buffer_.current(), x);
         buffer_.add(len);
     }
 }
