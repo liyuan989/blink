@@ -43,8 +43,8 @@ int main(int argc, char const *argv[])
         uint16_t port = static_cast<uint16_t>(atoi(hostport.c_str() + colon + 1));
         g_topic = argv[2];
         g_content = argv[3];
-        string name = username() + "@" + hostName();
-        name += ":" + pidString();
+        string name = process_info::username() + "@" + process_info::hostName();
+        name += ":" + process_info::pidString();
 
         if (g_content == "-")
         {

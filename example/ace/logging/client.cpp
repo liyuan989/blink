@@ -70,11 +70,11 @@ private:
         {
             connection_ = connection;
             LogRecord_HeartBeat* hb = log_record_.mutable_heartbeat();
-            hb->set_hostname(hostName().c_str());
-            hb->set_process_name(procName().c_str());
-            hb->set_process_id(pid());
-            hb->set_process_start_time(startTime().microSecondsSinceEpoch());
-            hb->set_username(username().c_str());
+            hb->set_hostname(process_info::hostName().c_str());
+            hb->set_process_name(process_info::procName().c_str());
+            hb->set_process_id(process_info::pid());
+            hb->set_process_start_time(process_info::startTime().microSecondsSinceEpoch());
+            hb->set_username(process_info::username().c_str());
             updateLogRecord("Heartbeat");
             codec_.send(connection_, log_record_);
             log_record_.clear_heartbeat();

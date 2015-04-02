@@ -79,9 +79,9 @@ private:
 
     void printConnection()
     {
-        string procStatus = procStat();
+        string procStatus = process_info::procStat();
         printf("%d connection, file %d , VmSize %ld KiB, RSS %ld KiB, \n",
-               connections_.get(), openedFiles(),
+               connections_.get(), process_info::openedFiles(),
                getLong(procStatus, "VmSize:"), getLong(procStatus, "VmRSS:"));
         string meminfo;
         readFile("/proc/meminfo", 65536, &meminfo);
@@ -113,7 +113,7 @@ private:
 int main(int argc, char const *argv[])
 {
     LOG_INFO << "pid = " << getpid() << ", tid = " << current_thread::tid()
-             << ", max files = " << maxOpenFiles();
+             << ", max files = " << process_info::maxOpenFiles();
     if (argc > 1)
     {
         g_numberThreads = atoi(argv[1]);

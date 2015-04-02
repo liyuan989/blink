@@ -81,13 +81,13 @@ class Procmon : Nocopyable
 {
 public:
     Procmon(EventLoop* loop, pid_t pid, uint16_t port, const char* procname)
-        : kClockTicksPerSecond_(clockTicksPerSecond()),
-          kb_per_page_(pageSize() / 1024),
+        : kClockTicksPerSecond_(process_info::clockTicksPerSecond()),
+          kb_per_page_(process_info::pageSize() / 1024),
           kBootTime_(getBootTime()),
           pid_(pid),
           server_(loop, InetAddress(port), getName()),
-          procname_(procName(readProcFile("stat")).asString()),
-          hostname_(hostName()),
+          procname_(process_info::procName(readProcFile("stat")).asString()),
+          hostname_(process_info::hostName()),
           cmdline_(getCmdline()),
           ticks_(0),
           cpu_usage_(600 / kPeriod_),  // 10 minutes
@@ -203,7 +203,7 @@ private:
         }
         int pid = atoi(stat.c_str());
         assert(pid == pid_);
-        StringPiece procname = procName(stat);
+        StringPiece procname = process_info::procName(stat);
         appendReponse("<h1>%s on %s</h1>\n",
                       procname.asString().c_str(), hostname_.c_str());
         response_.append("<p>Refresh <a href=\"?refresh=1\">1s</a> ");
@@ -336,7 +336,7 @@ private:
         {
             return;
         }
-        StringPiece procname = procName(stat);
+        StringPiece procname = process_info::procName(stat);
         StatData stat_data;
         memset(&stat_data, 0, sizeof(stat_data));
         stat_data.parse(procname.end() + 1, kb_per_page_);  // end is ')'

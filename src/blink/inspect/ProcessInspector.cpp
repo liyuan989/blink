@@ -76,9 +76,9 @@ StringPiece next(StringPiece data)
     return "";
 }
 
-CpuTime getCpuTime(StringPiece data)
+process_info::CpuTime getCpuTime(StringPiece data)
 {
-    CpuTime t;
+    process_info::CpuTime t;
     for (int i = 0; i < 10; ++i)
     {
         data = next(data);
@@ -86,7 +86,7 @@ CpuTime getCpuTime(StringPiece data)
     long utime = strtol(data.data(), NULL, 10);
     data = next(data);
     long stime = strtol(data.data(), NULL, 10);
-    const double hz = static_cast<double>(clockTicksPerSecond());
+    const double hz = static_cast<double>(process_info::clockTicksPerSecond());
     t.user_seconds = static_cast<double>(utime) / hz;
     t.system_seconds = static_cast<double>(stime) / hz;
     return t;
@@ -103,7 +103,7 @@ int stringPrintf(string* out, const char* fmt, ...)
     return ret;
 }
 
-string ProcessInspector::username_ = username();
+string ProcessInspector::username_ = process_info::username();
 
 void ProcessInspector::registerCommands(Inspector* inspector)
 {
@@ -122,27 +122,27 @@ string ProcessInspector::overview(HttpRequest::Method, const Inspector::ArgList&
     result += "Page generated at ";
     result += now.toFormattedString();
     result += " (UTC)\nStart at ";
-    result += startTime().toFormattedString();
+    result += process_info::startTime().toFormattedString();
     result += " (UTC), up for ";
-    result += uptime(now, startTime(), true);
+    result += uptime(now, process_info::startTime(), true);
 
-    string proc_status = procStatus();
+    string proc_status = process_info::procStatus();
     result += getProcessName(proc_status);
     result += " (";
-    result += exePath();
+    result += process_info::exePath();
     result += ") running as ";
     result += username_;
     result += " on ";
-    result += hostName();
+    result += process_info::hostName();
     result += "\n";
 
-    if (isDebugBuild())
+    if (process_info::isDebugBuild())
     {
         result += "WARNING: debug build!\n";
     }
 
     stringPrintf(&result, "pid %d, number of threads %ld, bits %zd\n",
-                 blink::pid(), getLong(proc_status, "Threads:"), CHAR_BIT * sizeof(void*));
+                 process_info::pid(), getLong(proc_status, "Threads:"), CHAR_BIT * sizeof(void*));
 
     result += "Virtual memory: ";
     stringPrintf(&result, "%.3f MiB, ",
@@ -154,9 +154,10 @@ string ProcessInspector::overview(HttpRequest::Method, const Inspector::ArgList&
 
     // FIXME: VmData
 
-    stringPrintf(&result, "Opened files: %d, limit: %d\n", blink::openedFiles(), maxOpenFiles());
+    stringPrintf(&result, "Opened files: %d, limit: %d\n",
+                 process_info::openedFiles(), process_info::maxOpenFiles());
 
-    CpuTime t = cpuTime();
+    process_info::CpuTime t = process_info::cpuTime();
     stringPrintf(&result, "User time: %12.3fs\nSys time: %12.3fs\n",
                  t.user_seconds, t.system_seconds);
 
@@ -168,25 +169,25 @@ string ProcessInspector::overview(HttpRequest::Method, const Inspector::ArgList&
 string ProcessInspector::pid(HttpRequest::Method, const Inspector::ArgList&)
 {
     char buf[32];
-    snprintf(buf, sizeof(buf), "%d", blink::pid());
+    snprintf(buf, sizeof(buf), "%d", process_info::pid());
     return buf;
 }
 
 string ProcessInspector::proStatus(HttpRequest::Method, const Inspector::ArgList&)
 {
-    return procStatus();
+    return process_info::procStatus();
 }
 
 string ProcessInspector::openedFiles(HttpRequest::Method, const Inspector::ArgList&)
 {
     char buf[32];
-    snprintf(buf, sizeof(buf), "%d", blink::openedFiles());
+    snprintf(buf, sizeof(buf), "%d", process_info::openedFiles());
     return buf;
 }
 
 string ProcessInspector::threads(HttpRequest::Method, const Inspector::ArgList&)
 {
-    std::vector<pid_t> threads = blink::threads();
+    std::vector<pid_t> threads = process_info::threads();
     string result = "  TID NAME             S    User Time  System Time\n";
     result.resize(threads.size() * 64);
     string stat;
@@ -197,14 +198,14 @@ string ProcessInspector::threads(HttpRequest::Method, const Inspector::ArgList&)
         snprintf(buf, sizeof(buf), "/proc/%d/stat", tid);
         if (readFile(buf, 65536, &stat) == 0)
         {
-            StringPiece name = procName(stat);
+            StringPiece name = process_info::procName(stat);
             const char* rp = name.end();
             assert(*rp == ')');
             const char* state = rp + 2;
             *const_cast<char*>(rp) = '\0';   // don't do this at home
             StringPiece data(stat);
             data.removePrefix(static_cast<int>(state - data.data() + 2));
-            CpuTime t = getCpuTime(data);
+            process_info::CpuTime t = getCpuTime(data);
             snprintf(buf, sizeof(buf), "%5d %-16s %c %12.3f %12.3f\n",
                      tid, name.data(), *state, t.user_seconds, t.system_seconds);
             result += buf;

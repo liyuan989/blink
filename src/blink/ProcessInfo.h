@@ -10,6 +10,9 @@
 namespace blink
 {
 
+namespace process_info
+{
+
 pid_t pid();
 string pidString();
 string username();
@@ -49,6 +52,8 @@ struct CpuTime
 CpuTime cpuTime();
 int threadsNumber();
 std::vector<pid_t> threads();
+
+}  // namespace process_info
 
 }  // namespace blink
 

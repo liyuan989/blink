@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 using namespace blink;
+using namespace blink::process_info;
 
 int main(int argc, char const *argv[])
 {

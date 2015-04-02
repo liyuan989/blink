@@ -22,6 +22,12 @@
 namespace blink
 {
 
+namespace process_info
+{
+
+namespace detail
+{
+
 __thread int t_opened_file_num = 0;
 
 //  struct dirent
@@ -62,6 +68,8 @@ Timestamp g_startTime = Timestamp::now();
 int       g_clockTicks = static_cast<int>(::sysconf(_SC_CLK_TCK));
 int       g_pageSize = static_cast<int>(::sysconf(_SC_PAGESIZE));
 
+}  // namespace detail
+
 pid_t pid()
 {
     return processes::getpid();
@@ -101,17 +109,17 @@ string username()
 
 Timestamp startTime()
 {
-    return g_startTime;
+    return detail::g_startTime;
 }
 
 int clockTicksPerSecond()
 {
-    return g_clockTicks;
+    return detail::g_clockTicks;
 }
 
 int pageSize()
 {
-    return g_pageSize;
+    return detail::g_pageSize;
 }
 
 bool isDebugBuild()
@@ -192,9 +200,9 @@ string exePath()
 
 int openedFiles()
 {
-    t_opened_file_num = 0;
-    scanDir("/proc/self/fd", fdDirFilter);
-    return t_opened_file_num;
+    detail::t_opened_file_num = 0;
+    detail::scanDir("/proc/self/fd", detail::fdDirFilter);
+    return detail::t_opened_file_num;
 }
 
 //  struct rlimit
@@ -252,10 +260,12 @@ int threadsNumber()
 std::vector<pid_t> threads()
 {
     std::vector<pid_t> result;
-    t_pids = &result;
-    scanDir("/proc/self/task", taskDirFilter);
-    t_pids = NULL;
+    detail::t_pids = &result;
+    detail::scanDir("/proc/self/task", detail::taskDirFilter);
+    detail::t_pids = NULL;
     return result;
 }
+
+}  // namespace process_info
 
 }  // namespace blink

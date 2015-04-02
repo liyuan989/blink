@@ -40,9 +40,9 @@ string PerformanceInspector::growth(HttpRequest::Method, const Inspector::ArgLis
 
 string PerformanceInspector::profile(HttpRequest::Method, const Inspector::ArgList&)
 {
-    string filename = "/tmp/" + procName();
+    string filename = "/tmp/" + process_info::procName();
     filename += ".";
-    filename += pidString();
+    filename += process_info::pidString();
     filename += ".";
     filename += Timestamp::now().toString();
     filename += ".profile";

@@ -127,7 +127,7 @@ string LogFile::getLogFileName(const string& basename, time_t* now)
     char time_buf[32];
     strftime(time_buf, sizeof(time_buf), ".%Y%m%d-%H%M%S.", &tm_time);
     filename += time_buf;
-    filename += hostName();
+    filename += process_info::hostName();
     char pid_buf[32];
     snprintf(pid_buf, sizeof(pid_buf), ".%d", processes::getpid());
     filename += pid_buf;

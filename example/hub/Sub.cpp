@@ -51,8 +51,8 @@ int main(int argc, char const *argv[])
         }
         EventLoop loop;
         g_loop = &loop;
-        string name = username() + "@" + hostName();
-        name += ":" + pidString();
+        string name = process_info::username() + "@" + process_info::hostName();
+        name += ":" + process_info::pidString();
         PubSubClient client(g_loop, InetAddress(ip, port), name);
         client.setConnectionCallback(connection);
         client.start();
