@@ -195,7 +195,7 @@ string ProcessInspector::threads(HttpRequest::Method, const Inspector::ArgList&)
     {
         char buf[256];
         int tid = threads[i];
-        snprintf(buf, sizeof(buf), "/proc/%d/stat", tid);
+        snprintf(buf, sizeof(buf), "/proc/%d/task/%d", process_info::pid(), tid);
         if (readFile(buf, 65536, &stat) == 0)
         {
             StringPiece name = process_info::procName(stat);
