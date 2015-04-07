@@ -106,71 +106,22 @@ bool Socket::getTcpInfoString(char* buf, size_t len) const
 
 void Socket::bindAddress(const InetAddress& local_addr)
 {
-    struct sockaddr_in addr = local_addr.getSockAddrInet();
-    int val = sockets::bind(sockfd_, sockets::sockaddr_cast(&addr), sizeof(addr));
-    if (val < 0)
-    {
-        LOG_FATAL << "Socket::bindAddress";
-    }
+    sockets::bindOrDie(sockfd_, local_addr.getSockAddrInet());
 }
 
 void Socket::listen()
 {
-    int val = sockets::listen(sockfd_, SOMAXCONN);
-    if (val < 0)
-    {
-        LOG_FATAL << "Socket::listen";
-    }
+    sockets::listenOrDie(sockfd_);
 }
 
-int Socket::accept(InetAddress* addr)
+int Socket::accept(InetAddress* peer_addr)
 {
-    struct sockaddr_in addr_in;
-    memset(&addr_in, 0, sizeof(addr_in));
-    int len = sizeof(addr_in);
-#if VALGRIND || defined (NO_ACCEPT4)
-    int connectfd = sockets::accept(sockfd_, sockets::sockaddr_cast(&addr_in), &len);
-    bool ret = sockets::setNonBlockAndCloseOnExec(sockfd_);
-    if (!ret)
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    int connectfd = sockets::accept(sockfd_, &addr);
+    if (connectfd >= 0)
     {
-        LOG_FATAL << "Socket::accept, setNonBlockAndCloseOnExec";
-    }
-#else
-    int connectfd = sockets::accept4(sockfd_, sockets::sockaddr_cast(&addr_in),
-                                     &len, SOCK_NONBLOCK | SOCK_CLOEXEC);
-#endif
-    if (connectfd < 0)
-    {
-        int saved_errno = errno;
-        LOG_ERROR << "Socket::accept, connectfd";
-        switch(saved_errno)
-        {
-            case EAGAIN:               // Try again
-            case ECONNABORTED:         // Software caused connection abort
-            case EINTR:                // Interrupted system call
-            case EPROTO:               // Protocol error
-            case EPERM:                // Operation not permitted
-            case EMFILE:               // Too many open files
-                errno = saved_errno;
-                break;
-            case EBADF:                // File descriptor in bad state
-            case EFAULT:               // Bad address
-            case EINVAL:               // Invalid argument
-            case ENFILE:               // File table overflow
-            case ENOBUFS:              // No buffer space available
-            case ENOMEM:               // Out of memory
-            case ENOTSOCK:             // Socket operation on non-socket
-            case EOPNOTSUPP:           // Operation not supported on transport endpoint
-                LOG_FATAL << "unexpected error of accept/accept4";
-                break;
-            default:
-                LOG_FATAL << "unknown error of accept/accept4";
-                break;
-        }
-    }
-    else
-    {
-        addr->setSockAddrInet(addr_in);
+        peer_addr->setSockAddrInet(addr);
     }
     return connectfd;
 }

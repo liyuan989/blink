@@ -24,7 +24,7 @@ struct sockaddr* sockaddr_cast(struct sockaddr_in* addr)
     return static_cast<struct sockaddr*>(implicit_cast<void*>(addr));
 }
 
-const struct sockaddr* sockaddr_cast(const struct socket_in* addr)
+const struct sockaddr* sockaddr_cast(const struct sockaddr_in* addr)
 {
     return static_cast<const struct sockaddr*>(implicit_cast<const void*>(addr));
 }
@@ -109,19 +109,20 @@ struct hostent* gethostbyaddr(const char* addr, int len, int type)
     return val;
 }
 
-int gethostbyname_r(const char* name, struct hostent* ret, char* buf, size_t buflen,
-                    struct hostent** result, int* h_errnop)
+int gethostbyname_r(const char* name, struct hostent* ret, char* buf,
+                    size_t buflen, struct hostent** result, int* h_errnop)
 {
     return ::gethostbyname_r(name, ret, buf, buflen, result, h_errnop);
 }
 
-int gethostbyaddr_r(const void* addr, socklen_t len, int type, struct hostent* ret, char* buf, size_t buflen,
-                    struct hostent** result, int* h_errnop)
+int gethostbyaddr_r(const void* addr, socklen_t len, int type, struct hostent* ret,
+                    char* buf, size_t buflen, struct hostent** result, int* h_errnop)
 {
     return ::gethostbyaddr_r(addr, len, type, ret, buf, buflen, result, h_errnop);
 }
 
-int getaddrinfo(const char* hostname, const char* service, const struct addrinfo* hints, struct addrinfo** result)
+int getaddrinfo(const char* hostname, const char* service,
+                const struct addrinfo* hints, struct addrinfo** result)
 {
     int val = ::getaddrinfo(hostname, service, hints, result);
     if (val != 0)
@@ -131,8 +132,8 @@ int getaddrinfo(const char* hostname, const char* service, const struct addrinfo
     return val;
 }
 
-int getnameinfo(const struct sockaddr* addr, socklen_t addrlen, char* host, socklen_t hostlen,
-                char* serv, socklen_t servlen, int flags)
+int getnameinfo(const struct sockaddr* addr, socklen_t addrlen, char* host,
+                socklen_t hostlen, char* serv, socklen_t servlen, int flags)
 {
     int val = ::getnameinfo(addr, addrlen, host, hostlen, serv, servlen, flags);
     if (val != 0)
@@ -147,29 +148,74 @@ int socket(int domain, int type, int protocol)
     return ::socket(domain, type, protocol);
 }
 
-int connect(int sockfd, struct sockaddr* server_addr, int addrlen)
+int connect(int sockfd, const struct sockaddr_in& server_addr)
 {
-    return ::connect(sockfd, server_addr, addrlen);  // connect will return -1 in non-blocking model,
-}                                                    // the checking errno work leave for user.
-
-int bind(int sockfd, struct sockaddr* my_addr, int addrlen)
-{
-    return ::bind(sockfd, my_addr, addrlen);
+    // connect will return -1 in non-blocking model,
+    // the checking errno work leave for user.
+    return ::connect(sockfd, sockets::sockaddr_cast(&server_addr), static_cast<socklen_t>(sizeof(server_addr)));
 }
 
-int listen(int sockfd, int backlog)
+void bindOrDie(int sockfd, const struct sockaddr_in& addr)
 {
-    return ::listen(sockfd, backlog);
+    int val = ::bind(sockfd, sockets::sockaddr_cast(&addr), static_cast<socklen_t>(sizeof(addr)));
+    if (val < 0)
+    {
+        LOG_FATAL << "sockets::bindOrDie";
+    }
 }
 
-int accept(int sockfd, struct sockaddr* addr, int* addrlen)
+void listenOrDie(int sockfd)
 {
-    return ::accept(sockfd, addr, static_cast<socklen_t*>(static_cast<void*>(addrlen)));
+    int val = ::listen(sockfd, SOMAXCONN);
+    if (val < 0)
+    {
+        LOG_FATAL << "sockets::listenOrDie";
+    }
 }
 
-int accept4(int sockfd, struct sockaddr* addr, int* addrlen, int flags)
+int accept(int sockfd, struct sockaddr_in* addr)
 {
-    return ::accept4(sockfd, addr, static_cast<socklen_t*>(static_cast<void*>(addrlen)), flags);
+    socklen_t len = static_cast<socklen_t>(sizeof(*addr));
+#if VALGRIND || defined (NO_ACCEPT4)
+    int connectfd = ::accept(sockfd, sockets::sockaddr_cast(addr), &len);
+    bool ret = sockets::setNonBlockAndCloseOnExec(connectfd);
+    if (!ret)
+    {
+        LOG_FATAL << "Socket::accept, setNonBlockAndCloseOnExec";
+    }
+#else
+    int connectfd = ::accept4(sockfd, sockets::sockaddr_cast(addr), &len, SOCK_NONBLOCK | SOCK_CLOEXEC);
+#endif
+    if (connectfd < 0)
+    {
+        int saved_errno = errno;
+        LOG_ERROR << "Socket::accept, connectfd";
+        switch(saved_errno)
+        {
+            case EAGAIN:               // Try again
+            case ECONNABORTED:         // Software caused connection abort
+            case EINTR:                // Interrupted system call
+            case EPROTO:               // Protocol error
+            case EPERM:                // Operation not permitted
+            case EMFILE:               // Too many open files
+                errno = saved_errno;
+                break;
+            case EBADF:                // File descriptor in bad state
+            case EFAULT:               // Bad address
+            case EINVAL:               // Invalid argument
+            case ENFILE:               // File table overflow
+            case ENOBUFS:              // No buffer space available
+            case ENOMEM:               // Out of memory
+            case ENOTSOCK:             // Socket operation on non-socket
+            case EOPNOTSUPP:           // Operation not supported on transport endpoint
+                LOG_FATAL << "unexpected error of accept/accept4";
+                break;
+            default:
+                LOG_FATAL << "unknown error of accept/accept4";
+                break;
+        }
+    }
+    return connectfd;
 }
 
 ssize_t read(int fd, void* buf, size_t n)
@@ -207,7 +253,7 @@ ssize_t writev(int fd, const struct iovec* iov, int iovcnt)
     return ::writev(fd, iov, iovcnt);
 }
 
-int createNonblocking()
+int createNonblockingOrDie()
 {
 #if VALGRIND
     int sockfd = sockets::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -308,7 +354,7 @@ struct sockaddr_in getPeerAddr(int sockfd)
 
 int openClientFd(char* hostname, int port)
 {
-    int clientfd = sockets::socket(AF_INET, SOCK_STREAM, 0);
+    int clientfd = sockets::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (clientfd < 0)
     {
         return -1;
@@ -332,7 +378,7 @@ int openClientFd(char* hostname, int port)
     {
         memcpy(&serveraddr.sin_addr.s_addr, &ipaddr.s_addr, sizeof(ipaddr.s_addr));
     }
-    if (sockets::connect(clientfd, sockets::sockaddr_cast(&serveraddr), sizeof(serveraddr)) < 0)
+    if (sockets::connect(clientfd, serveraddr) < 0)
     {
         return -1;
     }
@@ -341,7 +387,7 @@ int openClientFd(char* hostname, int port)
 
 int openListenFd(int port)
 {
-    int listenfd = sockets::socket(AF_INET, SOCK_STREAM, 0);
+    int listenfd = sockets::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (listenfd < 0)
     {
         return -1;
@@ -359,14 +405,8 @@ int openListenFd(int port)
 #pragma GCC diagnostic ignored "-Wold-style-cast"
     serveraddr.sin_addr.s_addr = sockets::hton_long(INADDR_ANY);
 #pragma GCC diagnostic error "-Wold-style-cast"
-    if (sockets::bind(listenfd, sockets::sockaddr_cast(&serveraddr), sizeof(serveraddr)) < 0)
-    {
-        return -1;
-    }
-    if (sockets::listen(listenfd, ::atoi("LISTENQ")) < 0)
-    {
-        return -1;
-    }
+    sockets::bindOrDie(listenfd, serveraddr);
+    sockets::listenOrDie(listenfd);
     return listenfd;
 }
 

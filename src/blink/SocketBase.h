@@ -38,11 +38,11 @@ void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr);
 struct hostent* gethostbyname(const char* name);  // thread unsafe
 struct hostent* gethostbyaddr(const char* addr, int len, int type);  // thread unsafe
 
-int gethostbyname_r(const char* name, struct hostent* ret, char* buf, size_t buflen,
-                    struct hostent** result, int* h_errnop);  // thread safe
+int gethostbyname_r(const char* name, struct hostent* ret, char* buf,
+                    size_t buflen, struct hostent** result, int* h_errnop);  // thread safe
 
-int gethostbyaddr_r(const void* addr, socklen_t len, int type, struct hostent* ret, char* buf, size_t buflen,
-                    struct hostent** result, int* h_errnop);  // thread safe
+int gethostbyaddr_r(const void* addr, socklen_t len, int type, struct hostent* ret,
+                    char* buf, size_t buflen, struct hostent** result, int* h_errnop);  // thread safe
 
 //  struct addrinfo
 //  {
@@ -56,9 +56,11 @@ int gethostbyaddr_r(const void* addr, socklen_t len, int type, struct hostent* r
 //      struct addrinfo*  ai_next;        /* ptr to next structure in licked list */
 //  };
 
-int getaddrinfo(const char* hostname, const char* service, const struct addrinfo* hints, struct addrinfo** result);
-int getnameinfo(const struct sockaddr* addr, socklen_t addrlen, char* host, socklen_t hostlen,
-	            char* serv, socklen_t servlen, int flags);
+int getaddrinfo(const char* hostname, const char* service,
+                const struct addrinfo* hints, struct addrinfo** result);
+
+int getnameinfo(const struct sockaddr* addr, socklen_t addrlen, char* host,
+                socklen_t hostlen, char* serv, socklen_t servlen, int flags);
 
 //  struct sockaddr
 //  {
@@ -80,16 +82,15 @@ int getnameinfo(const struct sockaddr* addr, socklen_t addrlen, char* host, sock
 //  };
 
 struct sockaddr* sockaddr_cast(struct sockaddr_in* addr);
-const struct sockaddr* sockaddr_cast(const struct socket_in* addr);
+const struct sockaddr* sockaddr_cast(const struct sockaddr_in* addr);
 struct sockaddr_in* sockaddr_in_cast(struct sockaddr* addr);
 const struct sockaddr_in* sockaddr_in_cast(const struct sockaddr* addr);
 
 int socket(int domain, int type, int protocol);
-int connect(int sockfd, struct sockaddr* server_addr, int addrlen);
-int bind(int sockfd, struct sockaddr* my_addr, int addrlen);
-int listen(int sockfd, int backlog);
-int accept(int sockfd, struct sockaddr* addr, int* addrlen);
-int accept4(int sockfd, struct sockaddr* addr, int* addrlen, int flags);
+int connect(int sockfd, const struct sockaddr_in& server_addr);
+void bindOrDie(int sockfd, const struct sockaddr_in& addr);
+void listenOrDie(int sockfd);
+int accept(int sockfd, struct sockaddr_in* addr);
 ssize_t read(int fd, void* buf, size_t n);
 ssize_t write(int fd, const void* buf, size_t n);
 int close(int fd);
@@ -104,7 +105,7 @@ int shutdown(int sockfd, int howto);
 ssize_t readv(int fd, const struct iovec* iov, int iovcnt);
 ssize_t writev(int fd, const struct iovec* iov, int iovcnt);
 
-int createNonblocking();    // create tcp ipv4 socket
+int createNonblockingOrDie();    // create tcp ipv4 socket
 bool setNonBlockAndCloseOnExec(int sockfd);  // fcntl
 int getSocketError(int sockfd);
 bool isSelfConnect(int sockfd);

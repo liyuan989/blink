@@ -110,7 +110,7 @@ void runClient(const char* ip, uint16_t port)
     Socket socket(createNonblockingUdp());
     InetAddress server_addr(ip, port);
     struct sockaddr_in addr = server_addr.getSockAddrInet();
-    int ret = sockets::connect(socket.fd(), sockets::sockaddr_cast(&addr), sizeof(addr));
+    int ret = sockets::connect(socket.fd(), addr);
     if (ret < 0)
     {
         LOG_FATAL << "sockets::connect";

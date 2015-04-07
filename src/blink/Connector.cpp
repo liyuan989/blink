@@ -55,11 +55,9 @@ void Connector::startInLoop()
 
 void Connector::connect()
 {
-    int sockfd = sockets::createNonblocking();
+    int sockfd = sockets::createNonblockingOrDie();
     struct sockaddr_in server_addr = server_addr_.getSockAddrInet();
-    int val = sockets::connect(sockfd,
-                               sockets::sockaddr_cast(&server_addr),
-                               sizeof(server_addr));
+    int val = sockets::connect(sockfd, server_addr);
     int saved_errno = (val == 0) ? 0 : errno;
     switch (saved_errno)
     {

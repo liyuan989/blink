@@ -16,7 +16,7 @@ namespace blink
 
 Acceptor::Acceptor(EventLoop* loop, const InetAddress& listen_addr, bool reuse_port)
     : loop_(loop),
-      accept_socket_(sockets::createNonblocking()),
+      accept_socket_(sockets::createNonblockingOrDie()),
       accept_channel_(loop_, accept_socket_.fd()),
       listenning_(false),
       idle_fd_(::open("/dev/null", O_RDONLY | O_CLOEXEC))
@@ -71,7 +71,7 @@ void Acceptor::handleRead()
         if (errno == EMFILE)
         {
             ::close(idle_fd_);
-            idle_fd_ = sockets::accept(accept_socket_.fd(), NULL, NULL);
+            idle_fd_ = ::accept(accept_socket_.fd(), NULL, NULL);
             ::close(idle_fd_);
             idle_fd_ = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
         }
