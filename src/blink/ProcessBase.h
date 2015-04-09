@@ -44,7 +44,7 @@ sighandler_t signalRestart(int signum, sighandler_t handler);
 
 //  typedef struct
 //  {
-//      unsignedlong sig[_NSIG_WORDS];
+//      unsigned long sig[_NSIG_WORDS];
 //
 //  } sigset_t;
 
