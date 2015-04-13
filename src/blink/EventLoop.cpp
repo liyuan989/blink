@@ -43,6 +43,8 @@ public:
     }
 };
 
+#pragma GCC diagnostic error "-Wold-style-cast"
+
 IgnoreSigPipe g_initObject;
 
 }  // anonymous namespace
