@@ -20,7 +20,7 @@ const char Buffer::kCRLF[] = "\r\n";
 
 ssize_t Buffer::readData(int fd, int* err)
 {
-    char stack_buf[1024*64];
+    char stack_buf[1024 * 64];
     struct iovec iov[2];
     const size_t writeable_size = writeableSize();
     iov[0].iov_base = beginWrite();

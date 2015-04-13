@@ -48,8 +48,8 @@ bool isMainThread()
 void sleepMicroseconds(int64_t microseconds)
 {
     struct timespec spec;
-    spec.tv_sec = static_cast<time_t>(microseconds / (1000*1000));
-    spec.tv_nsec = static_cast<long>(microseconds % (1000*1000) * 1000);
+    spec.tv_sec = static_cast<time_t>(microseconds / (1000 * 1000));
+    spec.tv_nsec = static_cast<long>(microseconds % (1000 * 1000) * 1000);
     ::nanosleep(&spec, NULL);
 }
 

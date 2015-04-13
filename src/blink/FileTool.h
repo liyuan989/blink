@@ -13,7 +13,7 @@ namespace blink
 class ReadSmallFile : Nocopyable
 {
 public:
-    static const int kBufferSize = 1024*64;
+    static const int kBufferSize = 1024 * 64;
 
     explicit ReadSmallFile(StringArg filename);
     ~ReadSmallFile();
@@ -53,7 +53,7 @@ int readFile(StringArg filename,
 class AppendFile
 {
 public:
-    const static int kBufferSize = 1024*64;
+    const static int kBufferSize = 1024 * 64;
 
     explicit AppendFile(StringArg filename);
     ~AppendFile();
