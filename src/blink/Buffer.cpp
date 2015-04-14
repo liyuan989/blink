@@ -33,7 +33,7 @@ ssize_t Buffer::readData(int fd, int* err)
     {
         *err = errno;
     }
-    else if (implicit_cast<size_t>(n) < writeable_size)
+    else if (implicit_cast<size_t>(n) <= writeable_size)
     {
         write_index_ += n;
     }
